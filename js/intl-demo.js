@@ -25,7 +25,7 @@
   const N = (d) => d;
   const NODES = {
     web:      N({ label: "고객 웹", sub: "발송 · 수신함", icon: "monitor", mt: "고객이 웹에서 발송", mo: "고객 웹 수신함에 답장 도착", desc: "고객이 웹에서 메시지를 쓰고 발송을 누릅니다. 수신자가 답장하면 같은 화면 수신함에 들어옵니다." }),
-    svc:      N({ label: "기업 서비스", sub: "로그인 · 결제", icon: "building-2", mt: "사용자가 인증번호 요청", mo: "로그인 완료", desc: "OTP를 도입한 기업의 서비스입니다. 로그인·결제 단계에서 비밀번호 대신 문자 인증번호를 씁니다." }),
+    svc:      N({ label: "기업 서비스", sub: "가입 · 로그인 · 결제", icon: "building-2", mt: "사용자가 인증번호 요청", mo: "인증 완료", desc: "OTP를 도입한 기업의 서비스입니다. 회원가입 때 휴대폰 번호를 인증하고, 로그인·결제 때는 비밀번호 대신 문자 인증번호를 씁니다." }),
     platform: N({ label: "A2P 플랫폼", sub: "KR · 발신", icon: "server", mt: "한국 플랫폼에서 발신 · 대표번호 확인 · 과금", mo: "플랫폼이 원래 발송 건과 매칭", desc: "한국에 있는 발송 플랫폼입니다. 대표번호 확인, 과금, 발송 건 번호 부여를 하고 국제망으로 내보냅니다. 답장이 오면 원래 발송 건과 짝지어 고객에게 돌려줍니다." }),
     otp:      N({ label: "OTP API", sub: "발급 · 룩업 · 검증", icon: "key-round", mt: "OTP 발급 · 6자리 생성 · 유효 3분", mo: "검증 API · 일치 · 유효시간 확인", desc: "기업 서버가 호출하는 OTP API입니다. 인증번호를 만들고(원문 대신 암호화 저장), 보내기 전에 룩업으로 번호를 확인하고, 사용자가 입력한 번호를 검증합니다. 재요청·시도 횟수 제한이 걸려 있습니다." }),
     usIn:     N({ label: "US 게이트웨이", sub: "수신", icon: "globe", mt: "미국 게이트웨이 수신", mo: "미국 → 한국", desc: "미국 게이트웨이가 한국에서 보낸 메시지를 받습니다. 여기서부터 우회 구간입니다." }),
@@ -59,11 +59,16 @@
   };
   const REPLIES = ["네 확인했어요", "배송 언제 와요?", "감사합니다!", "주소 변경 가능할까요?"];
   const CARRIERS = ["MNO-A", "MNO-B", "MNO-C"];
+  // OTP 시나리오: 회원가입(룩업으로 가짜 계정 차단) / 로그인
+  const FLOW = {
+    signup: { title: "휴대폰 번호로 회원가입", ask: "사용자가 가입 중 번호 인증 요청", done: "가입 완료 · 번호 인증된 계정 생성", fraud: "대량 가입 감지: 가상번호로 인증 요청", fraudDone: "가상번호로 판단해 가입과 발송을 막았습니다.", fraudCap: "③ 룩업 결과 가상번호 → 가짜 계정 가입 차단 · 문자 비용 0", ok: "가입 완료" },
+    login:  { title: "휴대폰 인증으로 로그인", ask: "사용자가 로그인 인증번호 요청", done: "인증 완료 · 로그인되었습니다.", fraud: "대량 요청 감지: 가짜 번호로 인증번호 요청", fraudDone: "가짜 번호로 판단해 발송하지 않았습니다.", fraudCap: "③ 룩업 결과 무효 → 발송 차단 · 문자 비용 0", ok: "로그인 완료" },
+  };
   const SPEED = 430;
 
   /* ---------- 상태 ---------- */
   let dlg, stage, svg, gPk, capEl, infoEl, mode, L, S;
-  let tab = "a2p", dest = "kr", type = "sms";
+  let tab = "a2p", dest = "kr", type = "sms", flow = "signup";
   let packets = [], timers = [], ambientT = 0, raf = 0, last = 0, clock = 0, running = false, busy = false, auto = true, autoT = 0.8, seq = 0;
   let otpStats = { ok: 0, blocked: 0, times: [] };
   const nodeEls = {};
@@ -141,18 +146,24 @@
 
         <div class="a2p-panels" data-panel="otp" hidden>
           <section class="a2p-console otp-login" aria-label="기업 서비스 로그인 화면">
-            <div class="panel-head"><span class="mono">ENTERPRISE LOGIN</span></div>
-            <p class="otp-title">휴대폰 인증으로 로그인</p>
+            <div class="panel-head otp-head">
+              <span class="mono">ENTERPRISE SERVICE</span>
+              <div class="seg" role="radiogroup" aria-label="인증 상황">
+                <button type="button" role="radio" data-flow="signup" aria-checked="true">회원가입</button>
+                <button type="button" role="radio" data-flow="login" aria-checked="false">로그인</button>
+              </div>
+            </div>
+            <p class="otp-title"></p>
             <div class="otp-field"><span class="cc mono"></span><span class="num mono"></span></div>
             <div class="code-boxes" aria-label="인증번호 입력">${"<span></span>".repeat(6)}</div>
             <p class="otp-status">인증번호를 요청하세요.</p>
             <div class="a2p-actions">
               <button type="button" class="btn btn-primary btn-sm-o" data-act="otp">인증번호 받기</button>
-              <button type="button" class="btn btn-sm-o" data-act="fraud">가짜 번호 요청 (펌핑)</button>
+              <button type="button" class="btn btn-sm-o" data-act="fraud">가상번호 대량 요청</button>
               <button type="button" class="btn btn-sm-o" data-act="auto" aria-pressed="true">자동 재생 켜짐</button>
             </div>
             <div class="otp-stats">
-              <div><span>인증 성공</span><b data-os="ok">0</b></div>
+              <div><span>가입 · 로그인</span><b data-os="ok">0</b></div>
               <div><span>공격 차단</span><b data-os="blocked" class="bad">0</b></div>
               <div><span>평균 도착</span><b data-os="avg">–</b></div>
             </div>
@@ -188,6 +199,7 @@
       if (e.target === dlg || e.target.closest("[data-close]")) return close();
       const tb = e.target.closest("[data-tab]"); if (tb) return setTab(tb.dataset.tab);
       const ds = e.target.closest("[data-dest]"); if (ds) return setDest(ds.dataset.dest);
+      const fl = e.target.closest("[data-flow]"); if (fl) { setFlow(fl.dataset.flow); if (auto) toggleAuto(); return; }
       const ty = e.target.closest("[data-type]"); if (ty) { setType(ty.dataset.type); if (auto) toggleAuto(); return; }
       const act = e.target.closest("[data-act]")?.dataset.act;
       if (act === "send") a2pSend();
@@ -214,6 +226,13 @@
     dlg.querySelectorAll("[data-dest]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.dest === k)));
     reset();
   }
+  function setFlow(f) {
+    if (busy) return;
+    flow = f;
+    dlg.querySelectorAll("[data-flow]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.flow === f)));
+    $(".otp-title").textContent = FLOW[f].title;
+  }
+
   function setType(t) {
     type = t;
     dlg.querySelectorAll("[data-type]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.type === t)));
@@ -239,7 +258,7 @@
     $(".a2p-log").innerHTML = "";
     setType(type);
     $(".otp-field .cc").textContent = d.cc; $(".otp-field .num").textContent = d.num;
-    resetOtpUi();
+    resetOtpUi(); setFlow(flow);
     $(".sim-legend").innerHTML = tab === "a2p"
       ? `<span><i class="dot lime"></i>발신 (MT)</span><span><i class="dot mint"></i>전달 결과 (DLR)</span><span><i class="dot amber"></i>답장 (MO)</span>`
       : `<span><i class="dot sky"></i>룩업 질의</span><span><i class="dot lime"></i>OTP 발송</span><span><i class="dot mint"></i>검증</span><span><i class="dot red"></i>차단</span>`;
@@ -438,7 +457,8 @@
     setLookup(null); setTimer(0, "run");
     const d = DEST[dest];
     $(".otp-field .num").textContent = fraud ? "00-0000-0000" : d.num;
-    setStatus(fraud ? "대량 요청 감지: 가짜 번호로 인증번호 요청" : "인증번호 요청", fraud ? "bad" : "");
+    const F = FLOW[flow];
+    setStatus(fraud ? F.fraud : "인증번호 요청", fraud ? "bad" : "");
     const code = String(Math.floor(100000 + Math.random() * 900000));
     const target = 1.6 + Math.random() * 7.2; // 연출용 도착 시간 (초)
     const [svc, otp] = S.order;
@@ -452,7 +472,7 @@
     tick();
 
     flash(svc);
-    capEl.textContent = `① ${NODES.svc.mt}`;
+    capEl.textContent = `① ${F.ask}`;
     launch({
       kind: "mt", ids: [svc, otp], lane: -1, hit: "hit", cap: () => `② ${NODES.otp.mt}`,
       onDone: () => {
@@ -468,8 +488,8 @@
                 timing = false; setTimer(0, "");
                 setLookup({ valid: false, carrier: "확인 불가", ported: "–", roaming: "–" });
                 flash(otp, "bad");
-                capEl.textContent = "③ 룩업 결과 무효 → 발송 차단 · 문자 비용 0";
-                setStatus("가짜 번호로 판단해 발송하지 않았습니다.", "bad");
+                capEl.textContent = F.fraudCap;
+                setStatus(F.fraudDone, "bad");
                 otpStats.blocked++; showOtpStats();
                 later(1.8, () => { resetOtpUi(); busy = false; autoT = 1.6; });
                 return;
@@ -498,10 +518,10 @@
                       kind: "vf", ids: [svc, otp], lane: -1, hit: "hit-dlr",
                       onDone: () => launch({
                         kind: "vf", ids: [otp, svc], lane: 1, hit: "hit-dlr",
-                        cap: (id) => (id === svc ? "⑥ 검증 통과 · 일치 · 유효시간 안 → 로그인 완료" : ""),
+                        cap: (id) => (id === svc ? `⑥ 검증 통과 · 일치 · 유효시간 안 → ${F.ok}` : ""),
                         onDone: () => {
                           boxes.forEach((b) => (b.className = "ok"));
-                          setStatus("인증 완료 · 로그인되었습니다.", "ok");
+                          setStatus(F.done, "ok");
                           otpStats.ok++; showOtpStats();
                           later(2.2, () => { resetOtpUi(); busy = false; autoT = 1.4; });
                         },
@@ -535,7 +555,7 @@
       autoT -= dt;
       if (autoT <= 0) {
         if (tab === "a2p") { setType(["sms", "lms", "mms"][seq % 3]); a2pSend(); }
-        else { const n = otpStats.ok + otpStats.blocked; otpRun(n % 4 === 3); }
+        else { const n = otpStats.ok + otpStats.blocked; setFlow(n % 2 ? "login" : "signup"); otpRun(n % 4 === 3); }
       }
     }
     // 예약 실행

@@ -444,6 +444,8 @@ html.modal-open { overflow: hidden; }
 .dot.sky { background: #7cc7ff; }
 
 /* OTP · 룩업 패널 */
+.otp-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.otp-head .seg button { font-family: var(--sans); font-size: 12px; height: 28px; }
 .otp-title { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 14px; }
 .otp-field { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; border: 1px solid var(--line-hi); border-radius: 12px; background: var(--bg); font-size: 15px; }
 .otp-field .cc { color: var(--accent); padding-right: 10px; border-right: 1px solid var(--line); }
