@@ -526,6 +526,22 @@ html.modal-open { overflow: hidden; }
   box-shadow: inset 0 0 0 6px #f4f4f5;
 }
 
+.e-trip { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.e-trip > .mono { font-size: 12px; color: var(--muted); }
+.e-trip ol { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.e-trip ol { gap: 22px; }
+.e-trip li { position: relative; font-size: 12.5px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line-hi); color: var(--fg-2); transition: all .25s; }
+.e-trip li + li::before { content: "→"; position: absolute; left: -18px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+.e-trip li.now { border-color: var(--accent); color: var(--accent); }
+.e-trip li.done { border-color: rgba(94,224,193,.45); color: var(--accent-2); }
+.e-dash { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; }
+.e-dash .panel-head { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.e-total { color: #ffc861; }
+.e-dash ul:empty::after { content: "출장 국가별 연결 기록이 여기에 쌓입니다."; font-size: 12.5px; color: var(--muted); }
+.e-dash li { display: grid; grid-template-columns: 1fr auto auto; gap: 14px; padding: 7px 0; border-top: 1px solid var(--line); font-size: 13px; animation: fade-in .4s ease; }
+.e-dash li:first-child { border-top: 0; }
+.e-dash li .mono { color: var(--fg-2); font-size: 12px; }
+
 /* Projects */
 .projects { display: grid; gap: 14px; }
 .project { display: grid; grid-template-columns: 340px 1fr; gap: 40px; padding: 36px; }

@@ -35,6 +35,7 @@
     mno:      N({ label: "국내 MNO", sub: "SMSC · HLR", icon: "radio-tower", mt: "국내 MNO 문자센터 전달", mo: "MNO가 답장(MO) 수신", desc: "이동통신사 문자센터가 단말로 전달합니다. 가입자 정보(HLR)도 여기 있어서 룩업 질의에 답합니다." }),
     local:    N({ label: "현지 MNO", sub: "SMSC · HLR", icon: "radio-tower", mt: "현지 MNO 문자센터 전달", mo: "현지 MNO가 답장(MO) 수신", desc: "목적지 나라 이동통신사입니다. 허브가 직접 연결돼 있어 중간 업체 없이 바로 전달합니다." }),
     eweb:     N({ label: "여행자 웹", sub: "가입 · 선결제", icon: "credit-card", mt: "웹에서 가입 · 휴대폰 인증", desc: "여행자가 출국 전에 웹에서 가입(휴대폰 OTP 인증)하고, 나라와 요금제를 골라 선결제합니다." }),
+    eadmin:   N({ label: "관리자 포털", sub: "임원 등록 · 정산", icon: "building-2", mt: "관리자 포털에서 임원 등록", desc: "기업 담당자가 해외 출장이 잦은 임원을 등록합니다. 나라마다 상품을 사지 않고 글로벌 요금제 하나로 계약하고, 요금은 회사로 일괄 정산됩니다." }),
     eplat:    N({ label: "eSIM 플랫폼", sub: "주문 · 과금 · 회선", icon: "server", mt: "요금제 확정 · 선결제 완료", desc: "주문과 결제를 확인하고 회선을 만든 뒤 프로파일 발급을 요청합니다. 현지에서 쓴 데이터 사용량도 여기로 모여 과금됩니다." }),
     smdp:     N({ label: "프로파일 서버", sub: "SM-DP+", icon: "qr-code", mt: "eSIM 프로파일 생성 · QR 발급", desc: "GSMA 규격의 eSIM 프로파일 서버입니다. 회선 정보가 담긴 프로파일을 만들고, 폰이 내려받을 수 있게 QR(활성화 코드)을 발급합니다." }),
     home:     N({ label: "홈 코어", sub: "HLR · HSS", icon: "database", mt: "홈 코어 인증", mo: "홈 코어가 가입자 확인 · 승인", desc: "MNO·MVNO 사업권으로 운영하는 가입자 정보 시스템입니다. 해외 방문망에서 온 인증 요청을 확인하고 승인합니다." }),
@@ -47,11 +48,11 @@
     const d = DEST[dk];
     if (tab === "esim") {
       return {
-        d, order: ["eweb", "eplat", "smdp", "home", "hub", "visited", "traveler"],
+        d, order: [eMode === "biz" ? "eadmin" : "eweb", "eplat", "smdp", "home", "hub", "visited", "traveler"],
         bands: [
           { label: "KOREA", sub: "가입 · 발급 · 홈망", from: "eweb", to: "home" },
           { label: "GLOBAL", sub: "Tier1 IPX", from: "hub", to: "hub", hi: true },
-          { label: d.en, sub: "도착 국가", from: "visited", to: "traveler" },
+          { label: d.en, sub: eMode === "biz" ? "출장 국가 · 자동 전환" : "도착 국가", from: "visited", to: "traveler", dest: true },
         ],
       };
     }
@@ -84,7 +85,9 @@
 
   /* ---------- 상태 ---------- */
   let dlg, stage, svg, gPk, capEl, infoEl, mode, L, S;
-  let tab = "a2p", dest = "kr", type = "sms", flow = "signup";
+  let tab = "a2p", dest = "kr", type = "sms", flow = "signup", eMode = "personal";
+  const TRIP = ["jp", "us", "gb"]; // 기업 글로벌 eSIM 출장 예시
+  let esimRuns = 0;
   let packets = [], timers = [], ambientT = 0, raf = 0, last = 0, clock = 0, running = false, busy = false, auto = true, autoT = 0.8, seq = 0;
   let otpStats = { ok: 0, blocked: 0, times: [] };
   const nodeEls = {};
@@ -205,9 +208,19 @@
         </div>
         <div class="a2p-panels" data-panel="esim" hidden>
           <section class="a2p-console" aria-label="여행자 웹 가입 화면">
-            <div class="panel-head"><span class="mono">TRAVEL eSIM</span></div>
-            <p class="otp-title"><span class="e-country"></span> 여행 eSIM</p>
-            <div class="e-plan">
+            <div class="panel-head otp-head">
+              <span class="mono">TRAVEL eSIM</span>
+              <div class="seg" role="radiogroup" aria-label="이용 형태">
+                <button type="button" role="radio" data-emode="personal" aria-checked="true">개인</button>
+                <button type="button" role="radio" data-emode="biz" aria-checked="false">기업 · 글로벌</button>
+              </div>
+            </div>
+            <p class="otp-title e-title"></p>
+            <div class="e-trip" data-for="biz">
+              <span class="mono">출장 일정</span>
+              <ol>${TRIP.map((k) => `<li data-trip="${k}">${DEST[k].ko}</li>`).join("")}</ol>
+            </div>
+            <div class="e-plan" data-for="personal">
               <span class="mono">요금제</span>
               <div class="seg" role="radiogroup" aria-label="요금제">
                 <button type="button" role="radio" data-plan="0" aria-checked="true">3일 · 무제한</button>
@@ -215,13 +228,11 @@
                 <button type="button" role="radio" data-plan="2" aria-checked="false">7일 · 무제한</button>
               </div>
             </div>
-            <ol class="e-steps">
-              <li data-es="0"><i></i>웹 가입 · 휴대폰 인증</li>
-              <li data-es="1"><i></i>요금제 선택 · 선결제</li>
-              <li data-es="2"><i></i>eSIM 다운로드 · 설치 <span class="muted">(출국 전)</span></li>
-              <li data-es="3"><i></i>현지 도착 · 자동 개통</li>
-              <li data-es="4"><i></i>데이터 사용</li>
-            </ol>
+            <ol class="e-steps">${[0, 1, 2, 3, 4].map((i) => `<li data-es="${i}"><i></i><span></span></li>`).join("")}</ol>
+            <div class="e-dash" data-for="biz">
+              <div class="panel-head"><span class="mono">회사 대시보드 · 임원 A</span><span class="mono e-total"></span></div>
+              <ul></ul>
+            </div>
             <div class="a2p-actions">
               <button type="button" class="btn btn-primary btn-sm-o" data-act="esim">가입부터 시작</button>
               <button type="button" class="btn btn-sm-o" data-act="auto" aria-pressed="true">자동 재생 켜짐</button>
@@ -252,6 +263,7 @@
       if (e.target === dlg || e.target.closest("[data-close]")) return close();
       const tb = e.target.closest("[data-tab]"); if (tb) return setTab(tb.dataset.tab);
       const ds = e.target.closest("[data-dest]"); if (ds) return setDest(ds.dataset.dest);
+      const em = e.target.closest("[data-emode]"); if (em) { if (!busy) setEMode(em.dataset.emode); if (auto) toggleAuto(); return; }
       const pl = e.target.closest("[data-plan]"); if (pl) { if (!busy) dlg.querySelectorAll("[data-plan]").forEach((b) => b.setAttribute("aria-checked", String(b === pl))); return; }
       const fl = e.target.closest("[data-flow]"); if (fl) { setFlow(fl.dataset.flow); if (auto) toggleAuto(); return; }
       const ty = e.target.closest("[data-type]"); if (ty) { setType(ty.dataset.type); if (auto) toggleAuto(); return; }
@@ -274,6 +286,7 @@
     tab = t;
     const krBtn = dlg.querySelector('[data-dest="kr"]');
     krBtn.disabled = t === "esim";
+    dlg.querySelectorAll("[data-dest]").forEach((b) => { if (b !== krBtn) b.disabled = t === "esim" && eMode === "biz"; });
     krBtn.title = t === "esim" ? "로밍 eSIM은 해외 목적지만" : "";
     if (t === "esim" && dest === "kr") { dest = "jp"; dlg.querySelectorAll("[data-dest]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.dest === dest))); }
     dlg.querySelectorAll("[data-tab]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === t)));
@@ -281,7 +294,7 @@
     reset();
   }
   function setDest(k) {
-    if (tab === "esim" && k === "kr") return;
+    if (tab === "esim" && (k === "kr" || eMode === "biz")) return;
     dest = k;
     dlg.querySelectorAll("[data-dest]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.dest === k)));
     reset();
@@ -351,12 +364,12 @@
       if (m === "h") {
         el("rect", { x: a, y: 0, width: z - a, height: L.h, class: "band-bg" }, g);
         if (bi) el("line", { x1: a, y1: 14, x2: a, y2: L.h - 14, class: "band-edge" }, g);
-        el("text", { x: a + 14, y: 28, class: "band-label" }, g).textContent = b.label;
+        const bl = el("text", { x: a + 14, y: 28, class: "band-label" }, g); bl.textContent = b.label; if (b.dest) S.destLabel = bl;
         el("text", { x: a + 14, y: 44, class: "band-sub" }, g).textContent = b.sub;
       } else {
         el("rect", { x: 0, y: a, width: L.w, height: z - a, class: "band-bg" }, g);
         if (bi) el("line", { x1: 12, y1: a, x2: L.w - 12, y2: a, class: "band-edge" }, g);
-        el("text", { x: L.w - 14, y: a + 24, class: "band-label", "text-anchor": "end" }, g).textContent = b.label;
+        const bl = el("text", { x: L.w - 14, y: a + 24, class: "band-label", "text-anchor": "end" }, g); bl.textContent = b.label; if (b.dest) S.destLabel = bl;
         el("text", { x: L.w - 14, y: a + 40, class: "band-sub", "text-anchor": "end" }, g).textContent = b.sub;
       }
     });
@@ -390,9 +403,10 @@
       el("svg", { x: -11, y: -11, width: 22, height: 22, viewBox: "0 0 24 24", class: "ico" }, g).innerHTML = ICONS[nd.icon];
       const h = m === "h", off = id === "hub" ? 8 : 0;
       const at = h ? { x: 0, "text-anchor": "middle" } : { x: 44 + off, "text-anchor": "start" };
-      el("text", { ...at, y: h ? 54 + off : -1, class: "n-label" }, g).textContent = label;
+      const nl = el("text", { ...at, y: h ? 54 + off : -1, class: "n-label" }, g); nl.textContent = label;
+      if (id === "visited") S.visLabel = nl;
       el("text", { ...at, y: h ? 70 + off : 15, class: "n-sub" }, g).textContent = nd.sub;
-      const show = () => { infoEl.innerHTML = `<b>${esc(label)}</b> ${esc(nd.desc)}`; };
+      const show = () => { infoEl.innerHTML = `<b>${esc(nl.textContent)}</b> ${esc(nd.desc)}`; };
       g.addEventListener("pointerenter", show); g.addEventListener("focus", show); g.addEventListener("click", show);
       nodeEls[id] = g;
     }
@@ -637,40 +651,72 @@
     E(".t-fill").style.width = `${Math.min(sec / 10, 1) * 100}%`;
     E(".timer").className = `timer e-timer ${cls || ""}`;
   }
+  const STEPS = {
+    personal: ["웹 가입 · 휴대폰 인증", "요금제 선택 · 선결제", "eSIM 다운로드 · 설치 (출국 전)", "현지 도착 · 자동 개통", "데이터 사용"],
+    biz: ["관리자 포털에서 임원 등록", "글로벌 요금제 1회 계약 · 회사 일괄 정산", "임원 폰에 eSIM 1회 설치", "나라 이동마다 자동 연결 · 추가 가입 없음", "사용량 통합 대시보드"],
+  };
+  function setEMode(m) {
+    eMode = m;
+    dlg.querySelectorAll("[data-emode]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.emode === m)));
+    if (m === "biz") setDestMark(TRIP[0]);
+    setTab("esim");
+  }
+  // 목적지 버튼 표시만 바꿈 (기업 모드 출장 진행 표시용)
+  function setDestMark(k) {
+    dest = k;
+    dlg.querySelectorAll("[data-dest]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.dest === k)));
+  }
+  function setVisited(k) {
+    setDestMark(k);
+    if (S.destLabel) S.destLabel.textContent = DEST[k].en;
+    if (S.visLabel) S.visLabel.textContent = `${DEST[k].ko} 방문망`;
+    dlg.querySelectorAll("[data-trip]").forEach((li) => {
+      const i = TRIP.indexOf(li.dataset.trip), c = TRIP.indexOf(k);
+      li.className = i < c ? "done" : i === c ? "now" : "";
+    });
+  }
   function resetEsimUi() {
-    E(".e-country").textContent = DEST[dest].ko;
+    const biz = eMode === "biz";
+    E(".e-title").textContent = biz ? "기업 글로벌 eSIM" : `${DEST[dest].ko} 여행 eSIM`;
+    dlg.querySelectorAll('[data-panel="esim"] [data-for]').forEach((n) => (n.hidden = n.dataset.for !== eMode));
+    dlg.querySelectorAll("[data-es] span").forEach((sp, i) => (sp.textContent = STEPS[eMode][i]));
+    dlg.querySelectorAll("[data-trip]").forEach((li) => (li.className = ""));
+    E(".e-dash ul").innerHTML = ""; E(".e-total").textContent = "";
     esimStep(-1);
     esimScreen(`<p class="e-msg muted">eSIM 없음</p>`, "No service", 0);
     setETimer(0, "");
+    E('[data-act="esim"]').textContent = biz ? "임원 등록부터 시작" : "가입부터 시작";
     E('[data-act="esim"]').disabled = false;
   }
 
   function esimRun() {
     if (busy || !running || tab !== "esim") return;
-    busy = true; E('[data-act="esim"]').disabled = true;
-    const d = DEST[dest];
+    busy = true; E('[data-act="esim"]').disabled = true; esimRuns++;
+    const biz = eMode === "biz", first = S.order[0];
     const plan = dlg.querySelector('[data-plan][aria-checked="true"]').textContent;
     const cap = (t) => { capEl.textContent = t; };
-    esimStep(0); flash("eweb");
-    cap(`① ${NODES.eweb.mt}`);
-    esimScreen(`<p class="e-msg">가입 중…</p>`, "KR · 출국 전", 4);
+    const pre = biz ? "KR · 출장 전" : "KR · 출국 전";
+    esimStep(0); flash(first);
+    cap(`① ${NODES[first].mt}`);
+    esimScreen(`<p class="e-msg">${biz ? "임원 등록 중…" : "가입 중…"}</p>`, pre, 4);
     launch({
-      kind: "mt", ids: ["eweb", "eplat"], lane: -1, hit: "hit",
+      kind: "mt", ids: [first, "eplat"], lane: -1, hit: "hit",
       onDone: () => {
-        esimStep(1); cap(`② ${NODES.eplat.mt} · ${d.ko} ${plan}`);
+        esimStep(1);
+        cap(biz ? "② 글로벌 요금제 1회 계약 · 나라별 가입 없음 · 회사 일괄 정산" : `② ${NODES.eplat.mt} · ${DEST[dest].ko} ${plan}`);
         later(0.8, () => launch({
           kind: "mt", ids: ["eplat", "smdp"], lane: -1, hit: "hit",
           onDone: () => {
-            cap(`③ ${NODES.smdp.mt}`);
-            esimScreen(`<div class="qr" aria-hidden="true"></div><p class="e-msg">QR을 찍어 eSIM 추가</p>`, "KR · 출국 전", 4);
+            cap(biz ? "③ 글로벌 프로파일 1개 발급 · QR" : `③ ${NODES.smdp.mt}`);
+            esimScreen(`<div class="qr" aria-hidden="true"></div><p class="e-msg">QR을 찍어 eSIM 추가</p>`, pre, 4);
             esimStep(2);
             later(0.9, () => {
-              cap("④ 프로파일 다운로드 · 설치 (출국 전, 인터넷)");
-              const arc = arcPts(), start = clock, dur = arc.reduce((s, p, i) => (i ? s + Math.hypot(p[0] - arc[i - 1][0], p[1] - arc[i - 1][1]) : 0), 0) / (SPEED * 0.8);
+              cap(biz ? "④ 임원 폰에 1회 설치 · 이후 어느 나라든 그대로 사용" : "④ 프로파일 다운로드 · 설치 (출국 전, 인터넷)");
+              const arc = arcPts(), start = clock, dur = arc.reduce((acc, p, i) => (i ? acc + Math.hypot(p[0] - arc[i - 1][0], p[1] - arc[i - 1][1]) : 0), 0) / (SPEED * 0.8);
               const prog = () => {
                 if (!running || tab !== "esim") return;
                 const k = Math.min((clock - start) / dur, 1);
-                esimScreen(`<p class="e-msg">eSIM 설치 중</p><div class="e-prog"><i style="width:${(k * 100).toFixed(0)}%"></i></div><p class="e-pct mono">${(k * 100).toFixed(0)}%</p>`, "KR · 출국 전", 4);
+                esimScreen(`<p class="e-msg">eSIM 설치 중</p><div class="e-prog"><i style="width:${(k * 100).toFixed(0)}%"></i></div><p class="e-pct mono">${(k * 100).toFixed(0)}%</p>`, pre, 4);
                 if (k < 1) later(0.05, prog);
               };
               prog();
@@ -678,12 +724,33 @@
                 kind: "dlr", pts: arc, speed: SPEED * 0.8, shape: true,
                 onDone: () => {
                   flash("traveler", "hit-dlr");
-                  esimScreen(`<p class="e-msg ok">설치 완료</p><p class="e-sub">${d.ko}에 도착해서 켜면 바로 연결돼요</p>`, "KR · 출국 전", 4);
-                  later(1.2, () => {
-                    cap(`✈ ${d.ko}(으)로 이동`); esimStep(3);
-                    esimScreen(`<p class="e-msg">✈ 이동 중</p><p class="e-sub">비행기 모드</p>`, "✈", 0);
-                    later(1.6, arrive);
-                  });
+                  esimScreen(`<p class="e-msg ok">설치 완료</p><p class="e-sub">${biz ? "출장 가는 나라마다 자동으로 연결돼요" : `${DEST[dest].ko}에 도착해서 켜면 바로 연결돼요`}</p>`, pre, 4);
+                  const trip = biz ? TRIP.slice() : [dest];
+                  let total = 0;
+                  const next = (i) => {
+                    if (!running || tab !== "esim") return;
+                    if (i >= trip.length) {
+                      if (biz) cap(`⑧ ${trip.length}개국 사용량이 회사 대시보드 한 곳에 모임 · 일괄 정산`);
+                      esimStep(5);
+                      return later(2, () => { resetEsimUi(); busy = false; autoT = 1.4; });
+                    }
+                    const k = trip[i];
+                    later(i ? 0.6 : 1.2, () => {
+                      cap(`✈ ${DEST[k].ko}(으)로 이동`); esimStep(3);
+                      esimScreen(`<p class="e-msg">✈ 이동 중</p><p class="e-sub">${DEST[k].ko}행 · 비행기 모드</p>`, "✈", 0);
+                      later(biz ? 1.1 : 1.6, () => attach(k, biz ? 7 : 18, (sec, mb) => {
+                        total += mb;
+                        if (biz) {
+                          const li = document.createElement("li");
+                          li.innerHTML = `<span>${DEST[k].ko}</span><span class="mono">연결 ${sec.toFixed(1)}s</span><span class="mono">${mb.toFixed(1)} MB</span>`;
+                          E(".e-dash ul").appendChild(li);
+                          E(".e-total").textContent = `합계 ${total.toFixed(1)} MB`;
+                        }
+                        next(i + 1);
+                      }));
+                    });
+                  };
+                  next(0);
                 },
               });
             });
@@ -692,8 +759,10 @@
       },
     });
 
-    // 현지 도착 → 방문망 → 허브 → 홈 코어 인증 → 승인 → 개통
-    function arrive() {
+    // 현지 도착 → 방문망 → 허브 → 홈 코어 인증 → 승인 → 개통 → 데이터
+    function attach(k, bursts, done) {
+      const d = DEST[k];
+      setVisited(k);
       esimStep(3);
       const target = 2.5 + Math.random() * 5.5, t0 = clock;
       const req = ["traveler", "visited", "hub", "home"], back = req.slice().reverse();
@@ -701,7 +770,7 @@
       let timing = true;
       const tk = () => { if (!timing || !running || tab !== "esim") return; setETimer(Math.min(((clock - t0) / total) * target, target), "run"); later(0.05, tk); };
       tk();
-      cap(`⑤ ${d.ko} 도착 · 폰 켜짐 → ${d.ko} 방문망 접속`);
+      cap(`⑤ ${d.ko} 도착 · 폰 켜짐 → ${d.ko} 방문망 ${biz ? "자동 연결 (추가 가입 없음)" : "접속"}`);
       esimScreen(`<p class="e-msg">망 검색 중…</p>`, "Searching…", 1);
       launch({
         kind: "lk", ids: req, lane: 1, speed: SPEED * 1.4, hit: "hit-lk",
@@ -711,9 +780,8 @@
           cap: (id) => (id === "traveler" ? `⑦ 인증 승인 · ${d.ko} 방문망 즉시 개통` : ""),
           onDone: () => {
             timing = false; setETimer(target, "done");
-            esimStep(4);
             esimScreen(`<p class="e-msg ok">연결됨</p><p class="e-sub">${d.ko} MNO · LTE · 데이터 사용 가능</p><p class="e-data mono">0.0 MB</p>`, `${d.ko} MNO · LTE`, 4);
-            later(1.1, () => { if (tab === "esim") cap("⑧ 데이터 사용 · 사용량은 플랫폼으로 모여 과금"); });
+            if (!biz) later(1.1, () => { if (tab === "esim") { esimStep(4); cap("⑧ 데이터 사용 · 사용량은 플랫폼으로 모여 과금"); } });
             let mb = 0;
             const stream = (n) => {
               if (!running || tab !== "esim") return;
@@ -721,8 +789,8 @@
               launch({ kind: "mo", ids: up ? ["traveler", "visited", "hub"] : ["hub", "visited", "traveler"], lane: up ? 1 : -1, speed: SPEED * 1.2 });
               mb += 0.4 + Math.random() * 1.2;
               const dm = E(".e-data"); if (dm) dm.textContent = `${mb.toFixed(1)} MB`;
-              if (n < 18) later(0.18, () => stream(n + 1));
-              else later(1.4, () => { resetEsimUi(); busy = false; autoT = 1.4; });
+              if (n < bursts) later(0.18, () => stream(n + 1));
+              else later(biz ? 0.4 : 1.4, () => done(target, mb));
             };
             stream(0);
           },
@@ -750,7 +818,7 @@
       if (autoT <= 0) {
         if (tab === "a2p") { setType(["sms", "lms", "mms"][seq % 3]); a2pSend(); }
         else if (tab === "otp") { const n = otpStats.ok + otpStats.blocked; setFlow(n % 2 ? "login" : "signup"); otpRun(n % 4 === 3); }
-        else esimRun();
+        else { setEMode(esimRuns % 2 ? "biz" : "personal"); esimRun(); }
       }
     }
     // 예약 실행
