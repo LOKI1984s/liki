@@ -6,8 +6,9 @@
  */
 const PORTFOLIO = {
   profile: {
-    name: "[이름]",
-    nameEn: "[English Name]",
+    brand: "Zero Infinity", // 사이트 이름 (인트로 대제목·탭 제목)
+    mark: "0 → ∞",         // 로고 표기 (상단 메뉴)
+    name: "liki",           // 개인 아이디 (by liki · 저작권 표기)
     role: "Growth Hacker",
     // 홈 인트로에서 타이핑으로 순환되는 문구
     roles: ["Growth Hacker", "Data × Experiment", "AI Automation"],

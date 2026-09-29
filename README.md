@@ -1,4 +1,6 @@
-# Portfolio
+# Zero Infinity
+
+`0 → ∞` · by liki · Growth Hacker
 
 개인 포트폴리오. 정적 HTML/CSS/JS 멀티페이지, 다크 테마. 홈은 WebGL(three.js) 3D 인트로.
 

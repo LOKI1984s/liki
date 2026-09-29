@@ -23,7 +23,7 @@
   /* ---------- Nav ---------- */
   $("nav").innerHTML = `
     <nav class="nav">
-      <a href="index.html" class="brand"><span class="brand-dot"></span>${esc(p.name)}</a>
+      <a href="index.html" class="brand" aria-label="${esc(p.brand)} 홈"><span class="brand-mark mono">${esc(p.mark)}</span><span class="brand-name">${esc(p.brand)}</span></a>
       <ul class="menu">
         ${PAGES.map((x) => `<li><a href="${x.href}"${x.key === page ? ' class="active" aria-current="page"' : ""}>${x.label}</a></li>`).join("")}
       </ul>
@@ -34,7 +34,7 @@
     const open = document.body.classList.toggle("menu-open");
     toggle.setAttribute("aria-expanded", open);
   });
-  document.title = idx >= 0 ? `${PAGES[idx].label} — ${p.name}` : `${p.name} — ${p.role}`;
+  document.title = idx >= 0 ? `${PAGES[idx].label} — ${p.brand}` : `${p.brand} — by ${p.name}`;
 
   /* ---------- Blocks ---------- */
   const metricCell = (m) => `
@@ -63,7 +63,8 @@
         <section class="intro">
           <div class="intro-text">
             <p class="eyebrow rise" style="--i:0"><span class="mono">&gt;_</span><span class="typer" aria-live="polite"></span><span class="caret"></span></p>
-            <h1 class="intro-name" data-scramble="${esc(p.name)}">${esc(p.name)}</h1>
+            <h1 class="intro-name">${p.brand.split(" ").map((w) => `<span data-scramble="${esc(w)}">${esc(w)}</span>`).join("")}</h1>
+            <p class="intro-by rise" style="--i:1">by <b>${esc(p.name)}</b> · ${esc(p.role)}</p>
             <p class="intro-headline rise" style="--i:2">${accent(p.headline)}</p>
             <nav class="intro-index" aria-label="페이지">
               ${PAGES.map((x, i) => `
@@ -76,7 +77,7 @@
             </nav>
           </div>
           <div class="hud hud-l mono rise" style="--i:6">
-            <span>SYS // ${esc(p.nameEn)}</span>
+            <span>SYS // ${esc(p.mark)}</span>
             <span>KST <b id="hud-clock">--:--:--</b></span>
           </div>
           <div class="hud hud-r mono rise" style="--i:6">
