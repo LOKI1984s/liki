@@ -48,7 +48,6 @@
   const meter = (lv) =>
     lv ? `<span class="meter" aria-label="${lv}/5">${Array.from({ length: 5 }, (_, i) => `<i${i < lv ? ' class="on"' : ""}></i>`).join("")}</span>` : "";
 
-  const allSkills = d.skills.flatMap((g) => g.items.map((s) => s.name));
 
   const pageHead = () => {
     const x = PAGES[idx];
@@ -62,56 +61,28 @@
 
   const render = {
     home() {
-      const pr = d.projects[0];
-      const h = d.history[0];
       return `
-        <section class="hero">
-          ${p.status ? `<p class="status reveal"><span class="pulse"></span>${esc(p.status)}</p>` : ""}
-          <p class="eyebrow reveal">${esc(p.role)} · ${esc(p.name)} <span class="muted">${esc(p.nameEn)}</span></p>
-          <h1 class="hero-title reveal">${accent(p.headline)}</h1>
-          <p class="hero-summary reveal">${esc(p.summary)}</p>
-          <div class="hero-cta reveal">
-            <a class="btn btn-primary" href="projects.html">케이스 스터디 ${arrow}</a>
-            ${email ? `<a class="btn" href="${esc(email)}">연락하기</a>` : ""}
+        <section class="intro">
+          <div class="intro-text">
+            ${p.status ? `<p class="status rise" style="--i:0"><span class="pulse"></span>${esc(p.status)}</p>` : ""}
+            <p class="eyebrow rise" style="--i:1"><span class="mono">&gt;_</span><span class="typer" aria-live="polite"></span><span class="caret"></span></p>
+            <h1 class="intro-name" data-scramble="${esc(p.name)}">${esc(p.name)}</h1>
+            <p class="intro-headline rise" style="--i:3">${accent(p.headline)}</p>
+            <p class="intro-summary rise" style="--i:4">${esc(p.summary)}</p>
+            <div class="hero-cta rise" style="--i:5">
+              <a class="btn btn-primary" href="projects.html">프로젝트 보기 ${arrow}</a>
+              ${email ? `<a class="btn" href="${esc(email)}">연락하기</a>` : ""}
+            </div>
           </div>
-        </section>
-
-        ${p.metrics?.length ? `<section class="metrics reveal">${p.metrics.map(metricCell).join("")}</section>` : ""}
-
-        <section class="bento">
-          <a href="projects.html" class="card card-lg reveal">
-            <div class="card-top"><span class="mono">04</span>Case Studies ${arrow}</div>
-            ${pr ? `
-              <h3 class="card-title">${esc(pr.title)}</h3>
-              <p class="card-text">${esc(pr.summary)}</p>
-              <div class="mini-metrics">${(pr.metrics || []).map((m) => `<div><b data-count="${esc(m.value)}">${esc(m.value)}</b><span>${esc(m.label)}</span></div>`).join("")}</div>
-              <svg class="spark" viewBox="0 0 300 80" preserveAspectRatio="none" aria-hidden="true">
-                <defs><linearGradient id="sg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity=".35"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>
-                <path d="M0 72 C40 70 60 66 90 60 S140 52 170 40 S230 20 300 6 V80 H0Z" fill="url(#sg)"/>
-                <path class="spark-line" d="M0 72 C40 70 60 66 90 60 S140 52 170 40 S230 20 300 6" fill="none" stroke="var(--accent)" stroke-width="2"/>
-              </svg>` : ""}
-          </a>
-          <a href="skills.html" class="card reveal">
-            <div class="card-top"><span class="mono">01</span>Skills ${arrow}</div>
-            <p class="card-big">${allSkills.length}<small>tools</small></p>
-            <div class="chips">${allSkills.slice(0, 6).map((s) => `<span>${esc(s)}</span>`).join("")}</div>
-          </a>
-          <a href="history.html" class="card reveal">
-            <div class="card-top"><span class="mono">02</span>Timeline ${arrow}</div>
-            ${h ? `<p class="mono muted small">${esc(h.period)}</p><h3 class="card-title">${esc(h.title)}</h3><p class="card-text">${esc(h.sub)}</p>` : ""}
-          </a>
-          <a href="dev.html" class="card card-md reveal">
-            <div class="card-top"><span class="mono">03</span>Build ${arrow}</div>
-            <ul class="card-list">${d.dev.map((v) => `<li>${esc(v.title)}</li>`).join("")}</ul>
-          </a>
-          <a href="references.html" class="card card-md reveal">
-            <div class="card-top"><span class="mono">05</span>References ${arrow}</div>
-            <ul class="card-list">${d.references.map((r) => `<li><span class="tag">${esc(r.type)}</span>${esc(r.title)}</li>`).join("")}</ul>
-          </a>
-        </section>
-
-        <section class="marquee" aria-hidden="true">
-          <div class="marquee-track">${[...allSkills, ...allSkills].map((s) => `<span>${esc(s)}</span>`).join("")}</div>
+          <div class="hud hud-l mono rise" style="--i:6">
+            <span>SYS // ${esc(p.nameEn)}</span>
+            <span>KST <b id="hud-clock">--:--:--</b></span>
+          </div>
+          <div class="hud hud-r mono rise" style="--i:6">
+            <span>PARTICLES <b id="hud-n">—</b></span>
+            <span>FPS <b id="hud-fps">—</b></span>
+            <span class="hud-hint">CLICK → PULSE</span>
+          </div>
         </section>`;
     },
 
@@ -196,7 +167,8 @@
   /* ---------- Footer ---------- */
   const prev = idx > 0 ? PAGES[idx - 1] : idx === 0 ? { href: "index.html", label: "홈" } : null;
   const next = idx >= 0 && idx < PAGES.length - 1 ? PAGES[idx + 1] : null;
-  $("footer").innerHTML = `
+  if (page === "home") $("footer").remove();
+  else $("footer").innerHTML = `
     ${idx >= 0 ? `
       <nav class="pager">
         ${prev ? `<a href="${prev.href}"><small>Prev</small>${prev.label}</a>` : "<span></span>"}
@@ -247,6 +219,51 @@
     el.style.setProperty("--d", `${Math.min(i, 6) * 60}ms`);
     io.observe(el);
   });
+
+  if (page === "home") {
+    // 이름 디코딩(스크램블) 효과
+    const GLYPHS = "!<>-_\\/[]{}—=+*^?#01ABCDEF";
+    document.querySelectorAll("[data-scramble]").forEach((el) => {
+      const text = el.dataset.scramble;
+      if (reduce) return;
+      let frame = 0;
+      const total = 42;
+      const run = () => {
+        el.textContent = [...text].map((ch, i) => {
+          if (ch === " ") return " ";
+          return frame > (i / text.length) * total * 0.7 + 8 ? ch : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+        }).join("");
+        if (frame++ < total) requestAnimationFrame(run);
+        else el.textContent = text;
+      };
+      setTimeout(run, 250);
+    });
+
+    // 역할 타이핑 순환
+    const typer = document.querySelector(".typer");
+    const roles = p.roles?.length ? p.roles : [p.role];
+    if (typer) {
+      if (reduce) typer.textContent = roles[0];
+      else {
+        let ri = 0, ci = 0, del = false;
+        const loop = () => {
+          const word = roles[ri];
+          typer.textContent = word.slice(0, ci);
+          if (!del && ci === word.length) { del = true; return setTimeout(loop, 1800); }
+          if (del && ci === 0) { del = false; ri = (ri + 1) % roles.length; }
+          ci += del ? -1 : 1;
+          setTimeout(loop, del ? 35 : 70);
+        };
+        setTimeout(loop, 700);
+      }
+    }
+
+    // HUD 시계 (KST)
+    const clock = $("hud-clock");
+    const fmt = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Seoul", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    const tick = () => { clock.textContent = fmt.format(new Date()); };
+    tick(); setInterval(tick, 1000);
+  }
 
   // 카드 스포트라이트
   document.querySelectorAll(".card").forEach((c) => {

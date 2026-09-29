@@ -1,7 +1,7 @@
 /*
  * 포트폴리오 데이터 — 이 파일만 수정하면 사이트 전체가 바뀐다.
  * [대괄호] 표시는 전부 본인 정보로 교체할 자리.
- * 숫자(metrics.value)에 실제 숫자를 넣으면 카운트업 애니메이션이 자동 적용된다. 예: "+312%", "1.2M", "38"
+ * 프로젝트 숫자(metrics.value)에 실제 숫자를 넣으면 카운트업 애니메이션이 자동 적용된다. 예: "+312%", "1.2M", "38"
  * 필요 없는 항목은 배열에서 지우면 화면에서도 사라진다.
  */
 const PORTFOLIO = {
@@ -10,6 +10,8 @@ const PORTFOLIO = {
     nameEn: "[English Name]",
     role: "Growth Hacker",
     status: "Open to work", // 비우면 배지 숨김
+    // 홈 인트로에서 타이핑으로 순환되는 문구
+    roles: ["Growth Hacker", "Data × Experiment", "AI Automation"],
     // 헤드라인 — *별표* 사이 단어가 강조색으로 표시됨
     headline: "[데이터로 가설을 세우고, 실험으로 *성장*을 증명합니다]",
     summary: "[한 줄 소개 — 어떤 지표를, 어떤 방법으로, 얼마나 움직였는지]",
@@ -19,13 +21,6 @@ const PORTFOLIO = {
       { label: "LinkedIn", value: "[linkedin.com/in/아이디]", href: "" },
       { label: "GitHub", value: "[github.com/아이디]", href: "" },
       { label: "Blog", value: "[블로그 주소]", href: "" },
-    ],
-    // 홈 상단 핵심 지표 4개
-    metrics: [
-      { value: "[+000%]", label: "[MAU 성장률]" },
-      { value: "[00]", label: "[진행한 A/B 실험 수]" },
-      { value: "[-00%]", label: "[CAC 절감]" },
-      { value: "[0.0x]", label: "[리텐션 개선]" },
     ],
   },
 

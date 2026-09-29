@@ -1,0 +1,20 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "esbuild src/intro.js --bundle --minify --format=iife --target=es2020 --outfile=js/intro.bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LOKI1984s/liki.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LOKI1984s/liki/issues"
+  },
+  "homepage": "https://github.com/LOKI1984s/liki#readme",
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "three": "^0.170.0"
+  },
+  "private": true
+}
