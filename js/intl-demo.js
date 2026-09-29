@@ -1,12 +1,12 @@
 /*
  * 국제 메시징 플랫폼 — 인터랙티브 구조도 (개발 페이지 팝업)
- * 탭: A2P 양방향 / OTP · 룩업   목적지: 국가 선택
+ * 탭: A2P 양방향 / OTP · 룩업 / 로밍 eSIM   목적지: 국가 선택
  * 공통 경로: 한국 플랫폼 → 미국 게이트웨이(수신·재발신) → Tier1 GSM 허브 → 목적지 통신사 → 단말
  * 한국 목적지는 1차 수신 통신사를 거쳐 '통신사 코드 + 대표번호'로 표시된다.
  * 회사명은 넣지 않고 역할 이름만 쓴다. 아이콘: Lucide (ISC License)
  */
 (() => {
-  const ICONS = {"monitor": "<rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\" /> <line x1=\"8\" x2=\"16\" y1=\"21\" y2=\"21\" /> <line x1=\"12\" x2=\"12\" y1=\"17\" y2=\"21\" />", "server": "<rect width=\"20\" height=\"8\" x=\"2\" y=\"2\" rx=\"2\" ry=\"2\" /> <rect width=\"20\" height=\"8\" x=\"2\" y=\"14\" rx=\"2\" ry=\"2\" /> <line x1=\"6\" x2=\"6.01\" y1=\"6\" y2=\"6\" /> <line x1=\"6\" x2=\"6.01\" y1=\"18\" y2=\"18\" />", "globe": "<circle cx=\"12\" cy=\"12\" r=\"10\" /> <path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\" /> <path d=\"M2 12h20\" />", "network": "<rect x=\"16\" y=\"16\" width=\"6\" height=\"6\" rx=\"1\" /> <rect x=\"2\" y=\"16\" width=\"6\" height=\"6\" rx=\"1\" /> <rect x=\"9\" y=\"2\" width=\"6\" height=\"6\" rx=\"1\" /> <path d=\"M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3\" /> <path d=\"M12 12V8\" />", "antenna": "<path d=\"M2 12 7 2\" /> <path d=\"m7 12 5-10\" /> <path d=\"m12 12 5-10\" /> <path d=\"m17 12 5-10\" /> <path d=\"M4.5 7h15\" /> <path d=\"M12 16v6\" />", "radio-tower": "<path d=\"M4.9 16.1C1 12.2 1 5.8 4.9 1.9\" /> <path d=\"M7.8 4.7a6.14 6.14 0 0 0-.8 7.5\" /> <circle cx=\"12\" cy=\"9\" r=\"2\" /> <path d=\"M16.2 4.8c2 2 2.26 5.11.8 7.47\" /> <path d=\"M19.1 1.9a9.96 9.96 0 0 1 0 14.1\" /> <path d=\"M9.5 18h5\" /> <path d=\"m8 22 4-11 4 11\" />", "smartphone": "<rect width=\"14\" height=\"20\" x=\"5\" y=\"2\" rx=\"2\" ry=\"2\" /> <path d=\"M12 18h.01\" />", "send": "<path d=\"M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z\" /> <path d=\"m21.854 2.147-10.94 10.939\" />", "key-round": "<path d=\"M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z\" /> <circle cx=\"16.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\" />", "search-check": "<path d=\"m8 11 2 2 4-4\" /> <circle cx=\"11\" cy=\"11\" r=\"8\" /> <path d=\"m21 21-4.3-4.3\" />", "shield-check": "<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\" /> <path d=\"m9 12 2 2 4-4\" />", "building-2": "<path d=\"M10 12h4\" /> <path d=\"M10 8h4\" /> <path d=\"M14 21v-3a2 2 0 0 0-4 0v3\" /> <path d=\"M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2\" /> <path d=\"M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16\" />", "lock-keyhole": "<circle cx=\"12\" cy=\"16\" r=\"1\" /> <rect x=\"3\" y=\"10\" width=\"18\" height=\"12\" rx=\"2\" /> <path d=\"M7 10V7a5 5 0 0 1 10 0v3\" />"};
+  const ICONS = {"monitor": "<rect width=\"20\" height=\"14\" x=\"2\" y=\"3\" rx=\"2\" /> <line x1=\"8\" x2=\"16\" y1=\"21\" y2=\"21\" /> <line x1=\"12\" x2=\"12\" y1=\"17\" y2=\"21\" />", "server": "<rect width=\"20\" height=\"8\" x=\"2\" y=\"2\" rx=\"2\" ry=\"2\" /> <rect width=\"20\" height=\"8\" x=\"2\" y=\"14\" rx=\"2\" ry=\"2\" /> <line x1=\"6\" x2=\"6.01\" y1=\"6\" y2=\"6\" /> <line x1=\"6\" x2=\"6.01\" y1=\"18\" y2=\"18\" />", "globe": "<circle cx=\"12\" cy=\"12\" r=\"10\" /> <path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\" /> <path d=\"M2 12h20\" />", "network": "<rect x=\"16\" y=\"16\" width=\"6\" height=\"6\" rx=\"1\" /> <rect x=\"2\" y=\"16\" width=\"6\" height=\"6\" rx=\"1\" /> <rect x=\"9\" y=\"2\" width=\"6\" height=\"6\" rx=\"1\" /> <path d=\"M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3\" /> <path d=\"M12 12V8\" />", "antenna": "<path d=\"M2 12 7 2\" /> <path d=\"m7 12 5-10\" /> <path d=\"m12 12 5-10\" /> <path d=\"m17 12 5-10\" /> <path d=\"M4.5 7h15\" /> <path d=\"M12 16v6\" />", "radio-tower": "<path d=\"M4.9 16.1C1 12.2 1 5.8 4.9 1.9\" /> <path d=\"M7.8 4.7a6.14 6.14 0 0 0-.8 7.5\" /> <circle cx=\"12\" cy=\"9\" r=\"2\" /> <path d=\"M16.2 4.8c2 2 2.26 5.11.8 7.47\" /> <path d=\"M19.1 1.9a9.96 9.96 0 0 1 0 14.1\" /> <path d=\"M9.5 18h5\" /> <path d=\"m8 22 4-11 4 11\" />", "smartphone": "<rect width=\"14\" height=\"20\" x=\"5\" y=\"2\" rx=\"2\" ry=\"2\" /> <path d=\"M12 18h.01\" />", "send": "<path d=\"M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z\" /> <path d=\"m21.854 2.147-10.94 10.939\" />", "key-round": "<path d=\"M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z\" /> <circle cx=\"16.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\" />", "search-check": "<path d=\"m8 11 2 2 4-4\" /> <circle cx=\"11\" cy=\"11\" r=\"8\" /> <path d=\"m21 21-4.3-4.3\" />", "shield-check": "<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\" /> <path d=\"m9 12 2 2 4-4\" />", "building-2": "<path d=\"M10 12h4\" /> <path d=\"M10 8h4\" /> <path d=\"M14 21v-3a2 2 0 0 0-4 0v3\" /> <path d=\"M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2\" /> <path d=\"M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16\" />", "lock-keyhole": "<circle cx=\"12\" cy=\"16\" r=\"1\" /> <rect x=\"3\" y=\"10\" width=\"18\" height=\"12\" rx=\"2\" /> <path d=\"M7 10V7a5 5 0 0 1 10 0v3\" />", "qr-code": "<rect width=\"5\" height=\"5\" x=\"3\" y=\"3\" rx=\"1\" /> <rect width=\"5\" height=\"5\" x=\"16\" y=\"3\" rx=\"1\" /> <rect width=\"5\" height=\"5\" x=\"3\" y=\"16\" rx=\"1\" /> <path d=\"M21 16h-3a2 2 0 0 0-2 2v3\" /> <path d=\"M21 21v.01\" /> <path d=\"M12 7v3a2 2 0 0 1-2 2H7\" /> <path d=\"M3 12h.01\" /> <path d=\"M12 3h.01\" /> <path d=\"M12 16v.01\" /> <path d=\"M16 12h1\" /> <path d=\"M21 12v.01\" /> <path d=\"M12 21v-1\" />", "database": "<ellipse cx=\"12\" cy=\"5\" rx=\"9\" ry=\"3\" /> <path d=\"M3 5V19A9 3 0 0 0 21 19V5\" /> <path d=\"M3 12A9 3 0 0 0 21 12\" />", "credit-card": "<rect width=\"20\" height=\"14\" x=\"2\" y=\"5\" rx=\"2\" /> <line x1=\"2\" x2=\"22\" y1=\"10\" y2=\"10\" /> <path d=\"M6 14h2\" />", "plane": "<path d=\"M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z\" />", "cloud-download": "<path d=\"M12 13v8l-4-4\" /> <path d=\"m12 21 4-4\" /> <path d=\"M4.393 15.269A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.436 8.284\" />", "signal": "<path d=\"M2 20h.01\" /> <path d=\"M7 20v-4\" /> <path d=\"M12 20v-8\" /> <path d=\"M17 20V8\" /> <path d=\"M22 4v16\" />"};
   const SVGNS = "http://www.w3.org/2000/svg";
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -34,11 +34,27 @@
     krGate:   N({ label: "1차 수신 통신사", sub: "국내 국제관문", icon: "antenna", mt: "1차 수신 통신사 · 통신사 코드 + 대표번호 표시", mo: "1차 수신 통신사 경유", desc: "국제 메시지를 가장 먼저 받는 국내 사업자입니다. 발신번호가 '통신사 코드 + 대표번호'로 붙어서, 국제발신이지만 한국 대표번호로 표시됩니다." }),
     mno:      N({ label: "국내 MNO", sub: "SMSC · HLR", icon: "radio-tower", mt: "국내 MNO 문자센터 전달", mo: "MNO가 답장(MO) 수신", desc: "이동통신사 문자센터가 단말로 전달합니다. 가입자 정보(HLR)도 여기 있어서 룩업 질의에 답합니다." }),
     local:    N({ label: "현지 MNO", sub: "SMSC · HLR", icon: "radio-tower", mt: "현지 MNO 문자센터 전달", mo: "현지 MNO가 답장(MO) 수신", desc: "목적지 나라 이동통신사입니다. 허브가 직접 연결돼 있어 중간 업체 없이 바로 전달합니다." }),
+    eweb:     N({ label: "여행자 웹", sub: "가입 · 선결제", icon: "credit-card", mt: "웹에서 가입 · 휴대폰 인증", desc: "여행자가 출국 전에 웹에서 가입(휴대폰 OTP 인증)하고, 나라와 요금제를 골라 선결제합니다." }),
+    eplat:    N({ label: "eSIM 플랫폼", sub: "주문 · 과금 · 회선", icon: "server", mt: "요금제 확정 · 선결제 완료", desc: "주문과 결제를 확인하고 회선을 만든 뒤 프로파일 발급을 요청합니다. 현지에서 쓴 데이터 사용량도 여기로 모여 과금됩니다." }),
+    smdp:     N({ label: "프로파일 서버", sub: "SM-DP+", icon: "qr-code", mt: "eSIM 프로파일 생성 · QR 발급", desc: "GSMA 규격의 eSIM 프로파일 서버입니다. 회선 정보가 담긴 프로파일을 만들고, 폰이 내려받을 수 있게 QR(활성화 코드)을 발급합니다." }),
+    home:     N({ label: "홈 코어", sub: "HLR · HSS", icon: "database", mt: "홈 코어 인증", mo: "홈 코어가 가입자 확인 · 승인", desc: "MNO·MVNO 사업권으로 운영하는 가입자 정보 시스템입니다. 해외 방문망에서 온 인증 요청을 확인하고 승인합니다." }),
+    visited:  N({ label: "방문망", sub: "현지 MNO", icon: "signal", mt: "현지 방문망 접속", mo: "방문망 개통", desc: "여행자가 도착한 나라의 통신사입니다. 폰이 켜지면 이 망에 붙고, Tier1 허브를 거쳐 홈 코어에 인증을 요청합니다." }),
+    traveler: N({ label: "여행자 폰", sub: "eSIM", icon: "smartphone", mt: "현지 도착 · 폰 전원 켜짐", desc: "출국 전에 eSIM을 설치해둔 폰입니다. 도착해서 켜면 바로 현지 망에 붙어 데이터를 씁니다." }),
     phone:    N({ label: "수신자", sub: "단말", icon: "smartphone", mt: "수신자 단말 도착", mo: "수신자가 같은 번호로 답장", desc: "메시지를 받고 그 번호로 바로 답장할 수 있습니다." }),
   };
 
   function scene(tab, dk) {
     const d = DEST[dk];
+    if (tab === "esim") {
+      return {
+        d, order: ["eweb", "eplat", "smdp", "home", "hub", "visited", "traveler"],
+        bands: [
+          { label: "KOREA", sub: "가입 · 발급 · 홈망", from: "eweb", to: "home" },
+          { label: "GLOBAL", sub: "Tier1 IPX", from: "hub", to: "hub", hi: true },
+          { label: d.en, sub: "도착 국가", from: "visited", to: "traveler" },
+        ],
+      };
+    }
     const head = tab === "a2p" ? ["web", "platform"] : ["svc", "otp"];
     const tail = dk === "kr" ? ["krGate", "mno", "phone"] : ["local", "phone"];
     const order = [...head, "usIn", "usOut", "hub", ...tail];
@@ -109,6 +125,7 @@
           <nav class="tabs" role="tablist" aria-label="서비스">
             <button type="button" role="tab" class="tab" data-tab="a2p" aria-selected="true">A2P 양방향</button>
             <button type="button" role="tab" class="tab" data-tab="otp" aria-selected="false">OTP · 룩업</button>
+            <button type="button" role="tab" class="tab" data-tab="esim" aria-selected="false">로밍 eSIM</button>
           </nav>
           <div class="dest">
             <span class="mono">목적지</span>
@@ -186,6 +203,42 @@
             <div class="phone"><div class="phone-head"></div><div class="phone-chat"></div></div>
           </section>
         </div>
+        <div class="a2p-panels" data-panel="esim" hidden>
+          <section class="a2p-console" aria-label="여행자 웹 가입 화면">
+            <div class="panel-head"><span class="mono">TRAVEL eSIM</span></div>
+            <p class="otp-title"><span class="e-country"></span> 여행 eSIM</p>
+            <div class="e-plan">
+              <span class="mono">요금제</span>
+              <div class="seg" role="radiogroup" aria-label="요금제">
+                <button type="button" role="radio" data-plan="0" aria-checked="true">3일 · 무제한</button>
+                <button type="button" role="radio" data-plan="1" aria-checked="false">5일 · 10GB</button>
+                <button type="button" role="radio" data-plan="2" aria-checked="false">7일 · 무제한</button>
+              </div>
+            </div>
+            <ol class="e-steps">
+              <li data-es="0"><i></i>웹 가입 · 휴대폰 인증</li>
+              <li data-es="1"><i></i>요금제 선택 · 선결제</li>
+              <li data-es="2"><i></i>eSIM 다운로드 · 설치 <span class="muted">(출국 전)</span></li>
+              <li data-es="3"><i></i>현지 도착 · 자동 개통</li>
+              <li data-es="4"><i></i>데이터 사용</li>
+            </ol>
+            <div class="a2p-actions">
+              <button type="button" class="btn btn-primary btn-sm-o" data-act="esim">가입부터 시작</button>
+              <button type="button" class="btn btn-sm-o" data-act="auto" aria-pressed="true">자동 재생 켜짐</button>
+            </div>
+          </section>
+          <section class="otp-side">
+            <div class="timer e-timer">
+              <div class="timer-top"><span class="mono">도착 후 개통까지</span><b class="t-val mono">0.0s</b></div>
+              <div class="t-bar"><i class="t-fill"></i></div>
+              <p class="t-note">시뮬레이션 연출값 · 폰을 켜고 현지 망에 붙어 인증이 끝나기까지</p>
+            </div>
+            <div class="phone e-phone">
+              <div class="e-status"><span class="e-op mono">No service</span><span class="e-bars"><i></i><i></i><i></i><i></i></span></div>
+              <div class="e-screen"></div>
+            </div>
+          </section>
+        </div>
         <p class="sim-info"></p>
       </div>
       <footer class="modal-foot">
@@ -199,12 +252,14 @@
       if (e.target === dlg || e.target.closest("[data-close]")) return close();
       const tb = e.target.closest("[data-tab]"); if (tb) return setTab(tb.dataset.tab);
       const ds = e.target.closest("[data-dest]"); if (ds) return setDest(ds.dataset.dest);
+      const pl = e.target.closest("[data-plan]"); if (pl) { if (!busy) dlg.querySelectorAll("[data-plan]").forEach((b) => b.setAttribute("aria-checked", String(b === pl))); return; }
       const fl = e.target.closest("[data-flow]"); if (fl) { setFlow(fl.dataset.flow); if (auto) toggleAuto(); return; }
       const ty = e.target.closest("[data-type]"); if (ty) { setType(ty.dataset.type); if (auto) toggleAuto(); return; }
       const act = e.target.closest("[data-act]")?.dataset.act;
       if (act === "send") a2pSend();
       if (act === "otp") otpRun(false);
       if (act === "fraud") otpRun(true);
+      if (act === "esim") esimRun();
       if (act === "auto") toggleAuto();
     });
     dlg.addEventListener("close", stop);
@@ -217,11 +272,16 @@
   }
   function setTab(t) {
     tab = t;
+    const krBtn = dlg.querySelector('[data-dest="kr"]');
+    krBtn.disabled = t === "esim";
+    krBtn.title = t === "esim" ? "로밍 eSIM은 해외 목적지만" : "";
+    if (t === "esim" && dest === "kr") { dest = "jp"; dlg.querySelectorAll("[data-dest]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.dest === dest))); }
     dlg.querySelectorAll("[data-tab]").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === t)));
     dlg.querySelectorAll("[data-panel]").forEach((p) => (p.hidden = p.dataset.panel !== t));
     reset();
   }
   function setDest(k) {
+    if (tab === "esim" && k === "kr") return;
     dest = k;
     dlg.querySelectorAll("[data-dest]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.dest === k)));
     reset();
@@ -258,10 +318,12 @@
     $(".a2p-log").innerHTML = "";
     setType(type);
     $(".otp-field .cc").textContent = d.cc; $(".otp-field .num").textContent = d.num;
-    resetOtpUi(); setFlow(flow);
-    $(".sim-legend").innerHTML = tab === "a2p"
-      ? `<span><i class="dot lime"></i>발신 (MT)</span><span><i class="dot mint"></i>전달 결과 (DLR)</span><span><i class="dot amber"></i>답장 (MO)</span>`
-      : `<span><i class="dot sky"></i>룩업 질의</span><span><i class="dot lime"></i>OTP 발송</span><span><i class="dot mint"></i>검증</span><span><i class="dot red"></i>차단</span>`;
+    resetOtpUi(); setFlow(flow); resetEsimUi();
+    $(".sim-legend").innerHTML = {
+      a2p: `<span><i class="dot lime"></i>발신 (MT)</span><span><i class="dot mint"></i>전달 결과 (DLR)</span><span><i class="dot amber"></i>답장 (MO)</span>`,
+      otp: `<span><i class="dot sky"></i>룩업 질의</span><span><i class="dot lime"></i>OTP 발송</span><span><i class="dot mint"></i>검증</span><span><i class="dot red"></i>차단</span>`,
+      esim: `<span><i class="dot lime"></i>가입 · 발급</span><span><i class="dot mint"></i>프로파일 · 승인</span><span><i class="dot sky"></i>인증 요청</span><span><i class="dot amber"></i>데이터</span>`,
+    }[tab];
   }
 
   /* ---------- 그리기 ---------- */
@@ -304,15 +366,23 @@
     el("polyline", { points: lanePts(1), class: "track" }, svg);
     el("polyline", { points: lanePts(-1), class: "flow" }, svg);
     el("polyline", { points: lanePts(1, S.order.slice().reverse()), class: `flow ${tab === "a2p" ? "mo" : "mint"}` }, svg);
-    const [mx, my] = pt(S.order[1], -1), [ox, oy] = pt(S.order[1], 1), mid = pt(S.order[2]);
-    const t1 = tab === "a2p" ? ["MT 발신 →", "MT ↓"] : ["요청 · 발송 →", "↓"];
-    const t2 = tab === "a2p" ? ["← MO 답장", "MO ↑"] : ["← 응답 · 결과", "↑"];
+    const ti = tab === "esim" && m === "h" ? 4 : 1; // 차선 이름 위치 (eSIM은 허브 ↔ 방문망 구간)
+    const [mx, my] = pt(S.order[ti], -1), [ox, oy] = pt(S.order[ti], 1), mid = pt(S.order[ti + 1]);
+    const t1 = { a2p: ["MT 발신 →", "MT ↓"], otp: ["요청 · 발송 →", "↓"], esim: ["발급 · 승인 →", "↓"] }[tab];
+    const t2 = { a2p: ["← MO 답장", "MO ↑"], otp: ["← 응답 · 결과", "↑"], esim: ["← 인증 요청 · 데이터", "↑"] }[tab];
     el("text", m === "h" ? { x: (mx + mid[0]) / 2, y: my - 8, class: "lane-tag", "text-anchor": "middle" } : { x: mx - 8, y: (my + mid[1]) / 2, class: "lane-tag", "text-anchor": "end" }, svg).textContent = m === "h" ? t1[0] : t1[1];
     el("text", m === "h" ? { x: (ox + mid[0]) / 2, y: oy + 18, class: `lane-tag ${tab === "a2p" ? "mo" : "mint"}`, "text-anchor": "middle" } : { x: ox + 8, y: (oy + mid[1]) / 2, class: `lane-tag ${tab === "a2p" ? "mo" : "mint"}` }, svg).textContent = m === "h" ? t2[0] : t2[1];
 
+    if (tab === "esim") {
+      const arc = arcPts();
+      el("polyline", { points: arc.map((p) => p.join(",")).join(" "), class: "arc" }, svg);
+      const [ax, ay] = arc[Math.floor(arc.length / 2)];
+      if (m === "h") el("text", { x: ax, y: ay - 10, class: "lane-tag mint", "text-anchor": "middle" }, svg).textContent = "프로파일 다운로드 · 출국 전";
+    }
+
     for (const id of S.order) {
       const nd = NODES[id], [x, y] = pt(id);
-      const label = id === "local" ? `${S.d.ko} MNO` : nd.label;
+      const label = id === "local" ? `${S.d.ko} MNO` : id === "visited" ? `${S.d.ko} 방문망` : nd.label;
       const g = el("g", { class: `node n-${id}${id === "hub" ? " hero" : ""}`, transform: `translate(${x} ${y})`, tabindex: 0, role: "button", "aria-label": `${label}: ${nd.sub}` }, svg);
       if (id === "hub") el("circle", { r: 40, class: "ring" }, g);
       el("circle", { r: 31, class: "halo" }, g);
@@ -349,8 +419,9 @@
     return s;
   }
   // 경로를 따라 패킷을 보냄. cap(id, index)가 문자열을 돌려주면 캡션으로 표시
-  function launch({ kind, ids, lane, speed = SPEED, shape, hit, cap, onArrive, onDone }) {
-    const pts = ids.map((id) => pt(id, lane));
+  function launch({ kind, ids, lane, pts: raw, speed = SPEED, shape, hit, cap, onArrive, onDone }) {
+    const pts = raw || ids.map((id) => pt(id, lane));
+    if (!ids) ids = pts.map(() => null);
     packets.push({ kind, ids, pts, seg: 0, d: 0, speed, g: makePk(kind, shape), hit, cap, onArrive, onDone, x: pts[0][0], y: pts[0][1] });
   }
   function step(p, dt) {
@@ -361,7 +432,7 @@
       if (p.d < len) { const k = p.d / len; p.x = x1 + (x2 - x1) * k; p.y = y1 + (y2 - y1) * k; return; }
       p.d -= len; p.seg++;
       const id = p.ids[p.seg];
-      if (p.hit) flash(id, p.hit);
+      if (p.hit && id) flash(id, p.hit);
       const c = p.cap?.(id, p.seg); if (c) capEl.textContent = c;
       p.onArrive?.(id);
     }
@@ -537,6 +608,129 @@
     });
   }
 
+  /* ---------- 로밍 eSIM ---------- */
+  // 프로파일 서버 → 여행자 폰으로 가는 다운로드 호 (구조도 위쪽/오른쪽으로 크게 휨)
+  function arcPts() {
+    const [x1, y1] = pt("smdp"), [x2, y2] = pt("traveler");
+    const [cx, cy] = mode === "h" ? [(x1 + x2) / 2, L.axis - 150] : [L.w + 140, (y1 + y2) / 2];
+    const out = [];
+    for (let i = 0; i <= 40; i++) {
+      const t = i / 40, u = 1 - t;
+      out.push([u * u * x1 + 2 * u * t * cx + t * t * x2, u * u * y1 + 2 * u * t * cy + t * t * y2]);
+    }
+    return out;
+  }
+  const E = (sel) => $(`[data-panel="esim"] ${sel}`);
+  function esimStep(i) {
+    dlg.querySelectorAll("[data-es]").forEach((li) => {
+      const k = +li.dataset.es;
+      li.className = k < i ? "done" : k === i ? "now" : "";
+    });
+  }
+  function esimScreen(html, op, bars) {
+    E(".e-screen").innerHTML = html;
+    E(".e-op").textContent = op;
+    E(".e-bars").dataset.n = bars;
+  }
+  function setETimer(sec, cls) {
+    E(".t-val").textContent = `${sec.toFixed(1)}s`;
+    E(".t-fill").style.width = `${Math.min(sec / 10, 1) * 100}%`;
+    E(".timer").className = `timer e-timer ${cls || ""}`;
+  }
+  function resetEsimUi() {
+    E(".e-country").textContent = DEST[dest].ko;
+    esimStep(-1);
+    esimScreen(`<p class="e-msg muted">eSIM 없음</p>`, "No service", 0);
+    setETimer(0, "");
+    E('[data-act="esim"]').disabled = false;
+  }
+
+  function esimRun() {
+    if (busy || !running || tab !== "esim") return;
+    busy = true; E('[data-act="esim"]').disabled = true;
+    const d = DEST[dest];
+    const plan = dlg.querySelector('[data-plan][aria-checked="true"]').textContent;
+    const cap = (t) => { capEl.textContent = t; };
+    esimStep(0); flash("eweb");
+    cap(`① ${NODES.eweb.mt}`);
+    esimScreen(`<p class="e-msg">가입 중…</p>`, "KR · 출국 전", 4);
+    launch({
+      kind: "mt", ids: ["eweb", "eplat"], lane: -1, hit: "hit",
+      onDone: () => {
+        esimStep(1); cap(`② ${NODES.eplat.mt} · ${d.ko} ${plan}`);
+        later(0.8, () => launch({
+          kind: "mt", ids: ["eplat", "smdp"], lane: -1, hit: "hit",
+          onDone: () => {
+            cap(`③ ${NODES.smdp.mt}`);
+            esimScreen(`<div class="qr" aria-hidden="true"></div><p class="e-msg">QR을 찍어 eSIM 추가</p>`, "KR · 출국 전", 4);
+            esimStep(2);
+            later(0.9, () => {
+              cap("④ 프로파일 다운로드 · 설치 (출국 전, 인터넷)");
+              const arc = arcPts(), start = clock, dur = arc.reduce((s, p, i) => (i ? s + Math.hypot(p[0] - arc[i - 1][0], p[1] - arc[i - 1][1]) : 0), 0) / (SPEED * 0.8);
+              const prog = () => {
+                if (!running || tab !== "esim") return;
+                const k = Math.min((clock - start) / dur, 1);
+                esimScreen(`<p class="e-msg">eSIM 설치 중</p><div class="e-prog"><i style="width:${(k * 100).toFixed(0)}%"></i></div><p class="e-pct mono">${(k * 100).toFixed(0)}%</p>`, "KR · 출국 전", 4);
+                if (k < 1) later(0.05, prog);
+              };
+              prog();
+              launch({
+                kind: "dlr", pts: arc, speed: SPEED * 0.8, shape: true,
+                onDone: () => {
+                  flash("traveler", "hit-dlr");
+                  esimScreen(`<p class="e-msg ok">설치 완료</p><p class="e-sub">${d.ko}에 도착해서 켜면 바로 연결돼요</p>`, "KR · 출국 전", 4);
+                  later(1.2, () => {
+                    cap(`✈ ${d.ko}(으)로 이동`); esimStep(3);
+                    esimScreen(`<p class="e-msg">✈ 이동 중</p><p class="e-sub">비행기 모드</p>`, "✈", 0);
+                    later(1.6, arrive);
+                  });
+                },
+              });
+            });
+          },
+        }));
+      },
+    });
+
+    // 현지 도착 → 방문망 → 허브 → 홈 코어 인증 → 승인 → 개통
+    function arrive() {
+      esimStep(3);
+      const target = 2.5 + Math.random() * 5.5, t0 = clock;
+      const req = ["traveler", "visited", "hub", "home"], back = req.slice().reverse();
+      const total = pathLen(req, 1) / (SPEED * 1.4) + pathLen(back, -1) / (SPEED * 1.4);
+      let timing = true;
+      const tk = () => { if (!timing || !running || tab !== "esim") return; setETimer(Math.min(((clock - t0) / total) * target, target), "run"); later(0.05, tk); };
+      tk();
+      cap(`⑤ ${d.ko} 도착 · 폰 켜짐 → ${d.ko} 방문망 접속`);
+      esimScreen(`<p class="e-msg">망 검색 중…</p>`, "Searching…", 1);
+      launch({
+        kind: "lk", ids: req, lane: 1, speed: SPEED * 1.4, hit: "hit-lk",
+        cap: (id) => (id === "hub" ? "⑥ Tier1 허브 경유 · 로밍 인증 요청" : id === "home" ? "⑥ 홈 코어가 가입자 확인" : ""),
+        onDone: () => launch({
+          kind: "vf", ids: back, lane: -1, speed: SPEED * 1.4, hit: "hit-dlr",
+          cap: (id) => (id === "traveler" ? `⑦ 인증 승인 · ${d.ko} 방문망 즉시 개통` : ""),
+          onDone: () => {
+            timing = false; setETimer(target, "done");
+            esimStep(4);
+            esimScreen(`<p class="e-msg ok">연결됨</p><p class="e-sub">${d.ko} MNO · LTE · 데이터 사용 가능</p><p class="e-data mono">0.0 MB</p>`, `${d.ko} MNO · LTE`, 4);
+            later(1.1, () => { if (tab === "esim") cap("⑧ 데이터 사용 · 사용량은 플랫폼으로 모여 과금"); });
+            let mb = 0;
+            const stream = (n) => {
+              if (!running || tab !== "esim") return;
+              const up = n % 3 === 0;
+              launch({ kind: "mo", ids: up ? ["traveler", "visited", "hub"] : ["hub", "visited", "traveler"], lane: up ? 1 : -1, speed: SPEED * 1.2 });
+              mb += 0.4 + Math.random() * 1.2;
+              const dm = E(".e-data"); if (dm) dm.textContent = `${mb.toFixed(1)} MB`;
+              if (n < 18) later(0.18, () => stream(n + 1));
+              else later(1.4, () => { resetEsimUi(); busy = false; autoT = 1.4; });
+            };
+            stream(0);
+          },
+        }),
+      });
+    }
+  }
+
   /* ---------- 루프 ---------- */
   function loop(now) {
     if (!running) return;
@@ -555,7 +749,8 @@
       autoT -= dt;
       if (autoT <= 0) {
         if (tab === "a2p") { setType(["sms", "lms", "mms"][seq % 3]); a2pSend(); }
-        else { const n = otpStats.ok + otpStats.blocked; setFlow(n % 2 ? "login" : "signup"); otpRun(n % 4 === 3); }
+        else if (tab === "otp") { const n = otpStats.ok + otpStats.blocked; setFlow(n % 2 ? "login" : "signup"); otpRun(n % 4 === 3); }
+        else esimRun();
       }
     }
     // 예약 실행
