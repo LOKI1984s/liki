@@ -1,61 +1,82 @@
 /*
  * 포트폴리오 데이터 — 이 파일만 수정하면 사이트 전체가 바뀐다.
  * [대괄호] 표시는 전부 본인 정보로 교체할 자리.
+ * 숫자(metrics.value)에 실제 숫자를 넣으면 카운트업 애니메이션이 자동 적용된다. 예: "+312%", "1.2M", "38"
  * 필요 없는 항목은 배열에서 지우면 화면에서도 사라진다.
  */
 const PORTFOLIO = {
   profile: {
     name: "[이름]",
     nameEn: "[English Name]",
-    role: "[지원 직무 — 예: 백엔드 개발자]",
-    summary: "[한 줄 소개 — 무엇을, 어떻게, 어떤 결과로 해왔는지 한 문장]",
-    photo: "", // 예: "assets/profile.jpg" (비우면 표시 안 함)
+    role: "Growth Hacker",
+    status: "Open to work", // 비우면 배지 숨김
+    // 헤드라인 — *별표* 사이 단어가 강조색으로 표시됨
+    headline: "[데이터로 가설을 세우고, 실험으로 *성장*을 증명합니다]",
+    summary: "[한 줄 소개 — 어떤 지표를, 어떤 방법으로, 얼마나 움직였는지]",
+    photo: "", // 예: "assets/profile.jpg"
     contacts: [
       { label: "Email", value: "[email@example.com]", href: "mailto:[email@example.com]" },
-      { label: "Phone", value: "[010-0000-0000]", href: "" },
-      { label: "GitHub", value: "[github.com/아이디]", href: "https://github.com/" },
+      { label: "LinkedIn", value: "[linkedin.com/in/아이디]", href: "" },
+      { label: "GitHub", value: "[github.com/아이디]", href: "" },
       { label: "Blog", value: "[블로그 주소]", href: "" },
+    ],
+    // 홈 상단 핵심 지표 4개
+    metrics: [
+      { value: "[+000%]", label: "[MAU 성장률]" },
+      { value: "[00]", label: "[진행한 A/B 실험 수]" },
+      { value: "[-00%]", label: "[CAC 절감]" },
+      { value: "[0.0x]", label: "[리텐션 개선]" },
     ],
   },
 
   // 01 기술 — level: 1~5 (없으면 막대 표시 안 함)
   skills: [
     {
-      category: "Language",
+      category: "Analytics",
       items: [
-        { name: "[JavaScript]", level: 4, note: "[사용 수준 한 줄]" },
+        { name: "[GA4]", level: 5, note: "[이벤트 설계·퍼널 분석]" },
+        { name: "[Amplitude]", level: 4, note: "" },
+        { name: "[SQL]", level: 4, note: "" },
+      ],
+    },
+    {
+      category: "Experiment",
+      items: [
+        { name: "[A/B Test]", level: 5, note: "[가설 설계·통계 검정]" },
+        { name: "[CRO]", level: 4, note: "" },
+      ],
+    },
+    {
+      category: "Automation / Dev",
+      items: [
         { name: "[Python]", level: 3, note: "" },
+        { name: "[n8n / Make]", level: 4, note: "" },
+        { name: "[JavaScript]", level: 3, note: "" },
       ],
     },
     {
-      category: "Framework / Library",
+      category: "Marketing",
       items: [
-        { name: "[React]", level: 4, note: "" },
-        { name: "[Node.js]", level: 3, note: "" },
-      ],
-    },
-    {
-      category: "Infra / Tool",
-      items: [
-        { name: "[Git]", level: 4, note: "" },
-        { name: "[AWS]", level: 2, note: "" },
+        { name: "[SEO]", level: 4, note: "" },
+        { name: "[Performance Ads]", level: 4, note: "" },
+        { name: "[CRM]", level: 3, note: "" },
       ],
     },
   ],
 
   // 02 연혁 — type: 경력 | 학력 | 교육 | 자격 | 수상
   history: [
-    { period: "[2024.03 – 현재]", type: "경력", title: "[회사명]", sub: "[부서 / 직급]", desc: "[담당 업무 요약]" },
+    { period: "[2024.03 – 현재]", type: "경력", title: "[회사명]", sub: "[팀 / 직급]", desc: "[담당 업무 요약]" },
     { period: "[2023.01 – 2023.06]", type: "교육", title: "[교육기관 / 과정명]", sub: "", desc: "" },
     { period: "[2022.11]", type: "자격", title: "[자격증명]", sub: "[발급기관]", desc: "" },
     { period: "[2016.03 – 2022.02]", type: "학력", title: "[학교명]", sub: "[전공 / 학위]", desc: "" },
   ],
 
-  // 03 개발 — 개발 활동·역량 (오픈소스, 자동화, 코드 스타일, 협업 방식 등)
+  // 03 개발 — 개발·자동화 역량
   dev: [
-    { title: "[개발 원칙 / 강점 1]", desc: "[구체적 근거 — 무엇을 했고 결과가 어땠는지]" },
-    { title: "[개발 활동 2 — 예: 업무 자동화]", desc: "[도구, 규모, 절감 효과 등 숫자로]" },
-    { title: "[개발 활동 3 — 예: 오픈소스 기여]", desc: "[저장소, 기여 내용]" },
+    { title: "[그로스 실험 파이프라인]", desc: "[가설 → 실험 → 분석 → 적용 루프를 어떻게 자동화했는지]" },
+    { title: "[마케팅 자동화]", desc: "[도구, 규모, 절감 시간 등 숫자로]" },
+    { title: "[데이터 대시보드]", desc: "[어떤 지표를 누구에게 어떻게 보이게 했는지]" },
   ],
 
   // 04 프로젝트
@@ -63,19 +84,24 @@ const PORTFOLIO = {
     {
       title: "[프로젝트명]",
       period: "[2024.01 – 2024.04]",
-      team: "[개인 / 팀 4명]",
-      role: "[본인 역할 — 예: 백엔드 전담, 기여도 70%]",
-      stack: ["[React]", "[Node.js]", "[MySQL]"],
-      summary: "[한 줄 요약 — 무엇을 만들었나]",
+      team: "[팀 4명]",
+      role: "[본인 역할 — 예: 그로스 리드, 기여도 70%]",
+      stack: ["[GA4]", "[Amplitude]", "[n8n]"],
+      summary: "[한 줄 요약 — 어떤 지표를 움직였나]",
+      metrics: [
+        { value: "[+000%]", label: "[전환율]" },
+        { value: "[-00%]", label: "[이탈률]" },
+      ],
       points: [
         "[문제] 무엇이 문제였나",
-        "[해결] 어떻게 해결했나",
-        "[성과] 수치로 — 예: 응답속도 40% 개선",
+        "[가설] 무엇을 검증하려 했나",
+        "[실행] 어떤 실험을 돌렸나",
+        "[성과] 수치로",
       ],
       image: "", // 예: "assets/project1.png"
       links: [
-        { label: "GitHub", href: "" },
-        { label: "Demo", href: "" },
+        { label: "Case Study", href: "" },
+        { label: "Live", href: "" },
       ],
     },
     {
@@ -85,13 +111,14 @@ const PORTFOLIO = {
       role: "[역할]",
       stack: ["[기술]"],
       summary: "[요약]",
-      points: ["[문제]", "[해결]", "[성과]"],
+      metrics: [{ value: "[00%]", label: "[지표]" }],
+      points: ["[문제]", "[가설]", "[실행]", "[성과]"],
       image: "",
       links: [],
     },
   ],
 
-  // 05 레퍼런스 — 참고 링크, 발표, 글, 추천인 등
+  // 05 레퍼런스 — 글, 발표, 추천인 등
   references: [
     { type: "글", title: "[기술 블로그 글 제목]", href: "", desc: "[한 줄 설명]" },
     { type: "발표", title: "[발표 / 세미나]", href: "", desc: "" },
