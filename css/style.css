@@ -319,6 +319,18 @@ a.ref:hover .arr { color: var(--accent); transform: translate(2px, -2px); }
 .copy { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); padding-top: 24px; border-top: 1px solid var(--line); }
 
 /* =========================================================
+   Page transition — 들어올 때 걷히고, 나갈 때 덮음
+   ========================================================= */
+body::before, body::after {
+  content: ""; position: fixed; inset: 0; z-index: 200; pointer-events: none; background: var(--bg);
+}
+body::before { animation: veil-out .5s var(--ease) both; }
+@keyframes veil-out { from { opacity: 1; } to { opacity: 0; } }
+body::after { opacity: 0; transition: opacity .3s ease; }
+body.leaving::after { opacity: 1; }
+body[data-page="home"].gl-ready.leaving::after { transition-delay: .42s; }
+
+/* =========================================================
    Motion
    ========================================================= */
 .reveal { opacity: 0; transform: translateY(18px); filter: blur(4px); transition: opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease); transition-delay: var(--d, 0ms); }
@@ -326,6 +338,7 @@ a.ref:hover .arr { color: var(--accent); transform: translate(2px, -2px); }
 @media (prefers-reduced-motion: reduce) {
   .reveal, .rise { opacity: 1; transform: none; filter: none; transition: none; animation: none; }
   .pulse::after, .caret { animation: none; }
+  body::before { animation: none; opacity: 0; }
 }
 
 /* =========================================================

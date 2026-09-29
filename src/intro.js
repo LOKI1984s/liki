@@ -3,6 +3,7 @@
  * - ∞ 모양 중심선 위에 반 바퀴 꼬인 띠(뫼비우스 인피니티)
  * - 띠 표면을 따라 끝없이 흐르는 GPU 파티클 + 하나로 이어진 네온 가장자리
  * - 커서 반발, 클릭 시 충격파
+ * - 첫 진입: 한 점(0)에서 터져 ∞로 자리 잡음 / 메뉴에 반응 / 페이지 이동 시 다시 0으로 빨려 들어감
  * 수정 후 `npm run build` → js/intro.bundle.js 생성
  */
 import {
@@ -103,6 +104,12 @@ function init() {
 
   const U = {
     uTime: { value: 0 },
+    uFlow: { value: 0 },     // 흐름 누적값 (메뉴에 따라 속도 변함)
+    uRunT: { value: 0 },     // 가장자리 빛 흐름 누적값
+    uIntro: { value: 1 },    // 0 → 1: 한 점에서 ∞로
+    uOut: { value: 0 },      // 0 → 1: ∞에서 한 점으로 (페이지 이동)
+    uShow: { value: 1 },     // 네온·표면·먼지 가시도
+    uSpread: { value: 0 }, uBright: { value: 0 }, uHue: { value: 0 },
     uPulse: { value: -10 },
     uMouse: { value: new Vector3(99, 99, 0) },
     uA: { value: A }, uB: { value: B },
@@ -145,20 +152,36 @@ function init() {
   const flowMat = new ShaderMaterial({
     uniforms: U, transparent: true, depthWrite: false, blending: AdditiveBlending,
     vertexShader: NOISE + MOBIUS + DISTORT + /* glsl */ `
-      uniform float uPx, uW;
+      uniform float uPx, uW, uFlow, uIntro, uOut, uSpread;
       attribute float aT, aV, aS, aR;
       varying float vR, vG, vH, vTw;
       void main(){
-        float t = mod(aT + uTime * aS, 12.566371);
+        float t = mod(aT + uFlow * aS, 12.566371);
         vec3 nrm;
         vec3 p = ribbon(t, aV, uW, nrm);
         // 띠 표면에서 살짝 흩어지는 가루
         float n = snoise(vec3(t * 2.0, aV * 3.0, uTime * 0.3 + aR * 10.0));
         p += nrm * n * 0.05 + nrm * (aR - 0.5) * 0.06 * step(0.85, aR);
+        p += nrm * (aR - 0.5) * uSpread + nrm * n * uSpread * 0.4;
+
+        // 0 → ∞ : 한 점에서 터져 나와 제자리로
+        vec3 rd = normalize(vec3(sin(aR * 78.233 + aT * 12.9898), cos(aR * 45.164 + aT * 3.7), sin(aR * 91.7 + aT * 7.1)) + 1e-4);
+        float k = clamp(uIntro * 1.6 - aR * 0.6, 0.0, 1.0);
+        float e = 1.0 - pow(1.0 - k, 3.0);
+        float burst = sin(k * 3.14159);
+        p = mix(rd * 0.03, p, e) + rd * burst * (0.8 + aR * 1.2);
+
+        // ∞ → 0 : 소용돌이치며 한 점으로
+        float o = clamp(uOut * 1.35 - aR * 0.35, 0.0, 1.0);
+        float oe = o * o;
+        float sw = oe * 4.0;
+        p.xy = mat2(cos(sw), -sin(sw), sin(sw), cos(sw)) * p.xy;
+        p = mix(p, vec3(0.0), oe);
+
         vec4 wp = modelMatrix * vec4(p, 1.0);
         float g;
         wp.xyz = distort(wp.xyz, g);
-        vG = g; vR = aR;
+        vG = g + burst * 0.5 + oe * 0.6; vR = aR;
         vH = 0.5 + 0.5 * sin(t);                         // 루프 따라 색 그라데이션
         vTw = 0.55 + 0.45 * sin(uTime * (2.0 + aR * 5.0) + aR * 60.0); // 반짝임
         vec4 mv = viewMatrix * wp;
@@ -166,14 +189,14 @@ function init() {
         gl_PointSize = (0.8 + aR * 1.8 + g * 2.5) * uPx * (7.0 / -mv.z);
       }`,
     fragmentShader: /* glsl */ `
-      uniform vec3 uA, uB;
+      uniform vec3 uA, uB; uniform float uBright, uHue;
       varying float vR, vG, vH, vTw;
       void main(){
         float d = length(gl_PointCoord - 0.5);
         float m = smoothstep(0.5, 0.05, d);
-        vec3 c = mix(uB, uA, vH);
-        c = mix(c, vec3(1.0), step(0.96, vR) * 0.8 + vG * 0.4);
-        gl_FragColor = vec4(c, m * (0.25 + 0.55 * vTw) + vG * 0.4);
+        vec3 c = mix(mix(uB, uA, vH), uB, uHue * 0.85);
+        c = mix(c, vec3(1.0), step(0.96, vR) * 0.8 + vG * 0.4 + uBright * 0.25);
+        gl_FragColor = vec4(c, (m * (0.25 + 0.55 * vTw) + vG * 0.4) * (1.0 + uBright * 0.9));
       }`,
   });
   shape.add(new Points(pg, flowMat));
@@ -194,17 +217,17 @@ function init() {
         gl_Position = projectionMatrix * mv;
       }`,
     fragmentShader: /* glsl */ `
-      uniform vec3 uA, uB; uniform float uTime, uAlpha, uCore;
+      uniform vec3 uA, uB; uniform float uRunT, uAlpha, uCore, uShow, uHue, uBright;
       varying vec2 vUv; varying vec3 vN; varying vec3 vV;
       void main(){
         float t = vUv.x * 12.566371;
-        vec3 c = mix(uB, uA, 0.5 + 0.5 * sin(t));
+        vec3 c = mix(mix(uB, uA, 0.5 + 0.5 * sin(t)), uB, uHue * 0.85);
         float facing = abs(dot(normalize(vN), vV));
         float body = mix(pow(1.0 - facing, 1.5), pow(facing, 2.0), uCore);
         // 가장자리를 따라 흐르는 빛
-        float run = pow(0.5 + 0.5 * sin(vUv.x * 62.83 - uTime * 2.2), 8.0);
+        float run = pow(0.5 + 0.5 * sin(vUv.x * 62.83 - uRunT * 2.2), 8.0);
         vec3 col = mix(c, vec3(1.0), uCore * 0.35 + run * 0.35);
-        gl_FragColor = vec4(col, (body * (0.7 + run * 0.8)) * uAlpha);
+        gl_FragColor = vec4(col, (body * (0.7 + run * 0.8)) * uAlpha * uShow * (1.0 + uBright * 0.6));
       }`,
   });
   shape.add(new Mesh(new TubeGeometry(edgeCurve, 960, 0.011, 6, true), neon(0.011, 1.0, 1.0)));  // 심
@@ -237,13 +260,13 @@ function init() {
           gl_Position = projectionMatrix * mv;
         }`,
       fragmentShader: /* glsl */ `
-        uniform vec3 uA, uB; uniform float uTime;
+        uniform vec3 uA, uB; uniform float uRunT, uShow, uHue;
         varying vec3 vN; varying vec3 vV; varying vec2 vUv;
         void main(){
           float f = pow(1.0 - abs(dot(normalize(vN), vV)), 2.0);
-          vec3 c = mix(uB, uA, 0.5 + 0.5 * sin(vUv.x * 6.2831));
-          float lines = smoothstep(0.92, 1.0, sin(vUv.x * 400.0 - uTime * 3.0) * 0.5 + 0.5) * 0.5;
-          gl_FragColor = vec4(c, 0.035 + f * 0.12 + lines * 0.05);
+          vec3 c = mix(mix(uB, uA, 0.5 + 0.5 * sin(vUv.x * 6.2831)), uB, uHue * 0.85);
+          float lines = smoothstep(0.92, 1.0, sin(vUv.x * 400.0 - uRunT * 3.0) * 0.5 + 0.5) * 0.5;
+          gl_FragColor = vec4(c, (0.035 + f * 0.12 + lines * 0.05) * uShow);
         }`,
     })));
   }
@@ -270,10 +293,10 @@ function init() {
           gl_PointSize = (0.6 + aR * 1.2) * uPx * (6.0 / -mv.z);
         }`,
       fragmentShader: /* glsl */ `
-        uniform vec3 uA, uB; varying float vR;
+        uniform vec3 uA, uB; uniform float uShow; varying float vR;
         void main(){
           float m = smoothstep(0.5, 0.0, length(gl_PointCoord - 0.5));
-          gl_FragColor = vec4(mix(uB, uA, vR), m * 0.35);
+          gl_FragColor = vec4(mix(uB, uA, vR), m * 0.35 * (0.25 + 0.75 * uShow));
         }`,
     })));
   }
@@ -290,6 +313,43 @@ function init() {
   addEventListener("pointerdown", (e) => {
     if (e.target.closest("a,button")) return;
     U.uPulse.value = U.uTime.value;
+  });
+
+  /* ---- 메뉴 반응 ---- */
+  const BASE = { speed: 1, spread: 0, run: 0, bright: 0, hue: 0 };
+  const MODES = {
+    skills: { speed: 2.8 },                    // 빨라짐
+    history: { speed: 0.3, spread: 0.35 },     // 느려지며 흩어짐
+    dev: { run: 1, speed: 1.3 },               // 가장자리 빛이 빠르게 흐름
+    projects: { bright: 1, speed: 1.6 },       // 밝아짐
+    references: { hue: 1, speed: 0.8 },        // 민트로 물듦
+  };
+  const cur = { ...BASE };
+  let goal = { ...BASE };
+  const setMode = (key) => { goal = { ...BASE, ...(MODES[key] || {}) }; };
+  const keyOf = (a) => a.dataset.key || "";
+  document.querySelectorAll("a[data-key]").forEach((a) => {
+    a.addEventListener("pointerenter", () => setMode(keyOf(a)));
+    a.addEventListener("focus", () => setMode(keyOf(a)));
+    a.addEventListener("pointerleave", () => setMode(null));
+    a.addEventListener("blur", () => setMode(null));
+  });
+
+  /* ---- 0 → ∞ 첫 진입 (세션당 한 번) ---- */
+  let introStart = -1;
+  let seen = false;
+  try { seen = sessionStorage.getItem("zi-intro") === "1"; sessionStorage.setItem("zi-intro", "1"); } catch {}
+  if (!reduce && !seen) { U.uIntro.value = 0; introStart = 0; }
+
+  /* ---- ∞ → 0 페이지 이동 ---- */
+  let outStart = -1;
+  addEventListener("zi:leave", (e) => {
+    setMode(e.detail?.key);
+    outStart = U.uTime.value;
+  });
+  addEventListener("pageshow", (e) => {
+    if (!e.persisted) return;
+    outStart = -1; U.uOut.value = 0; setMode(null);
   });
 
   /* ---- Layout ---- */
@@ -331,6 +391,18 @@ function init() {
     const dt = Math.min(clock.getDelta(), 0.05);
     const T = (U.uTime.value += reduce ? dt * 0.15 : dt);
     mouse.lerp(target, 0.06);
+
+    const ease = 1 - Math.exp(-dt * 4);
+    for (const k in cur) cur[k] += (goal[k] - cur[k]) * ease;
+    const slow = reduce ? 0.15 : 1;
+    U.uFlow.value += dt * cur.speed * slow;
+    U.uRunT.value += dt * (1 + cur.run * 2.5) * slow;
+    U.uSpread.value = cur.spread; U.uBright.value = cur.bright; U.uHue.value = cur.hue;
+
+    if (introStart >= 0) U.uIntro.value = Math.min(1, (T - introStart) / 2.6);
+    if (outStart >= 0) U.uOut.value = Math.min(1, (T - outStart) / 0.65);
+    const sIn = Math.min(1, Math.max(0, (U.uIntro.value - 0.55) / 0.45));
+    U.uShow.value = sIn * sIn * (3 - 2 * sIn) * (1 - U.uOut.value);
 
     ray.setFromCamera(mouse, camera);
     if (hasMouse && ray.ray.intersectPlane(plane, hit)) U.uMouse.value.lerp(hit, 0.2);

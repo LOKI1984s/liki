@@ -25,7 +25,7 @@
     <nav class="nav">
       <a href="index.html" class="brand" aria-label="${esc(p.brand)} 홈"><span class="brand-mark mono">${esc(p.mark)}</span><span class="brand-name">${esc(p.brand)}</span></a>
       <ul class="menu">
-        ${PAGES.map((x) => `<li><a href="${x.href}"${x.key === page ? ' class="active" aria-current="page"' : ""}>${x.label}</a></li>`).join("")}
+        ${PAGES.map((x) => `<li><a href="${x.href}" data-key="${x.key}"${x.key === page ? ' class="active" aria-current="page"' : ""}>${x.label}</a></li>`).join("")}
       </ul>
       <button class="menu-toggle" aria-label="메뉴" aria-expanded="false"><span></span><span></span></button>
     </nav>`;
@@ -68,7 +68,7 @@
             <p class="intro-headline rise" style="--i:2">${accent(p.headline)}</p>
             <nav class="intro-index" aria-label="페이지">
               ${PAGES.map((x, i) => `
-                <a href="${x.href}" class="rise" style="--i:${3 + i}">
+                <a href="${x.href}" data-key="${x.key}" class="rise" style="--i:${3 + i}">
                   <span class="mono">${num(i)}</span>
                   <b>${x.label}</b>
                   <span class="en">${x.en}</span>
@@ -266,6 +266,21 @@
     const tick = () => { clock.textContent = fmt.format(new Date()); };
     tick(); setInterval(tick, 1000);
   }
+
+  // 페이지 전환: 내부 페이지 링크는 화면을 덮은 뒤 이동 (홈은 ∞가 0으로 빨려 들어감)
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a[href]");
+    if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target === "_blank") return;
+    const href = a.getAttribute("href");
+    if (!/^(\.\/|[\w-]+\.html)$/.test(href)) return;
+    e.preventDefault();
+    if (document.body.classList.contains("leaving")) return;
+    document.body.classList.add("leaving");
+    dispatchEvent(new CustomEvent("zi:leave", { detail: { key: a.dataset.key || "" } }));
+    const wait = reduce ? 0 : page === "home" && document.body.classList.contains("gl-ready") ? 720 : 320;
+    setTimeout(() => { location.href = a.href; }, wait);
+  });
+  addEventListener("pageshow", (e) => { if (e.persisted) document.body.classList.remove("leaving"); });
 
   // 카드 스포트라이트
   document.querySelectorAll(".card").forEach((c) => {
