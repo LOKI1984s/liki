@@ -374,9 +374,8 @@ a.ref:hover .arr { color: var(--accent); transform: translate(2px, -2px); }
   .metric { padding: 22px 18px; }
   .metric:nth-child(odd) { border-left: 0; }
   .metric:nth-child(n+3) { border-top: 1px solid var(--line); }
-  .intro { align-items: flex-end; padding-block: 44svh 84px; }
+  .intro { align-items: flex-start; padding-block: 92px 84px; }
   .intro-text { padding-top: 0; }
-  .intro::before { content: ""; position: fixed; inset: 45% 0 0; z-index: -1; background: linear-gradient(transparent, rgba(8,9,10,.85) 40%); }
   .intro-name { font-size: clamp(48px, 16vw, 76px); }
   .intro-by { margin-top: 12px; }
   .intro-by { margin-top: 18px; font-family: var(--mono); font-size: 13px; letter-spacing: .04em; color: var(--fg-2); }

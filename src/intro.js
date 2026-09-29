@@ -301,8 +301,17 @@ function init() {
     wide = w > 900;
     camera.position.set(0, 0, wide ? 9 : 12.5);
     camera.updateProjectionMatrix();
-    world.position.set(wide ? 3.0 : 0, wide ? 0 : 2.65, 0);
-    world.scale.setScalar(wide ? 0.86 : 0.58);
+    if (wide) {
+      world.position.set(3.0, 0, 0);
+      world.scale.setScalar(0.86);
+    } else {
+      // 세로 화면: 제목 오른쪽 옆, 화면 위에서 38% 지점
+      const halfH = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
+      const halfW = halfH * camera.aspect;
+      const nx = w >= 500 ? 0.0 : 0.3;
+      world.position.set(nx * halfW, (1 - 2 * 0.38) * halfH, 0);
+      world.scale.setScalar(w >= 500 ? 0.62 : 0.5);
+    }
     world.rotation.z = wide ? 0 : Math.PI / 2; // 세로 화면에선 8자로 세움
   }
   addEventListener("resize", resize);
@@ -332,7 +341,8 @@ function init() {
     shape.rotation.x = 0.32 + Math.sin(T * 0.09) * 0.22 - mouse.y * 0.25;
     camera.position.x = mouse.x * 0.35;
     camera.position.y = mouse.y * 0.25;
-    camera.lookAt(world.position.x * 0.5, world.position.y * 0.5, 0);
+    if (wide) camera.lookAt(world.position.x * 0.5, world.position.y * 0.5, 0);
+    else camera.lookAt(0, 0, 0);
 
     renderer.render(scene, camera);
 
