@@ -9,7 +9,6 @@ const PORTFOLIO = {
     name: "[이름]",
     nameEn: "[English Name]",
     role: "Growth Hacker",
-    status: "Open to work", // 비우면 배지 숨김
     // 홈 인트로에서 타이핑으로 순환되는 문구
     roles: ["Growth Hacker", "Data × Experiment", "AI Automation"],
     // 헤드라인 — *별표* 사이 단어가 강조색으로 표시됨

@@ -8,7 +8,6 @@
   const link = (href, text, cls = "") =>
     href ? `<a class="${cls}" href="${esc(href)}" target="_blank" rel="noopener">${esc(text)}</a>` : `<span class="${cls}">${esc(text)}</span>`;
   const accent = (s) => esc(s).replace(/\*(.+?)\*/g, '<em class="grad">$1</em>');
-  const email = (p.contacts.find((c) => c.label.toLowerCase() === "email") || {}).href || "";
   const arrow = `<svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5 4h7v7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>`;
 
   const PAGES = [
@@ -28,7 +27,6 @@
       <ul class="menu">
         ${PAGES.map((x) => `<li><a href="${x.href}"${x.key === page ? ' class="active" aria-current="page"' : ""}>${x.label}</a></li>`).join("")}
       </ul>
-      ${email ? `<a class="btn btn-sm" href="${esc(email)}">Contact</a>` : ""}
       <button class="menu-toggle" aria-label="메뉴" aria-expanded="false"><span></span><span></span></button>
     </nav>`;
   const toggle = document.querySelector(".menu-toggle");
@@ -64,15 +62,18 @@
       return `
         <section class="intro">
           <div class="intro-text">
-            ${p.status ? `<p class="status rise" style="--i:0"><span class="pulse"></span>${esc(p.status)}</p>` : ""}
-            <p class="eyebrow rise" style="--i:1"><span class="mono">&gt;_</span><span class="typer" aria-live="polite"></span><span class="caret"></span></p>
+            <p class="eyebrow rise" style="--i:0"><span class="mono">&gt;_</span><span class="typer" aria-live="polite"></span><span class="caret"></span></p>
             <h1 class="intro-name" data-scramble="${esc(p.name)}">${esc(p.name)}</h1>
-            <p class="intro-headline rise" style="--i:3">${accent(p.headline)}</p>
-            <p class="intro-summary rise" style="--i:4">${esc(p.summary)}</p>
-            <div class="hero-cta rise" style="--i:5">
-              <a class="btn btn-primary" href="projects.html">프로젝트 보기 ${arrow}</a>
-              ${email ? `<a class="btn" href="${esc(email)}">연락하기</a>` : ""}
-            </div>
+            <p class="intro-headline rise" style="--i:2">${accent(p.headline)}</p>
+            <nav class="intro-index" aria-label="페이지">
+              ${PAGES.map((x, i) => `
+                <a href="${x.href}" class="rise" style="--i:${3 + i}">
+                  <span class="mono">${num(i)}</span>
+                  <b>${x.label}</b>
+                  <span class="en">${x.en}</span>
+                  ${arrow}
+                </a>`).join("")}
+            </nav>
           </div>
           <div class="hud hud-l mono rise" style="--i:6">
             <span>SYS // ${esc(p.nameEn)}</span>
