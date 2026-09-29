@@ -115,7 +115,13 @@
     },
 
     dev() {
-      return pageHead() + `<div class="dev">${d.dev.map((v, i) => `
+      return pageHead() + `<div class="dev">${d.dev.map((v, i) => v.demo ? `
+        <button type="button" class="card card-demo reveal" data-demo="${esc(v.demo)}">
+          <div class="card-top"><span class="mono">${num(i)}</span><span class="live"><span class="pulse"></span>Interactive</span></div>
+          <h3 class="card-title">${esc(v.title)}</h3>
+          <p class="card-text">${esc(v.desc)}</p>
+          <span class="demo-open">시스템 구조 보기 ${arrow}</span>
+        </button>` : `
         <article class="card reveal">
           <div class="card-top"><span class="mono">${num(i)}</span></div>
           <h3 class="card-title">${esc(v.title)}</h3>
@@ -266,6 +272,12 @@
     const tick = () => { clock.textContent = fmt.format(new Date()); };
     tick(); setInterval(tick, 1000);
   }
+
+  // 인터랙티브 데모 팝업
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-demo]");
+    if (b) window.ZIDemos?.[b.dataset.demo]?.open(b);
+  });
 
   // 페이지 전환: 내부 페이지 링크는 화면을 덮은 뒤 이동 (홈은 ∞가 0으로 빨려 들어감)
   document.addEventListener("click", (e) => {

@@ -10,7 +10,7 @@
 | index.html | 홈 — 3D 인트로 (뫼비우스 ∞ 띠 + 흐르는 파티클, 클릭 시 충격파) |
 | skills.html | 01 기술 |
 | history.html | 02 연혁 |
-| dev.html | 03 개발 |
+| dev.html | 03 개발 — SMS 중계 재판매 시스템 구조도 팝업 포함 |
 | projects.html | 04 프로젝트 |
 | references.html | 05 레퍼런스 |
 
@@ -19,6 +19,7 @@
 *.html          페이지 뼈대
 css/style.css   디자인
 js/data.js      ← 내용은 여기만 수정
+js/sms-demo.js  개발 페이지 팝업: SMS 시스템 구조 시뮬레이션 (아이콘: Lucide, ISC)
 js/main.js      렌더링 (네비·페이지·이전/다음·인트로 텍스트 효과)
 js/intro.bundle.js  3D 인트로 빌드 결과물 (커밋됨, 그대로 동작)
 src/intro.js    3D 인트로 소스
