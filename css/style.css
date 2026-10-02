@@ -212,6 +212,8 @@ body[data-page="home"] .bg::after { opacity: .55; }
 .hud b { color: var(--fg-2); font-weight: 500; }
 .hud-l { left: 0; }
 .hud-r { right: 0; text-align: right; }
+.hits { display: block; height: 20px; width: auto; border-radius: 4px; opacity: .9; }
+.hud .hits { margin-top: 4px; }
 .hud-hint { color: var(--accent); opacity: .8; }
 .no-gl .hud-r { display: none; }
 
@@ -827,7 +829,7 @@ a.ref:hover .arr { color: var(--accent); transform: translate(2px, -2px); }
 .contacts li { display: flex; flex-direction: column; gap: 4px; font-size: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
 .contacts .muted { font-family: var(--sans); font-size: 11.5px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; }
 .contacts a:hover { color: var(--accent); }
-.copy { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); padding-top: 24px; border-top: 1px solid var(--line); }
+.copy { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); padding-top: 24px; border-top: 1px solid var(--line); }
 
 /* =========================================================
    Page transition — 들어올 때 걷히고, 나갈 때 덮음

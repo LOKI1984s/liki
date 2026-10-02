@@ -18,6 +18,14 @@
     { key: "contact", href: "contact.html", label: "연락", en: "Contact", lead: "다음 사업 모델을 함께 설계합니다" },
   ];
   const num = (i) => String(i + 1).padStart(2, "0");
+  // 방문자 카운터 배지: 오늘 / 전체 (로컬 미리보기는 -local 키로 따로 집계해 실제 수치를 늘리지 않음)
+  const counter = () => {
+    const c = p.counter;
+    if (!c?.key) return "";
+    const key = location.hostname.endsWith("github.io") ? c.key : `${c.key}-local`;
+    const q = new URLSearchParams({ view: "today-total", style: "flat-square", label: c.label || "VISITORS", color: "2f3d0f", labelColor: "16181b" });
+    return `<img class="hits" src="https://hits.sh/${key}.svg?${q}" alt="방문자 수 (오늘 / 전체)" height="20" referrerpolicy="no-referrer">`;
+  };
   // 사업 모델 카드 버튼: 데모 버튼 + (있으면) 서류 바로 보기 버튼
   const actions = (pr) => `
     <div class="model-actions">
@@ -91,6 +99,7 @@
           <div class="hud hud-l mono rise" style="--i:6">
             <span>SYS // ${esc(p.mark)}</span>
             <span>KST <b id="hud-clock">--:--:--</b></span>
+            ${counter()}
           </div>
           <div class="hud hud-r mono rise" style="--i:6">
             <span>PARTICLES <b id="hud-n">0</b></span>
@@ -235,7 +244,7 @@
         ${p.contacts.map((c) => `<li><span class="muted">${esc(c.label)}</span>${link(c.href, c.value)}</li>`).join("")}
       </ul>
     </section>`}
-    <p class="copy"><span>© ${new Date().getFullYear()} ${esc(p.name)}</span><span class="mono">${esc(p.role)}</span></p>`;
+    <p class="copy"><span>© ${new Date().getFullYear()} ${esc(p.name)}</span>${counter()}<span class="mono">${esc(p.role)}</span></p>`;
 
   /* ---------- Motion ---------- */
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;

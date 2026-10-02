@@ -25,6 +25,8 @@ const PORTFOLIO = {
       { value: "3", label: "제휴 모델" },
       { value: "226", label: "글로벌 게이트웨이" },
     ],
+    // 방문자 카운터 (hits.sh, 가입 불필요). 배포 주소에서만 실제 카운트, 로컬 미리보기는 별도 키로 집계
+    counter: { key: "loki1984s.github.io/liki", label: "VISITORS" },
     photo: "", // 예: "assets/profile.jpg"
     resume: "", // 예: "assets/resume.pdf" (넣으면 연락 페이지에 다운로드 버튼 표시)
     contacts: [
