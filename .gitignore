@@ -1,2 +1,6 @@
 node_modules/
 .DS_Store
+
+# 원본 자료 (계약서·NDA·개인정보 포함) — 절대 커밋 금지
+files/
+.claude/

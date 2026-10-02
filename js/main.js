@@ -6,24 +6,33 @@
   const esc = (s = "") =>
     String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const link = (href, text, cls = "") =>
-    href ? `<a class="${cls}" href="${esc(href)}" target="_blank" rel="noopener">${esc(text)}</a>` : `<span class="${cls}">${esc(text)}</span>`;
+    href ? `<a class="${cls}" href="${esc(href)}"${/^https?:/.test(href) ? ' target="_blank" rel="noopener"' : ""}>${esc(text)}</a>` : `<span class="${cls}">${esc(text)}</span>`;
   const accent = (s) => esc(s).replace(/\*(.+?)\*/g, '<em class="grad">$1</em>');
   const arrow = `<svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M5 4h7v7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>`;
 
   const PAGES = [
-    { key: "skills", href: "skills.html", label: "기술", en: "Skills", lead: "지표를 읽고, 실험하고, 자동화하는 도구들" },
-    { key: "history", href: "history.html", label: "연혁", en: "Timeline", lead: "경력 · 학력 · 교육 · 자격" },
-    { key: "dev", href: "dev.html", label: "개발", en: "Build", lead: "성장을 반복 가능한 시스템으로 만드는 방법" },
-    { key: "projects", href: "projects.html", label: "프로젝트", en: "Case Studies", lead: "문제 → 가설 → 실험 → 성과" },
-    { key: "references", href: "references.html", label: "레퍼런스", en: "References", lead: "글 · 발표 · 추천" },
+    { key: "models", href: "models.html", label: "사업 모델", en: "Business Models", lead: "문제, 모델, 구조, 수익으로 정리한 초기 모델링과 서비스 기획 사례" },
+    { key: "partners", href: "partners.html", label: "제휴·실적", en: "Partnerships", lead: "통신사 · 글로벌 파트너 제휴와 공급 레퍼런스" },
+    { key: "history", href: "history.html", label: "경력", en: "Career", lead: "회사별 직급과 담당 업무" },
+    { key: "skills", href: "skills.html", label: "역량", en: "Capabilities", lead: "사업을 설계하고 연결하는 방법" },
+    { key: "contact", href: "contact.html", label: "연락", en: "Contact", lead: "다음 사업 모델을 함께 설계합니다" },
   ];
   const num = (i) => String(i + 1).padStart(2, "0");
+  // 사업 모델 카드 버튼: 데모 버튼 + (있으면) 서류 바로 보기 버튼
+  const actions = (pr) => `
+    <div class="model-actions">
+      <button type="button" class="btn btn-sm model-demo" data-demo="${esc(pr.demo)}">
+        <span class="live"><span class="pulse"></span></span>${esc(pr.demoLabel || "구조 보기")} ${arrow}
+      </button>
+      ${(pr.showcase?.docs || []).map((dc, di) => `
+      <button type="button" class="btn btn-sm model-demo model-doc" data-demo="${esc(pr.demo)}" data-doc="${di}">${esc(dc.button || dc.title)} ${arrow}</button>`).join("")}
+    </div>`;
   const idx = PAGES.findIndex((x) => x.key === page);
 
   /* ---------- Nav ---------- */
   $("nav").innerHTML = `
     <nav class="nav">
-      <a href="index.html" class="brand" aria-label="${esc(p.brand)} 홈"><span class="brand-mark mono">${esc(p.mark)}</span><span class="brand-name">${esc(p.brand)}</span></a>
+      <a href="index.html" class="brand" aria-label="${esc(p.brand)} 홈"><span class="brand-mark">${esc(p.mark)}</span><span class="brand-name">${esc(p.brand)}</span>${p.tagline ? `<span class="brand-tag">${esc(p.tagline)}</span>` : ""}</a>
       <ul class="menu">
         ${PAGES.map((x) => `<li><a href="${x.href}" data-key="${x.key}"${x.key === page ? ' class="active" aria-current="page"' : ""}>${x.label}</a></li>`).join("")}
       </ul>
@@ -34,7 +43,7 @@
     const open = document.body.classList.toggle("menu-open");
     toggle.setAttribute("aria-expanded", open);
   });
-  document.title = idx >= 0 ? `${PAGES[idx].label} — ${p.brand}` : `${p.brand} — by ${p.name}`;
+  document.title = idx >= 0 ? `${PAGES[idx].label} | ${p.brand}` : `${p.brand} | ${p.tagline || p.role}`;
 
   /* ---------- Blocks ---------- */
   const metricCell = (m) => `
@@ -64,8 +73,11 @@
           <div class="intro-text">
             <p class="eyebrow rise" style="--i:0"><span class="mono">&gt;_</span><span class="typer" aria-live="polite"></span><span class="caret"></span></p>
             <h1 class="intro-name">${p.brand.split(" ").map((w) => `<span data-scramble="${esc(w)}">${esc(w)}</span>`).join("")}</h1>
-            <p class="intro-by rise" style="--i:1">by <b>${esc(p.name)}</b> · ${esc(p.role)}</p>
+            <p class="intro-by rise" style="--i:1">${esc(p.tagline || p.role)}</p>
             <p class="intro-headline rise" style="--i:2">${accent(p.headline)}</p>
+            ${p.stats?.length ? `<dl class="intro-stats rise" style="--i:2">${p.stats.map((s) => `
+              <div><dt class="mono" data-count="${esc(s.value)}">${esc(s.value)}</dt><dd>${esc(s.label)}</dd></div>`).join("")}
+            </dl>` : ""}
             <nav class="intro-index" aria-label="페이지">
               ${PAGES.map((x, i) => `
                 <a href="${x.href}" data-key="${x.key}" class="rise" style="--i:${3 + i}">
@@ -81,9 +93,9 @@
             <span>KST <b id="hud-clock">--:--:--</b></span>
           </div>
           <div class="hud hud-r mono rise" style="--i:6">
-            <span>PARTICLES <b id="hud-n">—</b></span>
-            <span>FPS <b id="hud-fps">—</b></span>
-            <span class="hud-hint">CLICK → PULSE</span>
+            <span>PARTICLES <b id="hud-n">0</b></span>
+            <span>FPS <b id="hud-fps">0</b></span>
+            <span class="hud-hint">CLICK TO PULSE</span>
           </div>
         </section>`;
     },
@@ -96,6 +108,8 @@
             <li>
               <div class="skill-head"><span>${esc(s.name)}</span>${meter(s.level)}</div>
               ${s.note ? `<p>${esc(s.note)}</p>` : ""}
+              ${s.cases?.length || s.partners ? `<p class="skill-cases">${(s.cases || []).filter((ci) => d.models[ci]).map((ci) =>
+                `<a href="models.html#model-${num(ci)}">${esc(d.models[ci].short || d.models[ci].title)}</a>`).join("")}${s.partners ? `<a href="partners.html">제휴·실적</a>` : ""}</p>` : ""}
             </li>`).join("")}
           </ul>
         </section>`).join("")}</div>`;
@@ -110,41 +124,24 @@
             <h3>${esc(h.title)}</h3>
             ${h.sub ? `<p class="muted">${esc(h.sub)}</p>` : ""}
             ${h.desc ? `<p class="tl-desc">${esc(h.desc)}</p>` : ""}
+            ${h.tasks?.length ? `<ul class="tl-tasks">${h.tasks.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}
           </div>
         </li>`).join("")}</ol>`;
     },
 
-    dev() {
-      return pageHead() + `<div class="dev">${d.dev.map((v, i) => v.demo ? `
-        <button type="button" class="card card-demo reveal" data-demo="${esc(v.demo)}">
-          <div class="card-top"><span class="mono">${num(i)}</span><span class="live"><span class="pulse"></span>Interactive</span></div>
-          <h3 class="card-title">${esc(v.title)}</h3>
-          <p class="card-text">${esc(v.desc)}</p>
-          <span class="demo-open">시스템 구조 보기 ${arrow}</span>
-        </button>` : `
-        <article class="card reveal">
-          <div class="card-top"><span class="mono">${num(i)}</span></div>
-          <h3 class="card-title">${esc(v.title)}</h3>
-          <p class="card-text">${esc(v.desc)}</p>
-        </article>`).join("")}</div>`;
-    },
-
-    projects() {
-      return pageHead() + `<div class="projects">${d.projects.map((pr, i) => {
-        const links = pr.links.filter((l) => l.href);
-        return `
-        <article class="project card reveal">
+    models() {
+      return pageHead() + `<div class="projects">${d.models.map((pr, i) => `
+        <article class="project card reveal" id="model-${num(i)}">
           <div class="project-side">
-            <span class="mono accent">Case ${num(i)}</span>
+            <span class="mono accent">Model ${num(i)} · ${esc(pr.field)}</span>
             <h2>${esc(pr.title)}</h2>
             <p class="project-summary">${esc(pr.summary)}</p>
             <dl class="meta">
               <dt>기간</dt><dd class="mono">${esc(pr.period)}</dd>
-              <dt>구성</dt><dd>${esc(pr.team)}</dd>
               <dt>역할</dt><dd>${esc(pr.role)}</dd>
             </dl>
-            <div class="chips">${pr.stack.map((s) => `<span>${esc(s)}</span>`).join("")}</div>
-            ${links.length ? `<p class="links">${links.map((l) => `<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)} ${arrow}</a>`).join("")}</p>` : ""}
+            <div class="chips">${pr.chips.map((s) => `<span>${esc(s)}</span>`).join("")}</div>
+            ${pr.demo && !pr.showcase?.docs?.length ? actions(pr) : ""}
           </div>
           <div class="project-main">
             ${pr.image ? `<img class="project-img" src="${esc(pr.image)}" alt="${esc(pr.title)}">` : ""}
@@ -154,19 +151,67 @@
               return m && m[2] ? `<li><span class="step-k">${esc(m[1])}</span><span>${esc(m[2])}</span></li>` : `<li><span>${esc(x)}</span></li>`;
             }).join("")}</ol>
           </div>
-        </article>`;
-      }).join("")}</div>`;
+          ${pr.demo && pr.showcase?.docs?.length ? `<div class="project-foot">${actions(pr)}</div>` : ""}
+        </article>`).join("")}</div>` + (d.partnerships?.length ? `
+        <section class="pm-section">
+          <header class="pm-head reveal">
+            <p class="eyebrow"><span class="mono">+${d.partnerships.length}</span>Partnership Models</p>
+            <h2>${esc(d.partnershipsIntro?.title || "")}</h2>
+            <p class="lead">${esc(d.partnershipsIntro?.lead || "")}</p>
+          </header>
+          <div class="pmodels">${d.partnerships.map((pm, i) => `
+            <article class="card pm reveal">
+              <div class="card-top"><span class="mono">P${num(i)}</span><span class="pm-field">${esc(pm.field)}</span></div>
+              <span class="pm-tag mono">Open for Partnership</span>
+              <h3 class="card-title">${esc(pm.title)}</h3>
+              <p class="card-text">${esc(pm.summary)}</p>
+              ${pm.targets?.length ? `<div class="pm-targets"><p>적용 대상</p><ul>${pm.targets.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></div>` : ""}
+              <ol class="steps">${pm.points.map((x) => {
+                const m = x.match(/^\[([^\]]+)\]\s*(.*)$/);
+                return m ? `<li${m[1] === "제휴" ? ' class="pm-deal"' : ""}><span class="step-k">${esc(m[1])}</span><span>${esc(m[2])}</span></li>` : `<li><span>${esc(x)}</span></li>`;
+              }).join("")}</ol>
+              <div class="pm-foot">
+                <div class="chips">${pm.chips.map((s) => `<span>${esc(s)}</span>`).join("")}</div>
+                ${pm.demo ? `<button type="button" class="btn btn-sm model-demo" data-demo="${esc(pm.demo)}"${pm.demoScene != null ? ` data-scene="${pm.demoScene}"` : ""}>
+                  <span class="live"><span class="pulse"></span></span>${esc(pm.demoLabel || "구조 보기")} ${arrow}
+                </button>` : ""}
+              </div>
+            </article>`).join("")}
+          </div>
+        </section>` : "");
     },
 
-    references() {
-      return pageHead() + `<ul class="refs">${d.references.map((r) => `
-        <li class="reveal">
-          <${r.href ? `a href="${esc(r.href)}" target="_blank" rel="noopener"` : "div"} class="ref">
-            <span class="tag">${esc(r.type)}</span>
-            <span class="ref-body"><b>${esc(r.title)}</b>${r.desc ? `<span class="muted">${esc(r.desc)}</span>` : ""}</span>
-            ${r.href ? arrow : ""}
-          </${r.href ? "a" : "div"}>
-        </li>`).join("")}</ul>`;
+    partners() {
+      const count = (g) => g.items.reduce((n, r) => n + r.name.split(" · ").length, 0);
+      const [lead, ...rest] = d.partners;
+      const group = (g, gi, wide) => `
+        <section class="card pt-group reveal${wide ? " pt-wide" : ""}">
+          <div class="card-top"><span class="mono">${num(gi)}</span>${esc(g.category)}<span class="pt-count mono">${count(g)}</span></div>
+          <ul class="pt-list">${[...g.items].sort((x, y) => parseInt(y.year) - parseInt(x.year)).map((r) => `
+            <li>
+              <span class="pt-year mono">${esc(r.year)}</span>
+              <span class="pt-body"><b>${esc(r.name)}</b>${r.desc ? `<span>${esc(r.desc)}</span>` : ""}</span>
+            </li>`).join("")}
+          </ul>
+        </section>`;
+      return pageHead() + `
+        <div class="metrics pt-metrics reveal">${d.partners.filter((g) => g.metric !== false).map((g) => metricCell({ value: String(count(g)), label: g.category })).join("")}</div>
+        <div class="pt-grid">
+          ${lead ? group(lead, 0, true) : ""}
+          ${[0, 1].map((c) => `<div class="pt-col">${rest.map((g, i) => (i % 2 === c ? group(g, i + 1) : "")).join("")}</div>`).join("")}
+        </div>
+        <p class="pt-note muted small">제휴 · 공급 관계만 표기합니다. 계약 조건과 금액은 공개하지 않습니다.</p>`;
+    },
+
+    contact() {
+      return pageHead() + `
+        <section class="card contact-card reveal">
+          <p class="project-summary">${esc(p.summary)}</p>
+          <ul class="contacts">
+            ${p.contacts.map((c) => `<li><span class="muted">${esc(c.label)}</span>${link(c.href, c.value)}</li>`).join("")}
+          </ul>
+          ${p.resume ? `<a class="btn btn-primary" href="${esc(p.resume)}" download>이력서 PDF ${arrow}</a>` : ""}
+        </section>`;
     },
   };
 
@@ -182,13 +227,14 @@
         ${prev ? `<a href="${prev.href}"><small>Prev</small>${prev.label}</a>` : "<span></span>"}
         ${next ? `<a href="${next.href}" class="next"><small>Next</small>${next.label}</a>` : "<span></span>"}
       </nav>` : ""}
+    ${page === "contact" ? "" : `
     <section class="cta reveal">
-      <p class="eyebrow">Let's grow</p>
-      <h2>다음 성장 실험을<br><em class="grad">함께 설계합니다.</em></h2>
+      <p class="eyebrow">Let's build</p>
+      <h2>다음 사업 모델을<br><em class="grad">함께 설계합니다.</em></h2>
       <ul class="contacts">
         ${p.contacts.map((c) => `<li><span class="muted">${esc(c.label)}</span>${link(c.href, c.value)}</li>`).join("")}
       </ul>
-    </section>
+    </section>`}
     <p class="copy"><span>© ${new Date().getFullYear()} ${esc(p.name)}</span><span class="mono">${esc(p.role)}</span></p>`;
 
   /* ---------- Motion ---------- */
@@ -229,6 +275,8 @@
   });
 
   if (page === "home") {
+    setTimeout(() => document.querySelectorAll(".intro-stats [data-count]").forEach(countUp), 600);
+
     // 이름 디코딩(스크램블) 효과
     const GLYPHS = "!<>-_\\/[]{}—=+*^?#01ABCDEF";
     document.querySelectorAll("[data-scramble]").forEach((el) => {

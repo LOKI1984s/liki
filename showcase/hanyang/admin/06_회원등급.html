@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회원등급 · 관리자</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===== Global Header ===== -->
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='대시보드.html'">
+      <div class="mark">S</div>
+      <div class="name">ADMIN관리자</div>
+    </div>
+
+    <div class="gh-quick">
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'inquiry')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="gh-notif-label">문의</span>
+          <span class="badge-dot">3</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-inquiry">
+          <div class="gh-notif-panel-head">신규 문의 <b>3건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">배송이 너무 늦어요</div><div class="sub">김민준 · 5분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">사이즈 교환 문의</div><div class="sub">이서연 · 22분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">결제가 안돼요</div><div class="sub">박도윤 · 1시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('문의 전체보기로 이동합니다')">문의 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'order')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="gh-notif-label">주문</span>
+          <span class="badge-dot">12</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-order">
+          <div class="gh-notif-panel-head">신규 주문 <b>12건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-042 · 88,000원</div><div class="sub">최지우 · 3분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-041 · 132,000원</div><div class="sub">정하은 · 18분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-040 · 45,000원</div><div class="sub">윤시우 · 40분 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('주문 전체보기로 이동합니다')">주문 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'delivery')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17h4V5H2v12h3"/><path d="M14 9h4l3 3v5h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="gh-notif-label">배송</span>
+          <span class="badge-dot">5</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-delivery">
+          <div class="gh-notif-panel-head">배송 대기 <b>5건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-118 발송 대기</div><div class="sub">김민준 · 2시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-117 발송 대기</div><div class="sub">이서연 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-116 지연 접수</div><div class="sub">박도윤 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('배송 현황으로 이동합니다')">배송 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'comment')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+          <span class="gh-notif-label">댓글</span>
+          <span class="badge-dot">2</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-comment">
+          <div class="gh-notif-panel-head">새 댓글 <b>2건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"배송 진짜 빠르네요!"</div><div class="sub">최지우 · 30분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"재입고 언제 되나요?"</div><div class="sub">정하은 · 2시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('댓글 전체보기로 이동합니다')">댓글 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'newmember')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+          <span class="gh-notif-label">신규회원</span>
+          <span class="badge-dot">4</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-newmember">
+          <div class="gh-notif-panel-head">신규 가입 <b>4명</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">정하은</div><div class="sub">카카오 가입 · 40분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">박도윤</div><div class="sub">자체 가입 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">윤시우</div><div class="sub">네이버 가입 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('회원목록으로 이동합니다')">신규회원 전체보기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">김도현 관리자님</div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>192.168.0.1 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="showToast('로그아웃 되었습니다')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll">
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">사이트관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="01_카테고리.html"><span class="dot"></span>카테고리</a>
+          <a class="nav-item" href="02_메뉴설정.html"><span class="dot"></span>메뉴설정</a>
+          <a class="nav-item" href="03_공지사항.html"><span class="dot"></span>공지사항</a>
+          <a class="nav-item" href="04_팝업배너.html"><span class="dot"></span>팝업·배너</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="ng-text">회원관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="05_회원목록.html"><span class="dot"></span>회원목록</a>
+          <a class="nav-item active" href="06_회원등급.html"><span class="dot"></span>회원등급</a>
+          <a class="nav-item" href="07_회원설정.html"><span class="dot"></span>회원설정</a>
+          <a class="nav-item" href="08_추천인설정.html"><span class="dot"></span>추천인설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="ng-text">주문관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="09_입금관리.html"><span class="dot"></span>입금관리</a>
+          <a class="nav-item" href="10_상품관리.html"><span class="dot"></span>상품관리</a>
+          <a class="nav-item" href="11_주문관리.html"><span class="dot"></span>주문관리</a>
+          <a class="nav-item" href="12_배송관리.html"><span class="dot"></span>배송관리</a>
+          <a class="nav-item" href="13_정기구독.html"><span class="dot"></span>정기구독</a>
+          <a class="nav-item" href="14_문의.html"><span class="dot"></span>문의</a>
+          <a class="nav-item" href="15_구매평.html"><span class="dot"></span>구매평</a>
+          <a class="nav-item" href="16_재입고알림.html"><span class="dot"></span>재입고알림</a>
+          <a class="nav-item" href="17_세금계산서.html"><span class="dot"></span>세금계산서</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 12l9 9 11-11-2-8-8-2Z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">프로모션</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="18_쿠폰.html"><span class="dot"></span>쿠폰</a>
+          <a class="nav-item" href="19_적립금.html"><span class="dot"></span>적립금</a>
+          <a class="nav-item" href="20_이벤트.html"><span class="dot"></span>이벤트</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14v3M12 10v7M17 6v11"/></svg>
+          <span class="ng-text">통계</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="21_개요.html"><span class="dot"></span>개요</a>
+          <a class="nav-item" href="22_매출.html"><span class="dot"></span>매출</a>
+          <a class="nav-item" href="23_기간별분석.html"><span class="dot"></span>기간별분석</a>
+          <a class="nav-item" href="24_유입통계.html"><span class="dot"></span>유입통계</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ng-text">메세지</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="25_문자발송.html"><span class="dot"></span>문자발송</a>
+          <a class="nav-item" href="26_자동메일.html"><span class="dot"></span>자동메일</a>
+          <a class="nav-item" href="27_환경설정.html"><span class="dot"></span>환경설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.2 4.2l2.8 2.8m10 10 2.8 2.8M1 12h4m14 0h4M4.2 19.8l2.8-2.8m10-10 2.8-2.8"/></svg>
+          <span class="ng-text">시스템</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="28_일반설정.html"><span class="dot"></span>일반설정</a>
+          <a class="nav-item" href="29_약관개인정보.html"><span class="dot"></span>약관·개인정보</a>
+          <a class="nav-item" href="30_도메인관리.html"><span class="dot"></span>도메인관리</a>
+          <a class="nav-item" href="31_전자결제.html"><span class="dot"></span>전자결제</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5z"/></svg>
+          <span class="ng-text">권한관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="32_관리자계정.html"><span class="dot"></span>관리자계정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+          <span class="ng-text">파트너</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="33_리셀러목록.html"><span class="dot"></span>리셀러목록</a>
+          <a class="nav-item" href="34_리셀러설정.html"><span class="dot"></span>리셀러설정</a>
+          <a class="nav-item" href="35_리셀러트리.html"><span class="dot"></span>리셀러트리</a>
+          <a class="nav-item" href="36_리셀러정산.html"><span class="dot"></span>리셀러정산</a>
+          <a class="nav-item" href="37_리셀러도메인.html"><span class="dot"></span>리셀러도메인</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== Main ===== -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">회원등급</div>
+        <div class="breadcrumb">회원관리 &nbsp;/&nbsp; 회원등급</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn" onclick="addGradeRow()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" style="margin-right:4px;vertical-align:-1px;"><path d="M12 5v14M5 12h14"/></svg>
+          등급 추가
+        </button>
+        <button class="btn btn-primary" onclick="showToast('저장되었습니다')">저장</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="card" style="padding:28px 24px;margin-bottom:20px;">
+        <div style="text-align:center;font-size:19px;font-weight:800;letter-spacing:2px;color:var(--text);margin-bottom:22px;">MEMBERSHIP</div>
+        <div style="overflow-x:auto;">
+        <div id="membershipCards" style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;min-width:760px;"></div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:24px;">
+        <div style="font-size:15px;font-weight:800;margin-bottom:2px;">회원그룹 설정</div>
+        <div class="settings-desc" style="margin:0 0 20px;">등급별 사용여부, 혜택(현금결제·무료배송·할인·적립), 등급조건(등급보호·구매금액·구매횟수)을 직접 입력해요.</div>
+
+        <div style="overflow-x:auto;">
+        <table class="grid-table" style="table-layout:fixed;width:100%;min-width:980px;">
+          <colgroup>
+            <col style="width:50px;">
+            <col style="width:50px;">
+            <col style="width:170px;">
+            <col style="width:80px;">
+            <col style="width:80px;">
+            <col style="width:90px;">
+            <col style="width:90px;">
+            <col style="width:80px;">
+            <col style="width:130px;">
+            <col style="width:130px;">
+            <col style="width:44px;">
+          </colgroup>
+          <thead>
+            <tr>
+              <th rowspan="2" style="vertical-align:middle;">등급</th>
+              <th rowspan="2" style="vertical-align:middle;">사용</th>
+              <th rowspan="2" style="vertical-align:middle;">회원그룹명</th>
+              <th colspan="4">혜택 및 조건</th>
+              <th rowspan="2" style="vertical-align:middle;">등급보호<span class="qmark" title="체크하면 조건 미달로도 자동 강등되지 않아요.">?</span></th>
+              <th colspan="2">등급조건</th>
+              <th rowspan="2" style="vertical-align:middle;"></th>
+            </tr>
+            <tr>
+              <th>현금결제<span class="qmark" title="현금(무통장입금) 결제 허용 여부">?</span></th>
+              <th>무료배송</th>
+              <th>할인</th>
+              <th>적립</th>
+              <th>구매금액</th>
+              <th>구매횟수</th>
+            </tr>
+          </thead>
+          <tbody id="gradeTbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<!-- ===== 삭제 확인 모달 ===== -->
+<div class="modal-overlay" id="gradeDeleteModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>등급 삭제</h3>
+      <button class="modal-close" onclick="closeModal('gradeDeleteModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="warn-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        <div>이 등급에 속한 회원은 기본 등급으로 이동됩니다.
+          <div class="name-list" id="gradeDeleteName">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('gradeDeleteModal')">취소</button>
+      <button class="btn" style="background:var(--danger);border-color:var(--danger);color:#fff;" onclick="confirmDeleteGrade()">삭제</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">저장되었습니다</span>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+let grades = [
+  { id:1, system:true, use:true, name:'게시판 관리자', color:'#6B7280', cash:false, freeship:false, discount:0, point:0, protect:false, amount:0, count:0 },
+  { id:2, use:true, name:'BRONZE', code:'B', stars:'', gradient:'linear-gradient(155deg,#C98A4A,#8A5A2E)', color:'#8A5A2E', cash:false, freeship:false, discount:0, point:1, protect:false, amount:0, count:0, coupon:5 },
+  { id:3, use:true, name:'SILVER', code:'S', stars:'★★', gradient:'linear-gradient(155deg,#B9C0C6,#6E767C)', color:'#6E767C', cash:false, freeship:true, discount:0, point:3, protect:false, amount:300000, count:0, coupon:5 },
+  { id:4, use:true, name:'GOLD', code:'G', stars:'★★★', gradient:'linear-gradient(155deg,#F3C64B,#C7952A)', color:'#C7952A', cash:true, freeship:true, discount:2, point:4, protect:false, amount:500000, count:0, coupon:5 },
+  { id:5, use:true, name:'VIP', code:'V', stars:'★★★★', gradient:'linear-gradient(155deg,#3E4A78,#1B2140)', color:'#1B2140', cash:true, freeship:true, discount:5, point:5, protect:true, amount:1000000, count:0, coupon:10 },
+  { id:6, use:true, name:'B2B', code:'B2B', stars:'', gradient:'linear-gradient(155deg,#4FB8C4,#2A7C87)', color:'#2A7C87', cash:true, freeship:true, discount:3, point:6, protect:true, amount:0, count:0, coupon:null },
+  { id:7, use:false, name:'일반회원', color:'#9CA3AF', cash:false, freeship:false, discount:0, point:0, protect:false, amount:0, count:0, isDefault:true },
+];
+let nextId = 8;
+
+function renderMembershipCards(){
+  const tiers = grades.filter(g => !g.system && !g.isDefault);
+  document.getElementById('membershipCards').innerHTML = tiers.map(g => `
+    <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff;">
+      <div style="padding:20px 10px 16px;text-align:center;border-bottom:1px solid var(--border);">
+        <div class="grade-hex" style="background:${g.gradient};margin:0 auto;">
+          <span class="stars">${g.stars}</span>
+          <span class="code">${g.code}</span>
+          <span class="name">${g.name}</span>
+        </div>
+      </div>
+      <div style="padding:14px 10px;text-align:center;border-bottom:1px solid var(--border);">
+        <div style="font-size:11px;color:var(--text-sub);margin-bottom:2px;">구매금액</div>
+        <div style="font-weight:800;font-size:14px;color:var(--accent);">${g.point}% 적립</div>
+      </div>
+      <div style="padding:14px 10px;text-align:center;border-bottom:1px solid var(--border);font-size:12.5px;min-height:46px;">
+        ${g.amount ? `${(g.amount/10000).toLocaleString()}만원<br><span style="font-size:10.5px;color:var(--text-faint);">이상 구매시</span>` : '<span style="color:var(--text-faint);">-</span>'}
+      </div>
+      <div style="padding:14px 10px;text-align:center;font-size:12.5px;">
+        ${g.coupon ? `생일쿠폰 ${g.coupon}%` : '<span style="color:var(--text-faint);">-</span>'}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderGrades(){
+  document.getElementById('gradeTbody').innerHTML = grades.map((g, i) => {
+    if(g.system){
+      return `
+        <tr>
+          <td style="font-weight:700;color:var(--text-sub);">${i+1}</td>
+          <td></td>
+          <td style="text-align:left;padding-left:12px;color:var(--text-sub);">${g.name}</td>
+          <td colspan="4" style="color:var(--text-faint);font-size:12px;">시스템 계정 · 설정 대상 아님</td>
+          <td></td><td></td><td></td>
+          <td></td>
+        </tr>
+      `;
+    }
+    return `
+      <tr>
+        <td style="font-weight:700;color:var(--text-sub);">${i+1}</td>
+        <td><input type="checkbox" ${g.use?'checked':''} onchange="updateGrade(${g.id},'use',this.checked)"></td>
+        <td>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="width:9px;height:9px;border-radius:3px;background:${g.color};flex:none;"></span>
+            <input type="text" value="${g.name}" style="text-align:left;" onchange="updateGrade(${g.id},'name',this.value)">
+          </div>
+        </td>
+        <td><input type="checkbox" ${g.cash?'checked':''} onchange="updateGrade(${g.id},'cash',this.checked)"></td>
+        <td><input type="checkbox" ${g.freeship?'checked':''} onchange="updateGrade(${g.id},'freeship',this.checked)"></td>
+        <td>
+          <div style="display:flex;align-items:center;gap:3px;justify-content:center;">
+            <input type="text" value="${g.discount}" style="width:44px;text-align:right;" onchange="updateGrade(${g.id},'discount',this.value)"><span style="font-size:12px;color:var(--text-faint);">%</span>
+          </div>
+        </td>
+        <td>
+          <div style="display:flex;align-items:center;gap:3px;justify-content:center;">
+            <input type="text" value="${g.point}" style="width:44px;text-align:right;" onchange="updateGrade(${g.id},'point',this.value)"><span style="font-size:12px;color:var(--text-faint);">%</span>
+          </div>
+        </td>
+        <td><input type="checkbox" ${g.protect?'checked':''} onchange="updateGrade(${g.id},'protect',this.checked)"></td>
+        <td>
+          <input type="text" value="${g.amount.toLocaleString()}" style="text-align:right;margin-bottom:2px;" oninput="formatPriceInput(this)" onchange="updateGrade(${g.id},'amount',this.value.replace(/,/g,''))">
+          <div style="font-size:10.5px;color:var(--text-faint);">원 이상</div>
+        </td>
+        <td>
+          <input type="text" value="${g.count}" style="text-align:right;margin-bottom:2px;" onchange="updateGrade(${g.id},'count',this.value)">
+          <div style="font-size:10.5px;color:var(--text-faint);">건 이상</div>
+        </td>
+        <td>
+          ${g.isDefault ? '' : `<button class="sns-action-btn" title="삭제" onclick="openDeleteGrade(${g.id})"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>`}
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+function updateGrade(id, field, value){
+  const g = grades.find(x=>x.id===id);
+  if(!g) return;
+  if(['discount','point','amount','count'].includes(field)) value = Number(value) || 0;
+  g[field] = value;
+  renderMembershipCards();
+}
+function addGradeRow(){
+  grades.push({ id:nextId++, use:true, name:'신규등급', code:'N', stars:'', gradient:'linear-gradient(155deg,#AEB4C4,#6B7488)', color:'#9CA3AF', cash:false, freeship:false, discount:0, point:1, protect:false, amount:0, count:0, coupon:null });
+  renderGrades();
+  renderMembershipCards();
+  showToast('등급이 추가되었습니다');
+}
+let delId = null;
+function openDeleteGrade(id){
+  const g = grades.find(x=>x.id===id);
+  if(!g) return;
+  delId = id;
+  document.getElementById('gradeDeleteName').textContent = g.name;
+  document.getElementById('gradeDeleteModal').classList.add('open');
+}
+function confirmDeleteGrade(){
+  grades = grades.filter(g=>g.id!==delId);
+  closeModal('gradeDeleteModal');
+  renderGrades();
+  renderMembershipCards();
+  showToast('삭제되었습니다');
+}
+
+renderGrades();
+renderMembershipCards();
+</script>
+</body>
+</html>

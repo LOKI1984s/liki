@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>리셀러정산 · 관리자</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='대시보드.html'">
+      <div class="mark">S</div>
+      <div class="name">ADMIN관리자</div>
+    </div>
+
+    <div class="gh-quick">
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'inquiry')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="gh-notif-label">문의</span>
+          <span class="badge-dot">3</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-inquiry">
+          <div class="gh-notif-panel-head">신규 문의 <b>3건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">배송이 너무 늦어요</div><div class="sub">김민준 · 5분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">사이즈 교환 문의</div><div class="sub">이서연 · 22분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">결제가 안돼요</div><div class="sub">박도윤 · 1시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('문의 전체보기로 이동합니다')">문의 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'order')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="gh-notif-label">주문</span>
+          <span class="badge-dot">12</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-order">
+          <div class="gh-notif-panel-head">신규 주문 <b>12건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-042 · 88,000원</div><div class="sub">최지우 · 3분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-041 · 132,000원</div><div class="sub">정하은 · 18분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-040 · 45,000원</div><div class="sub">윤시우 · 40분 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('주문 전체보기로 이동합니다')">주문 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'delivery')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17h4V5H2v12h3"/><path d="M14 9h4l3 3v5h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="gh-notif-label">배송</span>
+          <span class="badge-dot">5</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-delivery">
+          <div class="gh-notif-panel-head">배송 대기 <b>5건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-118 발송 대기</div><div class="sub">김민준 · 2시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-117 발송 대기</div><div class="sub">이서연 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-116 지연 접수</div><div class="sub">박도윤 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('배송 현황으로 이동합니다')">배송 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'comment')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+          <span class="gh-notif-label">댓글</span>
+          <span class="badge-dot">2</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-comment">
+          <div class="gh-notif-panel-head">새 댓글 <b>2건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"배송 진짜 빠르네요!"</div><div class="sub">최지우 · 30분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"재입고 언제 되나요?"</div><div class="sub">정하은 · 2시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('댓글 전체보기로 이동합니다')">댓글 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'newmember')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+          <span class="gh-notif-label">신규회원</span>
+          <span class="badge-dot">4</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-newmember">
+          <div class="gh-notif-panel-head">신규 가입 <b>4명</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">정하은</div><div class="sub">카카오 가입 · 40분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">박도윤</div><div class="sub">자체 가입 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">윤시우</div><div class="sub">네이버 가입 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('회원목록으로 이동합니다')">신규회원 전체보기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">김도현 관리자님</div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>192.168.0.1 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="showToast('로그아웃 되었습니다')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll">
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">사이트관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="01_카테고리.html"><span class="dot"></span>카테고리</a>
+          <a class="nav-item" href="02_메뉴설정.html"><span class="dot"></span>메뉴설정</a>
+          <a class="nav-item" href="03_공지사항.html"><span class="dot"></span>공지사항</a>
+          <a class="nav-item" href="04_팝업배너.html"><span class="dot"></span>팝업·배너</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="ng-text">회원관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="05_회원목록.html"><span class="dot"></span>회원목록</a>
+          <a class="nav-item" href="06_회원등급.html"><span class="dot"></span>회원등급</a>
+          <a class="nav-item" href="07_회원설정.html"><span class="dot"></span>회원설정</a>
+          <a class="nav-item" href="08_추천인설정.html"><span class="dot"></span>추천인설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="ng-text">주문관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="09_입금관리.html"><span class="dot"></span>입금관리</a>
+          <a class="nav-item" href="10_상품관리.html"><span class="dot"></span>상품관리</a>
+          <a class="nav-item" href="11_주문관리.html"><span class="dot"></span>주문관리</a>
+          <a class="nav-item" href="12_배송관리.html"><span class="dot"></span>배송관리</a>
+          <a class="nav-item" href="13_정기구독.html"><span class="dot"></span>정기구독</a>
+          <a class="nav-item" href="14_문의.html"><span class="dot"></span>문의</a>
+          <a class="nav-item" href="15_구매평.html"><span class="dot"></span>구매평</a>
+          <a class="nav-item" href="16_재입고알림.html"><span class="dot"></span>재입고알림</a>
+          <a class="nav-item" href="17_세금계산서.html"><span class="dot"></span>세금계산서</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 12l9 9 11-11-2-8-8-2Z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">프로모션</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="18_쿠폰.html"><span class="dot"></span>쿠폰</a>
+          <a class="nav-item" href="19_적립금.html"><span class="dot"></span>적립금</a>
+          <a class="nav-item" href="20_이벤트.html"><span class="dot"></span>이벤트</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14v3M12 10v7M17 6v11"/></svg>
+          <span class="ng-text">통계</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="21_개요.html"><span class="dot"></span>개요</a>
+          <a class="nav-item" href="22_매출.html"><span class="dot"></span>매출</a>
+          <a class="nav-item" href="23_기간별분석.html"><span class="dot"></span>기간별분석</a>
+          <a class="nav-item" href="24_유입통계.html"><span class="dot"></span>유입통계</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ng-text">메세지</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="25_문자발송.html"><span class="dot"></span>문자발송</a>
+          <a class="nav-item" href="26_자동메일.html"><span class="dot"></span>자동메일</a>
+          <a class="nav-item" href="27_환경설정.html"><span class="dot"></span>환경설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.2 4.2l2.8 2.8m10 10 2.8 2.8M1 12h4m14 0h4M4.2 19.8l2.8-2.8m10-10 2.8-2.8"/></svg>
+          <span class="ng-text">시스템</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="28_일반설정.html"><span class="dot"></span>일반설정</a>
+          <a class="nav-item" href="29_약관개인정보.html"><span class="dot"></span>약관·개인정보</a>
+          <a class="nav-item" href="30_도메인관리.html"><span class="dot"></span>도메인관리</a>
+          <a class="nav-item" href="31_전자결제.html"><span class="dot"></span>전자결제</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5z"/></svg>
+          <span class="ng-text">권한관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="32_관리자계정.html"><span class="dot"></span>관리자계정</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+          <span class="ng-text">파트너</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="33_리셀러목록.html"><span class="dot"></span>리셀러목록</a>
+          <a class="nav-item" href="34_리셀러설정.html"><span class="dot"></span>리셀러설정</a>
+          <a class="nav-item" href="35_리셀러트리.html"><span class="dot"></span>리셀러트리</a>
+          <a class="nav-item active" href="36_리셀러정산.html"><span class="dot"></span>리셀러정산</a>
+          <a class="nav-item" href="37_리셀러도메인.html"><span class="dot"></span>리셀러도메인</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">리셀러정산</div>
+        <div class="breadcrumb">파트너 &nbsp;/&nbsp; 리셀러정산</div>
+      </div>
+      <button class="btn" onclick="exportSettlementExcel()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-1px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+        엑셀다운로드
+      </button>
+    </div>
+
+    <div class="content">
+      <div class="kpi-grid" style="margin-bottom:16px;">
+        <div class="kpi-card"><div class="kpi-label">이번달 정산 예정액</div><div class="kpi-value">1,284,000원</div></div>
+        <div class="kpi-card"><div class="kpi-label">지급 완료</div><div class="kpi-value">98,000원</div></div>
+        <div class="kpi-card"><div class="kpi-label">지급 대기</div><div class="kpi-value">1,155,000원</div></div>
+        <div class="kpi-card"><div class="kpi-label">보류</div><div class="kpi-value">31,000원</div></div>
+      </div>
+
+      <div class="card" style="padding:20px 24px;margin-bottom:16px;">
+        <div style="font-size:15px;font-weight:800;margin-bottom:14px;">정산 개요</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
+          <div class="cumul-toggle">
+            <div class="cumul-toggle-btn active" onclick="selectOverviewMode(this,'day')">일별</div>
+            <div class="cumul-toggle-btn" onclick="selectOverviewMode(this,'month')">월별</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;" id="ovMonthSelectWrap">
+            <select class="search-type-select" style="padding:8px 26px 8px 12px;"><option>2026년</option><option>2025년</option></select>
+            <select class="search-type-select" style="padding:8px 26px 8px 12px;"><option>7월</option><option>6월</option><option>5월</option></select>
+            <select class="search-type-select" id="ovDaySelect" style="padding:8px 26px 8px 12px;" onchange="onOvDaySelectChange()"></select>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto;">
+        <table style="table-layout:fixed;">
+          <colgroup><col style="width:22%;"><col style="width:20%;"><col style="width:20%;"><col style="width:20%;"><col style="width:18%;"></colgroup>
+          <thead><tr><th id="ovDateHeader">일자</th><th>총판 정산액</th><th>대리점 정산액</th><th>합계</th><th>건수</th></tr></thead>
+          <tbody id="ovTbody"></tbody>
+        </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="status-tabs" style="padding:14px 16px 0;">
+          <div class="status-tab active" data-sstatus="all" onclick="filterSettleStatus(this,'all')">전체 <span class="cnt" id="sc-all">0</span></div>
+          <div class="status-tab" data-sstatus="pending" onclick="filterSettleStatus(this,'pending')">정산대기 <span class="cnt" id="sc-pending">0</span></div>
+          <div class="status-tab" data-sstatus="done" onclick="filterSettleStatus(this,'done')">지급완료 <span class="cnt" id="sc-done">0</span></div>
+          <div class="status-tab" data-sstatus="hold" onclick="filterSettleStatus(this,'hold')">보류 <span class="cnt" id="sc-hold">0</span></div>
+        </div>
+
+        <div class="toolbar" style="padding:14px 16px;">
+          <div style="font-size:13px;color:var(--text-sub);">전체 <b id="settleCount" style="color:var(--text);">0</b>건</div>
+          <div style="flex:1;"></div>
+          <div class="search-box" style="width:240px;flex:none;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="settleSearchInput" type="text" placeholder="파트너명, 아이디 검색" oninput="settleCurrentPage=1; renderSettleTable()">
+          </div>
+          <select style="max-width:140px;">
+            <option>2026년 7월</option><option>2026년 6월</option><option>2026년 5월</option>
+          </select>
+        </div>
+
+        <div class="bulkbar-coupon" id="settleBulkBar">
+          <span class="sel-count" id="settleSelCount">0건 선택됨</span>
+          <button class="btn" style="padding:7px 12px;font-size:12.5px;" onclick="bulkMarkPaid()">지급완료 처리</button>
+          <button class="btn" style="padding:7px 12px;font-size:12.5px;" onclick="bulkMarkHold()">보류 처리</button>
+        </div>
+
+        <div style="overflow-x:auto;">
+        <table style="table-layout:fixed;">
+          <colgroup>
+            <col style="width:40px;"><col style="width:15%;"><col style="width:9%;"><col style="width:12%;"><col style="width:12%;">
+            <col style="width:9%;"><col style="width:12%;"><col style="width:11%;"><col style="width:90px;">
+          </colgroup>
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="settleSelectAll" onclick="toggleAllSettle(this)"></th>
+              <th>파트너명</th><th>등급</th><th>정산기간</th><th>매출액</th><th>커미션율</th><th>정산액</th><th>상태</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="settleTbody"></tbody>
+        </table>
+        </div>
+
+        <div class="pagination">
+          <div class="info">전체 <b id="settleTotalCount">0</b>건 중 <span id="settlePageInfo">-</span> 표시</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="page-nums" id="settlePageNums" style="align-items:center;"></div>
+            <select id="settlePageSizeSelect" style="max-width:110px;" onchange="onSettlePageSizeChange()">
+              <option value="5">5개씩</option>
+              <option value="10" selected>10개씩</option>
+              <option value="15">15개씩</option>
+              <option value="20">20개씩</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<!-- ===== 정산 상세 모달 ===== -->
+<div class="modal-overlay" id="settleDetailModal">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <h3 id="sd_title">정산 상세</h3>
+      <button class="modal-close" onclick="closeModal('settleDetailModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:14px;"><span class="badge" id="sd_statusBadge">-</span></div>
+      <div class="reg-grid2">
+        <div class="field"><label>정산기간</label><div class="field-view"><div class="val" id="sd_period">-</div></div></div>
+        <div class="field"><label>커미션율</label><div class="field-view"><div class="val" id="sd_rate">-</div></div></div>
+      </div>
+      <div class="field">
+        <label>포함된 주문 (매출 산정 기준)</label>
+        <table style="table-layout:fixed;">
+          <colgroup><col style="width:34%;"><col style="width:22%;"><col style="width:22%;"><col style="width:22%;"></colgroup>
+          <thead><tr><th>주문번호</th><th>주문일</th><th>매출액</th><th>커미션</th></tr></thead>
+          <tbody id="sd_orderRows"></tbody>
+        </table>
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label>합계</label>
+        <div class="field-view"><div class="val" id="sd_total" style="font-weight:800;font-size:15px;color:var(--accent);">-</div></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('settleDetailModal')">닫기</button>
+      <button class="btn btn-primary" onclick="markSingleDone()">지급완료 처리</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">저장되었습니다</span>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+const settleStatusLabel = { pending:'정산대기', done:'지급완료', hold:'보류' };
+const settleStatusClass = { pending:'badge-group-none', done:'badge-grade-biz', hold:'badge-owner' };
+
+let settlements = [
+  { id:1, partner:'강남플라워스튜디오', loginId:'gangnam_p', tier:'distributor', period:'2026-07', sales:2840000, rate:12, amount:340800, status:'pending',
+    orders:[{no:'FL26070100011',date:'2026-07-03',sales:120000},{no:'FL26071200042',date:'2026-07-12',sales:98000},{no:'FL26071800077',date:'2026-07-18',sales:2622000}] },
+  { id:2, partner:'해운대꽃마당', loginId:'busan_p', tier:'distributor', period:'2026-07', sales:2210000, rate:10, amount:221000, status:'pending',
+    orders:[{no:'FL26070500019',date:'2026-07-05',sales:2210000}] },
+  { id:3, partner:'수원블룸', loginId:'suwon_a', tier:'agency', period:'2026-06', sales:980000, rate:8, amount:78400, status:'done',
+    orders:[{no:'FL26060200008',date:'2026-06-02',sales:980000}] },
+  { id:4, partner:'분당플로리스트', loginId:'bundang_a', tier:'agency', period:'2026-07', sales:1150000, rate:7, amount:80500, status:'pending',
+    orders:[{no:'FL26071500033',date:'2026-07-15',sales:1150000}] },
+  { id:5, partner:'광안리플라워', loginId:'gwangan_a', tier:'agency', period:'2026-07', sales:420000, rate:6, amount:25200, status:'pending',
+    orders:[{no:'FL26071000021',date:'2026-07-10',sales:420000}] },
+  { id:6, partner:'서면꽃집', loginId:'seomyeon_a', tier:'agency', period:'2026-07', sales:310000, rate:6, amount:18600, status:'hold',
+    orders:[{no:'FL26070800014',date:'2026-07-08',sales:310000}] },
+  { id:7, partner:'강남플라워스튜디오', loginId:'gangnam_p', tier:'distributor', period:'2026-06', sales:196000, rate:12, amount:23520, status:'done',
+    orders:[{no:'FL26060900027',date:'2026-06-09',sales:196000}] },
+];
+const settleTierLabel = { distributor:'총판', agency:'대리점' };
+const settleTierClass = { distributor:'badge-owner', agency:'badge-grade-general' };
+let selectedSettle = new Set();
+let settleStatusFilter = 'all';
+
+let settleCurrentPage = 1;
+function renderSettleTable(){
+  const kw = document.getElementById('settleSearchInput').value.trim().toLowerCase();
+  let filtered = settlements.filter(s => !kw || s.partner.toLowerCase().includes(kw) || s.loginId.toLowerCase().includes(kw));
+  if(settleStatusFilter !== 'all') filtered = filtered.filter(s => s.status === settleStatusFilter);
+
+  document.getElementById('settleCount').textContent = filtered.length;
+  document.getElementById('sc-all').textContent = settlements.length;
+  ['pending','done','hold'].forEach(s => document.getElementById('sc-'+s).textContent = settlements.filter(x=>x.status===s).length);
+  document.getElementById('settleSelectAll').checked = selectedSettle.size>0 && selectedSettle.size===filtered.length;
+  document.getElementById('settleBulkBar').classList.toggle('show', selectedSettle.size>0);
+  document.getElementById('settleSelCount').textContent = selectedSettle.size + '건 선택됨';
+
+  const pageSize = Number(document.getElementById('settlePageSizeSelect').value);
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  if(settleCurrentPage > totalPages) settleCurrentPage = totalPages;
+  const startIdx = (settleCurrentPage - 1) * pageSize;
+  const pageItems = filtered.slice(startIdx, startIdx + pageSize);
+
+  document.getElementById('settleTotalCount').textContent = filtered.length;
+  document.getElementById('settlePageInfo').textContent = filtered.length
+    ? (startIdx + 1) + '–' + Math.min(startIdx + pageSize, filtered.length)
+    : '0';
+  renderSettlePageNums(totalPages);
+
+  document.getElementById('settleTbody').innerHTML = pageItems.map(s => `
+    <tr>
+      <td><input type="checkbox" ${selectedSettle.has(s.id)?'checked':''} onclick="toggleOneSettle(${s.id})"></td>
+      <td style="font-weight:600;cursor:pointer;color:var(--accent);" onclick="openSettleDetail(${s.id})">${s.partner}</td>
+      <td><span class="badge ${settleTierClass[s.tier]}">${settleTierLabel[s.tier]}</span></td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${s.period}</td>
+      <td>${s.sales.toLocaleString()}원</td>
+      <td>${s.rate}%</td>
+      <td style="font-weight:700;">${s.amount.toLocaleString()}원</td>
+      <td><span class="badge ${settleStatusClass[s.status]}">${settleStatusLabel[s.status]}</span></td>
+      <td><button class="btn" style="padding:6px 12px;font-size:12px;" onclick="openSettleDetail(${s.id})">상세</button></td>
+    </tr>
+  `).join('');
+}
+function renderSettlePageNums(totalPages){
+  let html = `<button class="pg-arrow" ${settleCurrentPage<=1?'disabled':''} onclick="goSettlePage(${settleCurrentPage-1})">‹</button>`;
+  for(let i=1; i<=totalPages; i++){
+    html += `<div class="page-num${i===settleCurrentPage?' active':''}" onclick="goSettlePage(${i})">${i}</div>`;
+  }
+  html += `<button class="pg-arrow" ${settleCurrentPage>=totalPages?'disabled':''} onclick="goSettlePage(${settleCurrentPage+1})">›</button>`;
+  document.getElementById('settlePageNums').innerHTML = html;
+}
+function goSettlePage(page){
+  settleCurrentPage = page;
+  renderSettleTable();
+}
+function onSettlePageSizeChange(){
+  settleCurrentPage = 1;
+  renderSettleTable();
+}
+function filterSettleStatus(el, status){
+  document.querySelectorAll('.status-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  settleStatusFilter = status;
+  settleCurrentPage = 1;
+  renderSettleTable();
+}
+function toggleOneSettle(id){
+  if(selectedSettle.has(id)) selectedSettle.delete(id); else selectedSettle.add(id);
+  renderSettleTable();
+}
+function toggleAllSettle(cb){
+  const filtered = settleStatusFilter==='all' ? settlements : settlements.filter(s=>s.status===settleStatusFilter);
+  if(cb.checked) filtered.forEach(s=>selectedSettle.add(s.id)); else selectedSettle.clear();
+  renderSettleTable();
+}
+function bulkMarkPaid(){
+  if(!selectedSettle.size){ showToast('선택된 정산 건이 없어요'); return; }
+  settlements.forEach(s => { if(selectedSettle.has(s.id)) s.status = 'done'; });
+  selectedSettle.clear();
+  renderSettleTable();
+  showToast('선택한 건을 지급완료 처리했습니다');
+}
+function bulkMarkHold(){
+  if(!selectedSettle.size){ showToast('선택된 정산 건이 없어요'); return; }
+  settlements.forEach(s => { if(selectedSettle.has(s.id)) s.status = 'hold'; });
+  selectedSettle.clear();
+  renderSettleTable();
+  showToast('선택한 건을 보류 처리했습니다');
+}
+
+let sdCurrentId = null;
+function openSettleDetail(id){
+  const s = settlements.find(x=>x.id===id);
+  if(!s) return;
+  sdCurrentId = id;
+  document.getElementById('sd_title').textContent = s.partner + ' · ' + s.period;
+  document.getElementById('sd_statusBadge').textContent = settleStatusLabel[s.status];
+  document.getElementById('sd_statusBadge').className = 'badge ' + settleStatusClass[s.status];
+  document.getElementById('sd_period').textContent = s.period;
+  document.getElementById('sd_rate').textContent = s.rate + '%';
+  document.getElementById('sd_orderRows').innerHTML = s.orders.map(o => `
+    <tr><td>${o.no}</td><td style="color:var(--text-sub);font-size:12.5px;">${o.date}</td><td>${o.sales.toLocaleString()}원</td><td>${Math.round(o.sales*s.rate/100).toLocaleString()}원</td></tr>
+  `).join('');
+  document.getElementById('sd_total').textContent = s.amount.toLocaleString()+'원';
+  document.getElementById('settleDetailModal').classList.add('open');
+}
+function markSingleDone(){
+  const s = settlements.find(x=>x.id===sdCurrentId);
+  if(s) s.status = 'done';
+  closeModal('settleDetailModal');
+  renderSettleTable();
+  showToast('지급완료 처리했습니다');
+}
+
+function exportSettlementExcel(){
+  const rows = [['파트너명','정산기간','매출액','커미션율','정산액','상태']];
+  settlements.forEach(s => rows.push([s.partner, s.period, s.sales, s.rate+'%', s.amount, settleStatusLabel[s.status]]));
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = '파트너정산_' + new Date().toISOString().slice(0,10) + '.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('엑셀 파일을 다운로드했습니다');
+}
+
+renderSettleTable();
+
+/* ================= 정산 개요 (일별/월별) ================= */
+let overviewMode = 'day';
+const overviewDayData = [
+  { label:'2026-07-18', distributor:0, agency:0, count:0 },
+  { label:'2026-07-15', distributor:0, agency:80500, count:1 },
+  { label:'2026-07-12', distributor:98000, agency:0, count:1 },
+  { label:'2026-07-10', distributor:0, agency:25200, count:1 },
+  { label:'2026-07-08', distributor:0, agency:18600, count:1 },
+  { label:'2026-07-05', distributor:221000, agency:0, count:1 },
+  { label:'2026-07-03', distributor:14400, agency:0, count:1 },
+];
+const overviewMonthData = [
+  { label:'2026년 7월', distributor:561800, agency:124300, count:6 },
+  { label:'2026년 6월', distributor:23520, agency:78400, count:2 },
+  { label:'2026년 5월', distributor:0, agency:0, count:0 },
+];
+function selectOverviewMode(el, mode){
+  document.querySelectorAll('.cumul-toggle-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  overviewMode = mode;
+  document.getElementById('ovDateHeader').textContent = mode==='day' ? '일자' : '월';
+  document.getElementById('ovDaySelect').style.display = mode==='day' ? 'inline-block' : 'none';
+  renderOverviewTable();
+}
+function renderOverviewTable(){
+  const data = overviewMode==='day' ? overviewDayData : overviewMonthData;
+  document.getElementById('ovTbody').innerHTML = data.map(d => `
+    <tr>
+      <td>${d.label}</td>
+      <td>${d.distributor.toLocaleString()}원</td>
+      <td>${d.agency.toLocaleString()}원</td>
+      <td style="font-weight:700;">${(d.distributor+d.agency).toLocaleString()}원</td>
+      <td>${d.count}건</td>
+    </tr>
+  `).join('');
+}
+
+/* ================= 정산개요 - 일 선택 (1~31) ================= */
+function initOvDaySelect(){
+  const sel = document.getElementById('ovDaySelect');
+  let opts = '';
+  for(let d=1; d<=31; d++) opts += `<option value="${d}">${d}일</option>`;
+  sel.innerHTML = opts;
+  sel.value = 18;
+}
+function onOvDaySelectChange(){
+  showToast(document.getElementById('ovDaySelect').value + '일 데이터를 조회합니다');
+}
+initOvDaySelect();
+renderOverviewTable();
+</script>
+</body>
+</html>

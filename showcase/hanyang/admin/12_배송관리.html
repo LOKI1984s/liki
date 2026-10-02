@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>배송관리 · 관리자</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===== Global Header ===== -->
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='대시보드.html'">
+      <div class="mark">S</div>
+      <div class="name">ADMIN관리자</div>
+    </div>
+
+    <div class="gh-quick">
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'inquiry')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="gh-notif-label">문의</span>
+          <span class="badge-dot">3</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-inquiry">
+          <div class="gh-notif-panel-head">신규 문의 <b>3건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">배송이 너무 늦어요</div><div class="sub">김민준 · 5분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">사이즈 교환 문의</div><div class="sub">이서연 · 22분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">결제가 안돼요</div><div class="sub">박도윤 · 1시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('문의 전체보기로 이동합니다')">문의 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'order')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="gh-notif-label">주문</span>
+          <span class="badge-dot">12</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-order">
+          <div class="gh-notif-panel-head">신규 주문 <b>12건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-042 · 88,000원</div><div class="sub">최지우 · 3분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-041 · 132,000원</div><div class="sub">정하은 · 18분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-040 · 45,000원</div><div class="sub">윤시우 · 40분 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('주문 전체보기로 이동합니다')">주문 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'delivery')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17h4V5H2v12h3"/><path d="M14 9h4l3 3v5h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="gh-notif-label">배송</span>
+          <span class="badge-dot">5</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-delivery">
+          <div class="gh-notif-panel-head">배송 대기 <b>5건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-118 발송 대기</div><div class="sub">김민준 · 2시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-117 발송 대기</div><div class="sub">이서연 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-116 지연 접수</div><div class="sub">박도윤 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('배송 현황으로 이동합니다')">배송 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'comment')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+          <span class="gh-notif-label">댓글</span>
+          <span class="badge-dot">2</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-comment">
+          <div class="gh-notif-panel-head">새 댓글 <b>2건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"배송 진짜 빠르네요!"</div><div class="sub">최지우 · 30분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"재입고 언제 되나요?"</div><div class="sub">정하은 · 2시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('댓글 전체보기로 이동합니다')">댓글 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'newmember')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+          <span class="gh-notif-label">신규회원</span>
+          <span class="badge-dot">4</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-newmember">
+          <div class="gh-notif-panel-head">신규 가입 <b>4명</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">정하은</div><div class="sub">카카오 가입 · 40분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">박도윤</div><div class="sub">자체 가입 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">윤시우</div><div class="sub">네이버 가입 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('회원목록으로 이동합니다')">신규회원 전체보기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">김도현 관리자님</div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>192.168.0.1 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="showToast('로그아웃 되었습니다')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll">
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">사이트관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="01_카테고리.html"><span class="dot"></span>카테고리</a>
+          <a class="nav-item" href="02_메뉴설정.html"><span class="dot"></span>메뉴설정</a>
+          <a class="nav-item" href="03_공지사항.html"><span class="dot"></span>공지사항</a>
+          <a class="nav-item" href="04_팝업배너.html"><span class="dot"></span>팝업·배너</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="ng-text">회원관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="05_회원목록.html"><span class="dot"></span>회원목록</a>
+          <a class="nav-item" href="06_회원등급.html"><span class="dot"></span>회원등급</a>
+          <a class="nav-item" href="07_회원설정.html"><span class="dot"></span>회원설정</a>
+          <a class="nav-item" href="08_추천인설정.html"><span class="dot"></span>추천인설정</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="ng-text">주문관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="09_입금관리.html"><span class="dot"></span>입금관리</a>
+          <a class="nav-item" href="10_상품관리.html"><span class="dot"></span>상품관리</a>
+          <a class="nav-item" href="11_주문관리.html"><span class="dot"></span>주문관리</a>
+          <a class="nav-item active" href="12_배송관리.html"><span class="dot"></span>배송관리</a>
+          <a class="nav-item" href="13_정기구독.html"><span class="dot"></span>정기구독</a>
+          <a class="nav-item" href="14_문의.html"><span class="dot"></span>문의</a>
+          <a class="nav-item" href="15_구매평.html"><span class="dot"></span>구매평</a>
+          <a class="nav-item" href="16_재입고알림.html"><span class="dot"></span>재입고알림</a>
+          <a class="nav-item" href="17_세금계산서.html"><span class="dot"></span>세금계산서</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 12l9 9 11-11-2-8-8-2Z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">프로모션</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="18_쿠폰.html"><span class="dot"></span>쿠폰</a>
+          <a class="nav-item" href="19_적립금.html"><span class="dot"></span>적립금</a>
+          <a class="nav-item" href="20_이벤트.html"><span class="dot"></span>이벤트</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14v3M12 10v7M17 6v11"/></svg>
+          <span class="ng-text">통계</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="21_개요.html"><span class="dot"></span>개요</a>
+          <a class="nav-item" href="22_매출.html"><span class="dot"></span>매출</a>
+          <a class="nav-item" href="23_기간별분석.html"><span class="dot"></span>기간별분석</a>
+          <a class="nav-item" href="24_유입통계.html"><span class="dot"></span>유입통계</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ng-text">메세지</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="25_문자발송.html"><span class="dot"></span>문자발송</a>
+          <a class="nav-item" href="26_자동메일.html"><span class="dot"></span>자동메일</a>
+          <a class="nav-item" href="27_환경설정.html"><span class="dot"></span>환경설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.2 4.2l2.8 2.8m10 10 2.8 2.8M1 12h4m14 0h4M4.2 19.8l2.8-2.8m10-10 2.8-2.8"/></svg>
+          <span class="ng-text">시스템</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="28_일반설정.html"><span class="dot"></span>일반설정</a>
+          <a class="nav-item" href="29_약관개인정보.html"><span class="dot"></span>약관·개인정보</a>
+          <a class="nav-item" href="30_도메인관리.html"><span class="dot"></span>도메인관리</a>
+          <a class="nav-item" href="31_전자결제.html"><span class="dot"></span>전자결제</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5z"/></svg>
+          <span class="ng-text">권한관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="32_관리자계정.html"><span class="dot"></span>관리자계정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+          <span class="ng-text">파트너</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="33_리셀러목록.html"><span class="dot"></span>리셀러목록</a>
+          <a class="nav-item" href="34_리셀러설정.html"><span class="dot"></span>리셀러설정</a>
+          <a class="nav-item" href="35_리셀러트리.html"><span class="dot"></span>리셀러트리</a>
+          <a class="nav-item" href="36_리셀러정산.html"><span class="dot"></span>리셀러정산</a>
+          <a class="nav-item" href="37_리셀러도메인.html"><span class="dot"></span>리셀러도메인</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== Main ===== -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">배송</div>
+        <div class="breadcrumb">쇼핑 &nbsp;/&nbsp; 배송관리</div>
+      </div>
+      <button class="btn btn-primary" onclick="showToast('배송 설정이 저장되었습니다')">저장</button>
+    </div>
+
+    <div class="content" style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="tabs">
+          <div class="tab active" data-tab="manage" onclick="switchShipTab(this,'manage')">배송관리</div>
+          <div class="tab" data-tab="claim" onclick="switchShipTab(this,'claim')">취소·반품·교환</div>
+          <div class="tab" data-tab="template" onclick="switchShipTab(this,'template')">배송템플릿 설정</div>
+        </div>
+      </div>
+
+      <!-- ===== TAB: 취소·반품·교환 ===== -->
+      <div id="tab-claim" style="display:none;">
+        <div class="card">
+          <div class="status-tabs" style="padding:14px 16px 0;">
+            <div class="status-tab active" data-cstatus="all" onclick="filterClaimStatus(this,'all')">전체 <span class="cnt" id="cc-all">0</span></div>
+            <div class="status-tab" data-cstatus="cancel_req" onclick="filterClaimStatus(this,'cancel_req')">취소신청 <span class="cnt" id="cc-cancel_req">0</span></div>
+            <div class="status-tab" data-cstatus="cancel_done" onclick="filterClaimStatus(this,'cancel_done')">취소완료 <span class="cnt" id="cc-cancel_done">0</span></div>
+            <div class="status-tab" data-cstatus="return_req" onclick="filterClaimStatus(this,'return_req')">반품신청 <span class="cnt" id="cc-return_req">0</span></div>
+            <div class="status-tab" data-cstatus="return_done" onclick="filterClaimStatus(this,'return_done')">반품완료 <span class="cnt" id="cc-return_done">0</span></div>
+            <div class="status-tab" data-cstatus="exchange_req" onclick="filterClaimStatus(this,'exchange_req')">교환신청 <span class="cnt" id="cc-exchange_req">0</span></div>
+            <div class="status-tab" data-cstatus="exchange_done" onclick="filterClaimStatus(this,'exchange_done')">교환완료 <span class="cnt" id="cc-exchange_done">0</span></div>
+            <div class="status-tab" data-cstatus="address_change" onclick="filterClaimStatus(this,'address_change')">배송지변경 <span class="cnt" id="cc-address_change">0</span></div>
+          </div>
+          <div class="toolbar" style="padding:14px 16px;">
+            <div style="font-size:13px;color:var(--text-sub);">전체 <b id="claimCount" style="color:var(--text);">0</b>건</div>
+            <div style="flex:1;"></div>
+            <div class="search-box" style="width:280px;flex:none;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              <input id="claimSearchInput" type="text" placeholder="주문번호, 구매자명 검색" oninput="applyClaimSearch()">
+            </div>
+          </div>
+          <div style="overflow-x:auto;">
+          <table style="table-layout:fixed;">
+            <colgroup>
+              <col style="width:16%;"><col style="width:22%;"><col style="width:12%;">
+              <col style="width:18%;"><col style="width:12%;"><col style="width:10%;"><col style="width:100px;">
+            </colgroup>
+            <thead>
+              <tr><th>주문번호</th><th>상품명</th><th>구매자</th><th>사유</th><th>상태</th><th>신청일</th><th></th></tr>
+            </thead>
+            <tbody id="claimTbody"></tbody>
+          </table>
+          </div>
+          <div class="empty-state" id="claimEmpty" style="display:none;">해당하는 접수 건이 없습니다</div>
+        </div>
+      </div>
+
+      <!-- ===== TAB: 배송관리 ===== -->
+      <div id="tab-manage">
+        <div class="card" style="padding:22px 24px;margin-bottom:16px;">
+          <div style="font-size:16px;font-weight:800;">배송 관리</div>
+          <div style="font-size:12.5px;color:var(--text-faint);margin-top:5px;">
+            출고/배송중 <b style="color:var(--text);" id="shipActiveCount">0</b>건 · 운송장 미입력 <b style="color:var(--text);" id="noInvoiceCount2">0</b>건
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px;">
+          <div style="padding:16px 20px 4px;font-size:14px;font-weight:800;">운송장 미입력 (<span id="noInvoiceHeadCount">0</span>)</div>
+          <div style="overflow-x:auto;">
+            <table style="table-layout:fixed;">
+              <colgroup>
+                <col style="width:19%;">
+                <col style="width:11%;">
+                <col style="width:9%;">
+                <col style="width:13%;">
+                <col style="width:11%;">
+                <col style="width:17%;">
+                <col style="width:10%;">
+                <col style="width:10%;">
+              </colgroup>
+              <thead><tr><th>주문번호</th><th>받는분</th><th>지역</th><th>상태</th><th>배송수단</th><th>운송장</th><th>기사</th><th></th></tr></thead>
+              <tbody id="noInvoiceTbody"></tbody>
+            </table>
+          </div>
+          <div class="ship-stat-empty" id="noInvoiceEmpty" style="display:none;">없음</div>
+        </div>
+
+        <div class="card">
+          <div style="padding:16px 20px 4px;font-size:14px;font-weight:800;">전체 출고/배송 (<span id="allShipHeadCount">0</span>)</div>
+          <div style="overflow-x:auto;">
+            <table style="table-layout:fixed;">
+              <colgroup>
+                <col style="width:19%;">
+                <col style="width:11%;">
+                <col style="width:9%;">
+                <col style="width:13%;">
+                <col style="width:11%;">
+                <col style="width:17%;">
+                <col style="width:10%;">
+                <col style="width:10%;">
+              </colgroup>
+              <thead><tr><th>주문번호</th><th>받는분</th><th>지역</th><th>상태</th><th>배송수단</th><th>운송장</th><th>기사</th><th></th></tr></thead>
+              <tbody id="allShipTbody"></tbody>
+            </table>
+          </div>
+          <div class="ship-stat-empty" id="allShipEmpty" style="display:none;">없음</div>
+        </div>
+      </div>
+
+      <!-- ===== TAB: 배송템플릿 설정 ===== -->
+      <div id="tab-template" style="display:none;">
+        <div style="display:flex;gap:20px;align-items:flex-start;">
+          <div style="width:300px;flex-shrink:0;">
+            <div style="font-size:16px;font-weight:800;margin-bottom:8px;">배송 템플릿</div>
+            <div style="font-size:12.5px;color:var(--text-sub);line-height:1.75;margin-bottom:14px;">
+              각 업체, 상품별로 배송 정책이 다른 경우 템플릿을 생성하여 적용할 수 있습니다. 템플릿 생성 시 출고 및 반품 교환지는 필수로 지정해야 합니다.
+            </div>
+            <a class="link-add" style="padding:0;display:inline-block;" onclick="openTemplateAddModal()">템플릿 추가</a>
+          </div>
+
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:16px;">
+            <div class="card tmpl-card">
+              <div class="tmpl-title-row">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="tmpl-badge">기본</span>
+                  <span style="font-size:15px;font-weight:800;">배송 템플릿 A</span>
+                </div>
+                <div class="dropdown">
+                  <button class="row-menu-btn" onclick="toggleRowMenu(event,'tmplA')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                  </button>
+                  <div class="dropdown-menu" id="menu-tmplA">
+                    <button onclick="showToast('템플릿을 복제합니다')">복제</button>
+                    <button class="danger" onclick="showToast('기본 템플릿은 삭제할 수 없습니다')">삭제</button>
+                  </div>
+                </div>
+              </div>
+              <div class="tmpl-loc-row">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                출고 및 반품/교환지명 A
+              </div>
+
+              <div class="tmpl-country-box">
+                <div class="tmpl-country-head" onclick="toggleTmplDetail()">
+                  <span>대한민국</span>
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <button class="link-edit" onclick="event.stopPropagation(); openTemplateDetailModal('edit')">수정</button>
+                    <svg class="tmpl-chevron open" id="tmplChevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+                  </div>
+                </div>
+                <div class="tmpl-detail-body open" id="tmplDetailBody">
+                  <div class="tmpl-detail-row"><div class="tmpl-detail-label">배송 및 결제방법</div><div class="tmpl-detail-value">택배, 방문수령, 퀵서비스 / 착불 및 선결제</div></div>
+                  <div class="tmpl-detail-row"><div class="tmpl-detail-label">기본 배송비</div><div class="tmpl-detail-value">KRW 0</div></div>
+                  <div class="tmpl-detail-row"><div class="tmpl-detail-label">무료배송 조건</div><div class="tmpl-detail-value">KRW 0 이상 구매시</div></div>
+                  <div class="tmpl-detail-row"><div class="tmpl-detail-label">반품 배송비</div><div class="tmpl-detail-value">KRW 2,500</div></div>
+                  <div class="tmpl-detail-row"><div class="tmpl-detail-label">교환 배송비</div><div class="tmpl-detail-value">KRW 5,000</div></div>
+                  <div class="tmpl-detail-row"><div class="tmpl-detail-label">배송비 면세 (복합과세)</div><div class="tmpl-detail-value">사용</div></div>
+                </div>
+              </div>
+
+              <a class="link-add" style="padding:14px 0 0;display:block;" onclick="showToast('배송가능 국가를 추가합니다')">배송가능 국가 추가</a>
+            </div>
+
+            <button class="btn btn-primary" style="width:150px;" onclick="openTemplateAddModal()">템플릿 추가</button>
+
+            <div class="card" style="padding:24px 26px;margin-top:4px;">
+              <div style="font-size:16px;font-weight:800;">기타 배송 정책</div>
+              <div style="font-size:12.5px;color:var(--text-sub);margin-top:4px;margin-bottom:22px;">사이트 전체 상품에 공통적으로 적용할 배송 정책을 설정합니다.</div>
+
+              <div class="field">
+                <label>묶음배송비 계산 방식</label>
+                <div style="display:flex;flex-direction:column;gap:9px;">
+                  <label class="radio-row2"><input type="radio" name="bundleFee" checked> 가장 낮은 배송비로 부과</label>
+                  <label class="radio-row2"><input type="radio" name="bundleFee"> 가장 높은 배송비로 부과</label>
+                </div>
+              </div>
+              <div class="field">
+                <label>조건부/금액별 차등 배송비 책정 조건</label>
+                <div style="display:flex;flex-direction:column;gap:9px;">
+                  <label class="radio-row2"><input type="radio" name="tierFee" checked> 할인 전, 정상 판매가 기준</label>
+                  <label class="radio-row2"><input type="radio" name="tierFee"> 최종 결제 금액 기준</label>
+                </div>
+              </div>
+              <div class="field">
+                <label>착불 배송비 표시 조건</label>
+                <div style="display:flex;flex-direction:column;gap:9px;">
+                  <label class="radio-row2"><input type="radio" name="codDisplay"> 항상 착불로 표시</label>
+                  <label class="radio-row2"><input type="radio" name="codDisplay" checked> 배송금액과 함께 착불로 표시</label>
+                </div>
+              </div>
+              <div class="field" style="margin-bottom:0;">
+                <label>주문시 공동현관 비밀번호 입력</label>
+                <div style="display:flex;flex-direction:column;gap:9px;">
+                  <label class="radio-row2"><input type="radio" name="doorPw" checked> 사용 안 함</label>
+                  <label class="radio-row2"><input type="radio" name="doorPw"> 사용</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<!-- ===== 배송 템플릿 추가(기본) 모달 ===== -->
+<div class="modal-overlay" id="tmplAddModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>배송 템플릿 추가(기본)</h3>
+      <button class="modal-close" onclick="closeModal('tmplAddModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="info-note" style="margin-top:0;">배송 템플릿명과 배송비 정책을 적용할 출고 및 반품/교환지를 선택해 주세요.</div>
+      <div class="field">
+        <label>템플릿명</label>
+        <input type="text" id="tmplName" placeholder="템플릿명을 입력하세요">
+      </div>
+      <div class="field">
+        <label>출고 및 반품/교환지</label>
+        <select id="tmplLocation">
+          <option value="">출고 및 반품/교환지를 선택해 주세요.</option>
+          <option value="A">출고 및 반품/교환지명 A</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>배송관련 안내</label>
+        <textarea class="ta" placeholder="입력해 주세요"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('tmplAddModal')">취소</button>
+      <button class="btn btn-primary" onclick="closeModal('tmplAddModal'); openTemplateDetailModal('add')">계속</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 배송 템플릿 추가/수정(세부) 모달 ===== -->
+<div class="modal-overlay" id="tmplDetailModal">
+  <div class="modal modal-xl">
+    <div class="modal-head">
+      <h3 id="tmplDetailTitle">배송 템플릿 추가(세부)</h3>
+      <button class="modal-close" onclick="closeModal('tmplDetailModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="info-note" style="margin-top:0;">배송 템플릿명과 배송비 정책을 적용할 출고 및 반품/교환지를 선택해 주세요.</div>
+
+      <div class="field">
+        <label>배송 가능 국가</label>
+        <div id="countryChips" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:2px;">
+          <span class="chip-tag">대한민국 (Korea, Republic of) <button onclick="showToast('국가를 제거했습니다')">✕</button></span>
+        </div>
+        <button class="link-add" style="padding-top:8px;" onclick="showToast('국가 선택 목록을 엽니다')">+ 국가 추가</button>
+      </div>
+
+      <div class="field">
+        <label>배송방법</label>
+        <div id="shipMethodSummary" style="font-size:13.5px;font-weight:700;color:var(--text);padding:9px 2px;">택배, 방문수령, 퀵서비스</div>
+        <div class="checkbox-panel">
+          <label><input type="checkbox" value="택배" checked onchange="updateShipMethodSummary()"> 택배</label>
+          <label><input type="checkbox" value="방문수령" checked onchange="updateShipMethodSummary()"> 방문수령</label>
+          <label><input type="checkbox" value="퀵서비스" checked onchange="updateShipMethodSummary()"> 퀵서비스</label>
+        </div>
+      </div>
+
+      <div class="reg-grid2">
+        <div class="field">
+          <label>배송비 결제방법</label>
+          <select id="tmplPayMethod">
+            <option>착불 및 선결제</option>
+            <option>선결제</option>
+            <option>착불</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>기본 택배사 선택</label>
+          <select>
+            <option>없음</option>
+            <option>CJ대한통운</option>
+            <option>우체국택배</option>
+            <option>롯데택배</option>
+          </select>
+        </div>
+      </div>
+      <label class="radio-opt"><input type="checkbox" checked> 배송비 면세 (복합과세)</label>
+
+      <div class="field" style="margin-top:16px;">
+        <label>배송비</label>
+        <select id="tmplFeeType" onchange="onFeeTypeChange()">
+          <option value="conditional">조건부 무료배송</option>
+          <option value="free">무료배송</option>
+          <option value="paid">유료배송</option>
+        </select>
+      </div>
+      <div class="checkbox-panel" id="feeAmountBlock" style="flex-direction:row;gap:20px;">
+        <div class="field" style="margin-bottom:0;flex:1;">
+          <label>기본 배송비</label>
+          <div class="amt-input-row"><span class="amt-prefix">KRW</span><input type="text" value="0" oninput="formatPriceInput(this)"></div>
+        </div>
+        <div class="field" style="margin-bottom:0;flex:1;" id="freeCondField">
+          <label>무료배송 조건</label>
+          <div class="amt-input-row"><span class="amt-prefix">KRW</span><input type="text" value="0" oninput="formatPriceInput(this)"><span class="amt-suffix">이상 구매시</span></div>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:16px;">
+        <label>지역별 배송비</label>
+        <select><option>지역별 배송비 사용안함</option><option>지역별 배송비 사용</option></select>
+        <div class="settings-desc" style="margin-top:6px;">제주 및 도서산간 또는 특정 지역에 추가 배송비를 부과합니다.</div>
+      </div>
+
+      <div class="divider-line"></div>
+
+      <div class="field">
+        <label>반품/교환 설정</label>
+        <label class="radio-opt"><input type="checkbox" id="tmplReturnEnable" checked onchange="onReturnEnableChange()"> 반품/교환 기능 사용</label>
+      </div>
+
+      <div id="returnDetailBlock">
+        <div class="field">
+          <select><option>배송완료 후 14일 이내 가능</option><option>배송완료 후 7일 이내 가능</option><option>배송완료 후 30일 이내 가능</option></select>
+        </div>
+        <div class="reg-grid2">
+          <div class="field">
+            <label>반품 배송비(편도)</label>
+            <div class="amt-input-row"><span class="amt-prefix">KRW</span><input type="text" value="2,500" oninput="formatPriceInput(this)"></div>
+          </div>
+          <div class="field">
+            <label>교환 배송비(왕복)</label>
+            <div class="amt-input-row"><span class="amt-prefix">KRW</span><input type="text" value="5,000" oninput="formatPriceInput(this)"></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>반품/교환 불가능 사유</label>
+          <div class="rte-toolbar">
+            <button class="rte-btn" type="button">T▾</button>
+            <button class="rte-btn" type="button" style="font-weight:800;">B</button>
+            <button class="rte-btn" type="button" style="font-style:italic;">I</button>
+            <button class="rte-btn" type="button" style="text-decoration:underline;">U</button>
+            <button class="rte-btn" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+            </button>
+          </div>
+          <textarea class="rte-body" id="returnReasonText">1. 소비자의 잘못으로 물건이 멸실되거나 훼손된 경우(단, 내용물을 확인하기 위해 포장을 훼손한 경우는 제외)
+
+2. 소비자가 사용해서 물건의 가치가 뚜렷하게 떨어진 경우
+
+3. 시간이 지나 다시 판매하기 곤란할 정도로 물건의 가치가 뚜렷하게 떨어진 경우
+
+4. 복제가 가능한 물건의 포장을 훼손한 경우 (CD, DVD, GAME, 도서 등)
+
+5. 용역 또는 관련 법령에 따른 디지털콘텐츠의 제공이 개시된 경우 (단, 가분적 용역 또는 가분적 디지털콘텐츠로 구성된 계약의 경우 제공이 개시되지 않은 부분은 제외)
+
+6. 소비자의 주문에 따라 개별적으로 생산되는 상품이 제작에 들어간 경우</textarea>
+          <button class="btn" style="margin-top:8px;padding:6px 12px;font-size:12px;" onclick="resetReturnReason()">기본값으로 되돌리기</button>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:8px;">
+        <label>발송 및 배송 예정일</label>
+        <select><option>사용안함</option><option>사용</option></select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('tmplDetailModal')">취소</button>
+      <button class="btn btn-primary" id="tmplDetailSaveBtn" onclick="saveTemplateDetail()">수정</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 취소/반품/교환 상세 모달 ===== -->
+<div class="modal-overlay" id="claimDetailModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="cd_title">주문 상세</h3>
+      <button class="modal-close" onclick="closeModal('claimDetailModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:14px;"><span class="order-status-pill" id="cd_statusPill">-</span></div>
+      <div class="field"><label>상품명</label><div class="field-view"><div class="val" id="cd_product">-</div></div></div>
+      <div class="field"><label>구매자</label><div class="field-view"><div class="val" id="cd_buyer">-</div></div></div>
+      <div class="field"><label>사유</label><div class="field-view"><div class="val" id="cd_reason">-</div></div></div>
+      <div class="field" style="margin-bottom:0;"><label>접수일</label><div class="field-view"><div class="val" id="cd_date">-</div></div></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('claimDetailModal')">닫기</button>
+      <button class="btn btn-primary" onclick="closeModal('claimDetailModal'); showToast('처리되었습니다')">처리 완료</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">저장되었습니다</span>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+/* ================= 헤더 알림 패널 ================= */
+/* ================= 탭 전환 ================= */
+function switchShipTab(el, tab){
+  document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-manage').style.display = tab==='manage' ? 'block' : 'none';
+  document.getElementById('tab-claim').style.display = tab==='claim' ? 'block' : 'none';
+  document.getElementById('tab-template').style.display = tab==='template' ? 'block' : 'none';
+}
+
+/* ================= 배송관리 탭: 데이터 ================= */
+const shipOrders = [
+  {id:'202607150221105', name:'김민준', region:'서울', status:'상품준비중', method:'택배', invoice:'', driver:'', hasInvoice:false, active:true},
+  {id:'202607141122304', name:'이서연', region:'경기', status:'배송대기', method:'택배', invoice:'', driver:'', hasInvoice:false, active:true},
+  {id:'202607131022201', name:'박도윤', region:'대전', status:'배송중', method:'택배', invoice:'CJ 123456789012', driver:'홍기사', hasInvoice:true, active:true},
+  {id:'202607121022108', name:'최지우', region:'부산', status:'배송완료', method:'택배', invoice:'우체국 987654321000', driver:'김기사', hasInvoice:true, active:false},
+];
+
+function renderShipTables(){
+  const noInvoice = shipOrders.filter(o => !o.hasInvoice);
+  const active = shipOrders.filter(o => o.active);
+
+  document.getElementById('noInvoiceCount2').textContent = noInvoice.length;
+  document.getElementById('shipActiveCount').textContent = active.length;
+  document.getElementById('noInvoiceHeadCount').textContent = noInvoice.length;
+  document.getElementById('allShipHeadCount').textContent = shipOrders.length;
+
+  const noInvoiceBody = document.getElementById('noInvoiceTbody');
+  const noInvoiceEmpty = document.getElementById('noInvoiceEmpty');
+  if(noInvoice.length === 0){
+    noInvoiceBody.innerHTML = '';
+    noInvoiceEmpty.style.display = 'block';
+  } else {
+    noInvoiceEmpty.style.display = 'none';
+    noInvoiceBody.innerHTML = noInvoice.map(o => `
+      <tr>
+        <td class="text-sub" style="font-weight:700;color:var(--text);">${o.id}</td>
+        <td>${o.name}</td>
+        <td class="text-sub">${o.region}</td>
+        <td><span class="order-status-pill os-preparing">${o.status}</span></td>
+        <td class="text-sub">${o.method}</td>
+        <td class="text-sub">-</td>
+        <td class="text-sub">-</td>
+        <td><button class="link-edit" onclick="showToast('${o.name}님 주문에 운송장을 등록합니다')">운송장 등록</button></td>
+      </tr>
+    `).join('');
+  }
+
+  const allBody = document.getElementById('allShipTbody');
+  const allEmpty = document.getElementById('allShipEmpty');
+  if(shipOrders.length === 0){
+    allBody.innerHTML = '';
+    allEmpty.style.display = 'block';
+  } else {
+    allEmpty.style.display = 'none';
+    allBody.innerHTML = shipOrders.map(o => `
+      <tr>
+        <td class="text-sub" style="font-weight:700;color:var(--text);">${o.id}</td>
+        <td>${o.name}</td>
+        <td class="text-sub">${o.region}</td>
+        <td><span class="order-status-pill ${o.status==='배송완료'?'os-shipdone':o.status==='배송중'?'os-shipping':'os-preparing'}">${o.status}</span></td>
+        <td class="text-sub">${o.method}</td>
+        <td class="text-sub">${o.invoice || '-'}</td>
+        <td class="text-sub">${o.driver || '-'}</td>
+        <td><button class="link-edit" onclick="showToast('상세 배송 정보를 확인합니다')">상세</button></td>
+      </tr>
+    `).join('');
+  }
+}
+renderShipTables();
+
+/* ================= 배송템플릿: 상세 접기/펼치기 ================= */
+function toggleTmplDetail(){
+  document.getElementById('tmplDetailBody').classList.toggle('open');
+  document.getElementById('tmplChevron').classList.toggle('open');
+}
+
+/* ================= 템플릿 추가/수정 모달 ================= */
+function openTemplateAddModal(){
+  document.getElementById('tmplName').value = '';
+  document.getElementById('tmplLocation').value = '';
+  document.getElementById('tmplAddModal').classList.add('open');
+}
+function openTemplateDetailModal(mode){
+  document.getElementById('tmplDetailTitle').textContent = mode === 'edit' ? '배송 템플릿 수정(세부)' : '배송 템플릿 추가(세부)';
+  document.getElementById('tmplDetailSaveBtn').textContent = mode === 'edit' ? '수정' : '추가';
+  document.getElementById('tmplDetailModal').classList.add('open');
+}
+function updateShipMethodSummary(){
+  const checked = Array.from(document.querySelectorAll('.checkbox-panel input:checked')).map(el => el.value);
+  document.getElementById('shipMethodSummary').textContent = checked.length ? checked.join(', ') : '선택된 배송방법이 없습니다';
+}
+function onFeeTypeChange(){
+  const type = document.getElementById('tmplFeeType').value;
+  const block = document.getElementById('feeAmountBlock');
+  const freeCond = document.getElementById('freeCondField');
+  if(type === 'free'){ block.style.display = 'none'; }
+  else { block.style.display = 'flex'; freeCond.style.display = type === 'conditional' ? 'block' : 'none'; }
+}
+function onReturnEnableChange(){
+  const on = document.getElementById('tmplReturnEnable').checked;
+  document.getElementById('returnDetailBlock').style.display = on ? 'block' : 'none';
+}
+const defaultReturnReason = document.getElementById('returnReasonText') ? document.getElementById('returnReasonText').value : '';
+function resetReturnReason(){
+  document.getElementById('returnReasonText').value = defaultReturnReason;
+  showToast('기본값으로 되돌렸습니다');
+}
+function saveTemplateDetail(){
+  closeModal('tmplDetailModal');
+  showToast('배송 템플릿이 저장되었습니다');
+}
+
+/* ================= 취소·반품·교환 ================= */
+const claims = [
+  { id:'202607110933110', product:'체리', buyer:'정하은', reason:'단순 변심', status:'cancel_req', date:'2026-07-16' },
+  { id:'202607090011203', product:'딸기', buyer:'윤시우', reason:'상품 파손', status:'return_req', date:'2026-07-15' },
+  { id:'202607080011204', product:'바나나', buyer:'한지민', reason:'사이즈/색상 교환 희망', status:'exchange_req', date:'2026-07-14' },
+  { id:'202607070011205', product:'감귤', buyer:'오은서', reason:'배송지 오입력', status:'address_change', date:'2026-07-13' },
+  { id:'202607050011206', product:'레몬', buyer:'김민준', reason:'단순 변심', status:'cancel_done', date:'2026-07-10' },
+  { id:'202607030011207', product:'아보카도', buyer:'이서연', reason:'상품 불량', status:'return_done', date:'2026-07-08' },
+  { id:'202606290011208', product:'사과', buyer:'박도윤', reason:'옵션 변경 요청', status:'exchange_done', date:'2026-07-01' },
+];
+const claimStatusLabel = {
+  cancel_req:'취소신청', cancel_done:'취소완료', return_req:'반품신청', return_done:'반품완료',
+  exchange_req:'교환신청', exchange_done:'교환완료', address_change:'배송지변경'
+};
+const claimStatusClass = {
+  cancel_req:'os-preparing', cancel_done:'os-shipdone', return_req:'os-preparing', return_done:'os-shipdone',
+  exchange_req:'os-preparing', exchange_done:'os-shipdone', address_change:'os-shipping'
+};
+let claimStatusFilter = 'all';
+let claimKw = '';
+
+function renderClaimTable(){
+  const kw = claimKw.trim().toLowerCase();
+  let filtered = claims.filter(c => !kw || c.id.includes(kw) || c.buyer.toLowerCase().includes(kw));
+  if(claimStatusFilter !== 'all') filtered = filtered.filter(c => c.status === claimStatusFilter);
+
+  document.getElementById('claimCount').textContent = filtered.length;
+  document.getElementById('claimEmpty').style.display = filtered.length ? 'none' : 'block';
+  document.getElementById('cc-all').textContent = claims.length;
+  Object.keys(claimStatusLabel).forEach(k => {
+    document.getElementById('cc-'+k).textContent = claims.filter(c=>c.status===k).length;
+  });
+
+  document.getElementById('claimTbody').innerHTML = filtered.map(c => `
+    <tr>
+      <td style="font-weight:600;">${c.id}</td>
+      <td>${c.product}</td>
+      <td>${c.buyer}</td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${c.reason}</td>
+      <td><span class="order-status-pill ${claimStatusClass[c.status]}">${claimStatusLabel[c.status]}</span></td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${c.date}</td>
+      <td><button class="btn" style="padding:6px 12px;font-size:12px;" onclick="openClaimDetail('${c.id}','${c.status}')">상세</button></td>
+    </tr>
+  `).join('');
+}
+function filterClaimStatus(el, status){
+  document.querySelectorAll('#tab-claim .status-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  claimStatusFilter = status;
+  renderClaimTable();
+}
+function applyClaimSearch(){
+  claimKw = document.getElementById('claimSearchInput').value;
+  renderClaimTable();
+}
+function openClaimDetail(id, status){
+  const c = claims.find(x=>x.id===id && x.status===status) || claims.find(x=>x.id===id);
+  if(!c) return;
+  document.getElementById('cd_title').textContent = c.id;
+  document.getElementById('cd_statusPill').textContent = claimStatusLabel[c.status];
+  document.getElementById('cd_statusPill').className = 'order-status-pill ' + claimStatusClass[c.status];
+  document.getElementById('cd_product').textContent = c.product;
+  document.getElementById('cd_buyer').textContent = c.buyer;
+  document.getElementById('cd_reason').textContent = c.reason;
+  document.getElementById('cd_date').textContent = c.date;
+  document.getElementById('claimDetailModal').classList.add('open');
+}
+renderClaimTable();
+</script>
+</body>
+</html>

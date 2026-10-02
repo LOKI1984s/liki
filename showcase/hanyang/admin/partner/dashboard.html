@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대시보드 · 파트너센터</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===== Global Header ===== -->
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='dashboard.html'">
+      <div class="mark">P</div>
+      <div class="name">파트너센터</div>
+    </div>
+
+    <div class="gh-quick"></div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">강남플라워스튜디오님 <span class="p-tier-badge">총판</span></div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>정상 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="location.href='login.html'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll" style="padding-top:14px;">
+      <div class="p-nav-section">파트너센터</div>
+      <a class="p-nav-item active" href="dashboard.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>대시보드</span></a>
+      <a class="p-nav-item" href="members.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>회원목록</span></a>
+      <a class="p-nav-item" href="settlement.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span>정산관리</span></a>
+      <a class="p-nav-item" href="agencies.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3.5"/><path d="M2.5 21v-1.5A4.5 4.5 0 0 1 7 15h4a4.5 4.5 0 0 1 4.5 4.5V21"/><circle cx="18" cy="8" r="2.5"/><path d="M15.5 15.2A4 4 0 0 1 21.5 19v2"/></svg><span>하위 대리점</span></a>
+      <a class="p-nav-item" href="domain.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span>도메인</span></a>
+      <a class="p-nav-item" href="account.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg><span>내 정보</span></a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">대시보드</div>
+        <div class="breadcrumb">이번달 실적과 정산 현황을 한눈에 확인하세요</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="kpi-grid" style="margin-bottom:16px;">
+        <div class="kpi-card"><div class="kpi-label">이번달 매출</div><div class="kpi-value">2,840,000원</div><div class="kpi-sub up">▲ 지난달 대비 12%</div></div>
+        <div class="kpi-card"><div class="kpi-label">이번달 커미션</div><div class="kpi-value">340,800원</div><div class="kpi-sub">커미션율 12%</div></div>
+        <div class="kpi-card"><div class="kpi-label">정산 예정</div><div class="kpi-value">340,800원</div><div class="kpi-sub">7월 정산대기</div></div>
+        <div class="kpi-card"><div class="kpi-label">지급 완료 (누적)</div><div class="kpi-value">23,520원</div><div class="kpi-sub">최근 지급: 06-15</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:16px;align-items:start;">
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border);">
+            <div style="font-size:15px;font-weight:800;">최근 정산 내역</div>
+            <a style="font-size:12.5px;color:var(--accent);cursor:pointer;" onclick="location.href='settlement.html'">전체 보기 ›</a>
+          </div>
+          <div style="overflow-x:auto;">
+          <table style="table-layout:fixed;">
+            <colgroup><col style="width:28%;"><col style="width:24%;"><col style="width:24%;"><col style="width:24%;"></colgroup>
+            <thead><tr><th>정산기간</th><th>매출액</th><th>정산액</th><th>상태</th></tr></thead>
+            <tbody>
+              <tr><td>2026-07</td><td>2,840,000원</td><td style="font-weight:700;">340,800원</td><td><span class="badge badge-group-none">정산대기</span></td></tr>
+              <tr><td>2026-06</td><td>196,000원</td><td style="font-weight:700;">23,520원</td><td><span class="badge badge-grade-biz">지급완료</span></td></tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+
+        <div class="card" style="padding:20px;">
+          <div style="font-size:15px;font-weight:800;margin-bottom:14px;">하위 대리점 현황</div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;">
+            <span style="color:var(--text-sub);">하위 대리점 수</span><span style="font-weight:700;">3곳</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;">
+            <span style="color:var(--text-sub);">대리점 합산 매출</span><span style="font-weight:700;">2,320,000원</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:13px;">
+            <span style="color:var(--text-sub);">이번달 신규 대리점</span><span style="font-weight:700;">1곳</span>
+          </div>
+          <button class="btn" style="width:100%;margin-top:14px;" onclick="location.href='agencies.html'">하위 대리점 관리</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<script src="assets/js/common.js"></script>
+</body>
+</html>

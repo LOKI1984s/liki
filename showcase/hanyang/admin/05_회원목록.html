@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회원목록 · 관리자</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===== Global Header ===== -->
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='대시보드.html'">
+      <div class="mark">S</div>
+      <div class="name">ADMIN관리자</div>
+    </div>
+
+    <div class="gh-quick">
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'inquiry')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="gh-notif-label">문의</span>
+          <span class="badge-dot">3</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-inquiry">
+          <div class="gh-notif-panel-head">신규 문의 <b>3건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">배송이 너무 늦어요</div><div class="sub">김민준 · 5분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">사이즈 교환 문의</div><div class="sub">이서연 · 22분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">결제가 안돼요</div><div class="sub">박도윤 · 1시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('문의 전체보기로 이동합니다')">문의 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'order')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="gh-notif-label">주문</span>
+          <span class="badge-dot">12</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-order">
+          <div class="gh-notif-panel-head">신규 주문 <b>12건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-042 · 88,000원</div><div class="sub">최지우 · 3분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-041 · 132,000원</div><div class="sub">정하은 · 18분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-040 · 45,000원</div><div class="sub">윤시우 · 40분 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('주문 전체보기로 이동합니다')">주문 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'delivery')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17h4V5H2v12h3"/><path d="M14 9h4l3 3v5h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="gh-notif-label">배송</span>
+          <span class="badge-dot">5</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-delivery">
+          <div class="gh-notif-panel-head">배송 대기 <b>5건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-118 발송 대기</div><div class="sub">김민준 · 2시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-117 발송 대기</div><div class="sub">이서연 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-116 지연 접수</div><div class="sub">박도윤 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('배송 현황으로 이동합니다')">배송 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'comment')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+          <span class="gh-notif-label">댓글</span>
+          <span class="badge-dot">2</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-comment">
+          <div class="gh-notif-panel-head">새 댓글 <b>2건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"배송 진짜 빠르네요!"</div><div class="sub">최지우 · 30분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"재입고 언제 되나요?"</div><div class="sub">정하은 · 2시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('댓글 전체보기로 이동합니다')">댓글 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'newmember')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+          <span class="gh-notif-label">신규회원</span>
+          <span class="badge-dot">4</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-newmember">
+          <div class="gh-notif-panel-head">신규 가입 <b>4명</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">정하은</div><div class="sub">카카오 가입 · 40분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">박도윤</div><div class="sub">자체 가입 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">윤시우</div><div class="sub">네이버 가입 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('회원목록으로 이동합니다')">신규회원 전체보기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">김도현 관리자님</div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>192.168.0.1 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="showToast('로그아웃 되었습니다')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll">
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">사이트관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="01_카테고리.html"><span class="dot"></span>카테고리</a>
+          <a class="nav-item" href="02_메뉴설정.html"><span class="dot"></span>메뉴설정</a>
+          <a class="nav-item" href="03_공지사항.html"><span class="dot"></span>공지사항</a>
+          <a class="nav-item" href="04_팝업배너.html"><span class="dot"></span>팝업·배너</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="ng-text">회원관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item active" href="05_회원목록.html"><span class="dot"></span>회원목록</a>
+          <a class="nav-item" href="06_회원등급.html"><span class="dot"></span>회원등급</a>
+          <a class="nav-item" href="07_회원설정.html"><span class="dot"></span>회원설정</a>
+          <a class="nav-item" href="08_추천인설정.html"><span class="dot"></span>추천인설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="ng-text">주문관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="09_입금관리.html"><span class="dot"></span>입금관리</a>
+          <a class="nav-item" href="10_상품관리.html"><span class="dot"></span>상품관리</a>
+          <a class="nav-item" href="11_주문관리.html"><span class="dot"></span>주문관리</a>
+          <a class="nav-item" href="12_배송관리.html"><span class="dot"></span>배송관리</a>
+          <a class="nav-item" href="13_정기구독.html"><span class="dot"></span>정기구독</a>
+          <a class="nav-item" href="14_문의.html"><span class="dot"></span>문의</a>
+          <a class="nav-item" href="15_구매평.html"><span class="dot"></span>구매평</a>
+          <a class="nav-item" href="16_재입고알림.html"><span class="dot"></span>재입고알림</a>
+          <a class="nav-item" href="17_세금계산서.html"><span class="dot"></span>세금계산서</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 12l9 9 11-11-2-8-8-2Z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">프로모션</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="18_쿠폰.html"><span class="dot"></span>쿠폰</a>
+          <a class="nav-item" href="19_적립금.html"><span class="dot"></span>적립금</a>
+          <a class="nav-item" href="20_이벤트.html"><span class="dot"></span>이벤트</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14v3M12 10v7M17 6v11"/></svg>
+          <span class="ng-text">통계</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="21_개요.html"><span class="dot"></span>개요</a>
+          <a class="nav-item" href="22_매출.html"><span class="dot"></span>매출</a>
+          <a class="nav-item" href="23_기간별분석.html"><span class="dot"></span>기간별분석</a>
+          <a class="nav-item" href="24_유입통계.html"><span class="dot"></span>유입통계</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ng-text">메세지</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="25_문자발송.html"><span class="dot"></span>문자발송</a>
+          <a class="nav-item" href="26_자동메일.html"><span class="dot"></span>자동메일</a>
+          <a class="nav-item" href="27_환경설정.html"><span class="dot"></span>환경설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.2 4.2l2.8 2.8m10 10 2.8 2.8M1 12h4m14 0h4M4.2 19.8l2.8-2.8m10-10 2.8-2.8"/></svg>
+          <span class="ng-text">시스템</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="28_일반설정.html"><span class="dot"></span>일반설정</a>
+          <a class="nav-item" href="29_약관개인정보.html"><span class="dot"></span>약관·개인정보</a>
+          <a class="nav-item" href="30_도메인관리.html"><span class="dot"></span>도메인관리</a>
+          <a class="nav-item" href="31_전자결제.html"><span class="dot"></span>전자결제</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5z"/></svg>
+          <span class="ng-text">권한관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="32_관리자계정.html"><span class="dot"></span>관리자계정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+          <span class="ng-text">파트너</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="33_리셀러목록.html"><span class="dot"></span>리셀러목록</a>
+          <a class="nav-item" href="34_리셀러설정.html"><span class="dot"></span>리셀러설정</a>
+          <a class="nav-item" href="35_리셀러트리.html"><span class="dot"></span>리셀러트리</a>
+          <a class="nav-item" href="36_리셀러정산.html"><span class="dot"></span>리셀러정산</a>
+          <a class="nav-item" href="37_리셀러도메인.html"><span class="dot"></span>리셀러도메인</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== Main ===== -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">회원 목록</div>
+        <div class="breadcrumb">회원 &nbsp;/&nbsp; 회원목록</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn" onclick="openGroupListModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          그룹 목록
+        </button>
+        <button class="btn" onclick="openGroupCreateModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          그룹 추가
+        </button>
+        <button class="btn btn-primary" onclick="openAddMemberModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          회원 추가
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="card">
+
+        <!-- Tabs -->
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab(this,'all')">전체회원 <span class="count">8</span></div>
+          <div class="tab" onclick="switchTab(this,'left')">탈퇴회원 <span class="count">1</span></div>
+          <div class="tab" onclick="switchTab(this,'partner')">파트너 계정 <span class="count">7</span></div>
+        </div>
+
+        <div id="memberPanel">
+        <!-- Toolbar -->
+        <div class="toolbar">
+          <div class="search-box">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="searchInput" type="text" placeholder="이름, 아이디, 연락처로 검색" oninput="applySearch()">
+          </div>
+          <button class="btn filter-toggle" id="filterToggleBtn" onclick="toggleFilter()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+            상세 필터
+          </button>
+          <button class="btn" onclick="showToast('엑셀 파일 생성을 요청했습니다')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-4-4m4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            엑셀 다운로드
+          </button>
+        </div>
+
+        <!-- Filter Panel -->
+        <div class="filter-panel" id="filterPanel">
+          <div class="filter-field">
+            <label>가입일</label>
+            <select>
+              <option>전체 기간</option>
+              <option>오늘</option>
+              <option>최근 7일</option>
+              <option>최근 30일</option>
+              <option>기간 직접 설정</option>
+            </select>
+          </div>
+          <div class="filter-field">
+            <label>회원등급</label>
+            <select>
+              <option>전체</option>
+              <option>일반회원</option>
+              <option>VIP회원</option>
+              <option>VVIP회원</option>
+              <option>사업자회원</option>
+            </select>
+          </div>
+          <div class="filter-field">
+            <label>회원그룹</label>
+            <select>
+              <option>전체</option>
+              <option>그룹없음</option>
+              <option>운영진 그룹</option>
+              <option>단골 고객</option>
+            </select>
+          </div>
+          <div class="filter-field">
+            <label>가입경로</label>
+            <select>
+              <option>전체</option>
+              <option>자체 가입</option>
+              <option>네이버</option>
+              <option>카카오</option>
+              <option>구글</option>
+            </select>
+          </div>
+          <div class="filter-actions">
+            <button class="btn" onclick="toggleFilter()">초기화</button>
+            <button class="btn btn-primary" onclick="showToast('필터가 적용되었습니다'); toggleFilter()">필터 적용</button>
+          </div>
+        </div>
+
+        <!-- Bulk action bar -->
+        <div class="bulk-bar" id="bulkBar">
+          <span class="sel-count" id="selCount">1명 선택됨</span>
+          <button class="btn" onclick="openGradeModal()">등급 일괄변경</button>
+          <button class="btn" onclick="openGroupModal()">그룹 일괄변경</button>
+          <button class="btn btn-danger-outline" onclick="openDeleteModal()">선택 삭제</button>
+          <button class="btn btn-icon-only" onclick="clearSelection()" title="선택 해제">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </div>
+
+        <!-- Table -->
+        <div style="overflow-x:auto;">
+        <table style="table-layout:fixed;">
+          <colgroup>
+            <col style="width:38px;">
+            <col style="width:19%;">
+            <col style="width:70px;">
+            <col style="width:100px;">
+            <col style="width:82px;">
+            <col style="width:90px;">
+            <col style="width:80px;">
+            <col style="width:80px;">
+            <col style="width:76px;">
+            <col style="width:104px;">
+            <col style="width:44px;">
+          </colgroup>
+          <thead>
+            <tr>
+              <th><input type="checkbox" class="chk" id="selectAll" onclick="toggleAll(this)"></th>
+              <th>회원</th>
+              <th>구분</th>
+              <th>연락처</th>
+              <th>등급</th>
+              <th>그룹</th>
+              <th>가입일</th>
+              <th>가입경로</th>
+              <th>적립금</th>
+              <th>누적 구매금액</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="memberTbody">
+            <!-- rows injected by JS -->
+          </tbody>
+        </table>
+        </div>
+
+        <div class="empty-state" id="emptyState" style="display:none;">검색 조건에 맞는 회원이 없습니다.</div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <div class="info">전체 <b id="totalCount">8</b>명 중 1–8 표시</div>
+          <div class="page-nums">
+            <div class="page-num active">1</div>
+          </div>
+        </div>
+        </div>
+        <!-- /memberPanel -->
+
+        <!-- ===== 파트너 계정 패널 ===== -->
+        <div id="partnerPanel" style="display:none;">
+          <div class="info-note" style="margin:16px;">
+            총판·대리점 계정 목록이에요. 등급·커미션율·정산 관리는 <a style="color:var(--accent);cursor:pointer;" onclick="location.href='33_리셀러목록.html'">파트너 &gt; 리셀러목록</a>에서 합니다.
+          </div>
+          <div class="toolbar">
+            <div class="search-box">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              <input id="partnerAcctSearch" type="text" placeholder="파트너명, 아이디로 검색" oninput="renderPartnerAcctTable()">
+            </div>
+            <button class="btn" onclick="location.href='33_리셀러목록.html'">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              파트너 추가
+            </button>
+          </div>
+          <div style="overflow-x:auto;">
+          <table style="table-layout:fixed;">
+            <colgroup>
+              <col style="width:20%;"><col style="width:14%;"><col style="width:10%;"><col style="width:16%;">
+              <col style="width:10%;"><col style="width:14%;"><col style="width:10%;"><col style="width:90px;">
+            </colgroup>
+            <thead>
+              <tr><th>파트너명</th><th>아이디</th><th>등급</th><th>상위 총판</th><th>커미션율</th><th>가입일</th><th>상태</th><th></th></tr>
+            </thead>
+            <tbody id="partnerAcctTbody"></tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<!-- ===== Grade bulk modal ===== -->
+<div class="modal-overlay" id="gradeModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>회원등급 일괄변경</h3>
+      <button class="modal-close" onclick="closeModal('gradeModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p><b id="gradeTargetCount">1명</b>의 회원등급을 변경합니다.</p>
+      <div class="field">
+        <label>변경할 등급</label>
+        <select id="gradeSelect">
+          <option>일반회원</option>
+          <option>VIP회원</option>
+          <option>VVIP회원</option>
+          <option>사업자회원</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('gradeModal')">취소</button>
+      <button class="btn btn-primary" onclick="applyGrade()">변경 적용</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Group bulk modal ===== -->
+<div class="modal-overlay" id="groupModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>회원그룹 일괄변경</h3>
+      <button class="modal-close" onclick="closeModal('groupModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p><b id="groupTargetCount">1명</b>의 회원그룹을 변경합니다.</p>
+      <div class="field">
+        <label>변경할 그룹</label>
+        <select id="groupSelect">
+          <option>그룹없음</option>
+          <option>운영진 그룹</option>
+          <option>단골 고객</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('groupModal')">취소</button>
+      <button class="btn btn-primary" onclick="applyGroup()">변경 적용</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Delete confirm modal ===== -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>회원 삭제</h3>
+      <button class="modal-close" onclick="closeModal('deleteModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="warn-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        <div>
+          삭제 후에는 복구할 수 없습니다.
+          <div class="name-list" id="deleteTargetNames">홍길동</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('deleteModal')">취소</button>
+      <button class="btn" style="background:var(--danger);border-color:var(--danger);color:#fff;" onclick="confirmDelete()">삭제</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Group create modal ===== -->
+<div class="modal-overlay" id="groupListModal">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <h3>그룹 목록</h3>
+      <button class="modal-close" onclick="closeModal('groupListModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <table style="table-layout:fixed;">
+        <colgroup><col><col style="width:110px;"><col style="width:90px;"><col style="width:90px;"></colgroup>
+        <thead><tr><th>그룹명</th><th>유형</th><th>회원수</th><th></th></tr></thead>
+        <tbody id="groupListTbody"></tbody>
+      </table>
+      <div style="margin-top:14px;">
+        <button class="btn" style="width:100%;" onclick="closeModal('groupListModal');openGroupCreateModal()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" style="margin-right:4px;vertical-align:-2px;"><path d="M12 5v14M5 12h14"/></svg>
+          새 그룹 만들기
+        </button>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('groupListModal')">닫기</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="groupCreateModal">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <h3>새 그룹 만들기</h3>
+      <button class="modal-close" onclick="closeModal('groupCreateModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>그룹명 <span class="req">*</span></label>
+        <input type="text" id="ng_name" placeholder="그룹명을 입력하세요">
+      </div>
+      <div class="field">
+        <label>그룹 유형 선택</label>
+        <select id="ng_type" onchange="onGroupTypeChange()">
+          <option value="general">일반 회원 그룹</option>
+          <option value="admin">운영진 그룹</option>
+        </select>
+      </div>
+
+      <!-- 일반 회원 그룹: 배송비 혜택 -->
+      <div id="ng_generalBlock">
+        <div class="field">
+          <label>배송비 혜택</label>
+          <select id="ng_shipping">
+            <option>없음</option>
+            <option>기본배송비 무료</option>
+            <option>기본배송비 + 도서산간배송비 무료</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 운영진 그룹: 권한설정 -->
+      <div id="ng_adminBlock" style="display:none;">
+        <div class="info-note" id="ng_urlNote">
+          운영진 그룹으로 설정된 사용자는 <b>https://myshop.imweb.me/admin</b> 주소를 브라우저에 직접 입력하여 관리자 페이지에 접근할 수 있습니다.
+        </div>
+
+        <div class="toggle-row">
+          <span class="lbl">주요 시스템 알림 수신</span>
+          <label class="switch"><input type="checkbox" id="ng_sysAlert"><span class="track"></span></label>
+        </div>
+        <div class="toggle-row">
+          <span class="lbl">개인정보 접근 권한 (조회, 검색)</span>
+          <label class="switch"><input type="checkbox" id="ng_privacy"><span class="track"></span></label>
+        </div>
+
+        <div class="divider-line"></div>
+        <div style="font-size:12.5px;font-weight:700;color:var(--text-sub);margin-bottom:2px;">메뉴별 권한설정</div>
+        <table class="perm-table">
+          <thead><tr><th>항목</th><th class="c">조회 권한</th><th class="c">편집 권한</th></tr></thead>
+          <tbody>
+            <tr><td>고객</td><td class="c"><input type="checkbox"></td><td class="c"><input type="checkbox"></td></tr>
+            <tr><td>쇼핑</td><td class="c"><input type="checkbox"></td><td class="c"><input type="checkbox"></td></tr>
+            <tr><td>콘텐츠</td><td class="c"><input type="checkbox"></td><td class="c"><input type="checkbox"></td></tr>
+            <tr><td>통계</td><td class="c"><input type="checkbox"></td><td class="c"><input type="checkbox"></td></tr>
+            <tr><td>결제</td><td class="c"><input type="checkbox"></td><td class="c"><input type="checkbox"></td></tr>
+            <tr><td>설정</td><td class="c"><input type="checkbox"></td><td class="c"><input type="checkbox"></td></tr>
+            <tr><td>고객 가이드</td><td class="c"><input type="checkbox"></td><td class="c"><input type="checkbox"></td></tr>
+          </tbody>
+        </table>
+
+        <div class="divider-line"></div>
+        <div style="font-size:12.5px;font-weight:700;color:var(--text-sub);margin-bottom:6px;">세부 설정</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <label class="radio-opt"><input type="checkbox">쇼핑 주문서 출력 권한</label>
+          <label class="radio-opt"><input type="checkbox">사용자 목록 엑셀 다운로드 권한</label>
+          <label class="radio-opt"><input type="checkbox">쇼핑 엑셀 다운로드 권한</label>
+          <label class="radio-opt"><input type="checkbox">예약 엑셀 다운로드 권한</label>
+          <label class="radio-opt"><input type="checkbox">예약 주문서 출력 권한</label>
+          <label class="radio-opt"><input type="checkbox">컨텐츠 엑셀 다운로드 권한</label>
+          <label class="radio-opt"><input type="checkbox">통계 엑셀 다운로드 권한</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('groupCreateModal')">취소</button>
+      <button class="btn btn-primary" onclick="createGroup()">그룹 만들기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Member add modal ===== -->
+<div class="modal-overlay" id="memberAddModal">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <h3>회원 추가</h3>
+      <button class="modal-close" onclick="closeModal('memberAddModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>회원 유형</label>
+        <select id="na_grade" onchange="onMemberTypeChange()">
+          <option>일반회원</option><option>VIP회원</option><option>VVIP회원</option><option value="사업자회원">사업자회원</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>계정(이메일) <span class="req">(필수)</span></label>
+        <input type="email" id="na_account" placeholder="asdfasdf@gmail.com">
+      </div>
+      <div class="field">
+        <label>비밀번호 <span class="req">(필수)</span></label>
+        <input type="password" id="na_password" placeholder="영문+숫자 조합 6자리 이상">
+        <div style="font-size:11.5px;color:var(--text-faint);margin-top:5px;">영문, 숫자를 포함해 6자리 이상 입력해주세요.</div>
+      </div>
+      <div class="field">
+        <label>비밀번호 확인 <span class="req">(필수)</span></label>
+        <input type="password" id="na_password2" placeholder="비밀번호 다시 입력">
+        <div style="font-size:11.5px;color:var(--danger);margin-top:5px;display:none;" id="na_pwMismatch">비밀번호가 일치하지 않습니다.</div>
+      </div>
+      <div class="field">
+        <label>이름 <span class="req">(필수)</span></label>
+        <input type="text" id="na_name" placeholder="이름">
+      </div>
+      <div class="field">
+        <label>연락처</label>
+        <input type="text" id="na_phone" placeholder="010-0000-0000" maxlength="13" oninput="formatPhone(this)">
+      </div>
+
+      <!-- 사업자회원 전용: 사업자 정보 -->
+      <div id="na_bizBlock" style="display:none;">
+        <div class="divider-line"></div>
+        <div style="font-size:12.5px;font-weight:700;color:var(--text-sub);margin-bottom:10px;">사업자 정보</div>
+        <div class="field">
+          <label>상호명(회사명) <span class="req">(필수)</span></label>
+          <input type="text" id="na_bizName" placeholder="상호명을 입력하세요">
+        </div>
+        <div class="field">
+          <label>대표자명 <span class="req">(필수)</span></label>
+          <input type="text" id="na_bizOwner" placeholder="대표자 성명">
+        </div>
+        <div class="field">
+          <label>사업자등록번호 <span class="req">(필수)</span></label>
+          <input type="text" id="na_bizRegNo" placeholder="000-00-00000" maxlength="12" oninput="formatBizRegNo(this)">
+        </div>
+        <div class="field">
+          <label>업태</label>
+          <input type="text" id="na_bizType" placeholder="예: 도소매">
+        </div>
+        <div class="field">
+          <label>종목</label>
+          <input type="text" id="na_bizItem" placeholder="예: 의류">
+        </div>
+        <div class="field">
+          <label>사업장 소재지</label>
+          <input type="text" id="na_bizAddress" placeholder="사업장 주소를 입력하세요">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>소셜 로그인</label>
+        <div style="font-size:13px;color:var(--text-faint);padding-top:2px;">연결된 소셜 로그인이 없습니다.</div>
+      </div>
+      <div class="field">
+        <label>카카오 채널 친구 여부</label>
+        <div style="font-size:13px;color:var(--text-faint);padding-top:2px;">미확인</div>
+      </div>
+
+      <div class="divider-line"></div>
+      <div style="font-size:12.5px;font-weight:700;color:var(--text-sub);margin-bottom:8px;">동의 정보</div>
+      <label class="radio-opt"><input type="checkbox" id="na_agree14">만 14세 이상 동의</label>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('memberAddModal')">취소</button>
+      <button class="btn btn-primary" onclick="createMember()">추가</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Member detail slide-over ===== -->
+<div class="overlay-dim" id="soOverlay" onclick="closeSlideover()"></div>
+<div class="slideover view-mode" id="slideover">
+  <div class="so-head">
+    <div class="so-head-left">
+      <button class="so-back" onclick="closeSlideover()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <div class="so-title" id="soTitle">회원 상세</div>
+    </div>
+    <button class="modal-close" onclick="closeSlideover()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
+
+  <div class="so-body">
+    <div class="so-profile">
+      <div>
+        <div style="font-size:16px;font-weight:800;" id="soName">홍길동</div>
+        <div style="font-size:12.5px;color:var(--text-faint);margin-top:2px;" id="soEmail">hong@example.com</div>
+      </div>
+    </div>
+
+    <div class="so-section">
+      <div class="so-section-title">기본 정보</div>
+      <div class="grid2">
+        <div class="field-view">
+          <label>회원 유형</label>
+          <div class="val view-only" id="v_grade">일반회원</div>
+          <select class="edit-only" id="e_grade">
+            <option>일반회원</option><option>VIP회원</option><option>VVIP회원</option><option>사업자회원</option>
+          </select>
+        </div>
+        <div class="field-view">
+          <label>회원 그룹</label>
+          <div class="val view-only" id="v_group">그룹없음</div>
+          <select class="edit-only" id="e_group">
+            <option>그룹없음</option><option>운영진 그룹</option><option>단골 고객</option>
+          </select>
+        </div>
+        <div class="field-view">
+          <label>계정(아이디)</label>
+          <div class="val view-only" id="v_account">hong@example.com</div>
+          <input class="edit-only" id="e_account" value="hong@example.com">
+        </div>
+        <div class="field-view">
+          <label>이름</label>
+          <div class="val view-only" id="v_name">홍길동</div>
+          <input class="edit-only" id="e_name" value="홍길동">
+        </div>
+        <div class="field-view">
+          <label>연락처</label>
+          <div class="val view-only" id="v_phone">010-1234-5678</div>
+          <input class="edit-only" id="e_phone" value="010-1234-5678">
+        </div>
+        <div class="field-view">
+          <label>성별</label>
+          <div class="val view-only" id="v_gender">여자</div>
+          <select class="edit-only" id="e_gender"><option>선택안함</option><option>남자</option><option>여자</option></select>
+        </div>
+        <div class="field-view">
+          <label>가입경로</label>
+          <div class="val view-only" id="v_route">자체 가입</div>
+          <select class="edit-only" id="e_route"><option>자체 가입</option><option>네이버</option><option>카카오</option><option>구글</option></select>
+        </div>
+        <div class="field-view">
+          <label>가입일</label>
+          <div class="val view-only" id="v_joined">2026-07-01</div>
+          <div class="val edit-only" style="padding-top:9px;color:var(--text-faint);">2026-07-01 (수정불가)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="so-section">
+      <div class="so-section-title">구매 · 활동</div>
+      <div class="grid2">
+        <div class="field-view"><label>적립금</label><div class="val">12,000원</div></div>
+        <div class="field-view"><label>누적 구매금액</label><div class="val">348,000원</div></div>
+        <div class="field-view"><label>글/댓글/구매평/문의</label><div class="val">3 / 5 / 2 / 1</div></div>
+        <div class="field-view"><label>최근 접속일</label><div class="val">2026-07-15</div></div>
+      </div>
+    </div>
+
+    <div class="so-section">
+      <div class="so-section-title">메모</div>
+      <div class="memo-box">
+        <textarea placeholder="이 회원에 대한 메모를 남겨보세요">단골 고객. 재구매 문의 많음.</textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="so-foot">
+    <button class="btn btn-danger-outline view-only" onclick="soAskDeleteSingle()">회원 삭제</button>
+    <div style="display:flex;gap:8px;">
+      <button class="btn view-only" onclick="enterEditMode()">정보 수정</button>
+      <button class="btn edit-only" onclick="cancelEditMode()">취소</button>
+      <button class="btn btn-primary edit-only" onclick="saveEditMode()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">저장되었습니다</span>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+/* ================= Sample Data ================= */
+const members = [
+  {id:1, name:'홍길동', email:'hong@example.com', phone:'010-1234-5678', grade:'일반회원', group:'그룹없음', joined:'2026-07-01', point:'12,000', amount:'348,000', gender:'여자', route:'자체 가입', owner:false, partnerType:null},
+  {id:2, name:'김민준', email:'minjun.kim@example.com', phone:'010-2222-3333', grade:'VIP회원', group:'단골 고객', joined:'2026-06-24', point:'54,000', amount:'1,204,000', gender:'남자', route:'카카오', owner:false, partnerType:'distributor'},
+  {id:3, name:'관리자', email:'admin@example.com', phone:'010-0000-0000', grade:'일반회원', group:'그룹없음', joined:'2026-07-15', point:'0', amount:'0', gender:'선택안함', route:'자체 가입', owner:true, partnerType:null},
+  {id:4, name:'이서연', email:'seoyeon.lee@example.com', phone:'010-4444-5555', grade:'VVIP회원', group:'운영진 그룹', joined:'2026-05-11', point:'128,000', amount:'3,552,000', gender:'여자', route:'네이버', owner:false, partnerType:'distributor'},
+  {id:5, name:'박도윤', email:'doyoon.park@example.com', phone:'010-6666-7777', grade:'일반회원', group:'그룹없음', joined:'2026-07-10', point:'0', amount:'42,000', gender:'남자', route:'구글', owner:false, partnerType:'agency'},
+  {id:6, name:'최지우', email:'jiwoo.choi@example.com', phone:'010-8888-9999', grade:'VIP회원', group:'단골 고객', joined:'2026-04-02', point:'31,500', amount:'980,000', gender:'여자', route:'자체 가입', owner:false, partnerType:'agency'},
+  {id:7, name:'정하은', email:'haeun.jung@example.com', phone:'010-1111-2222', grade:'일반회원', group:'그룹없음', joined:'2026-07-13', point:'2,000', amount:'19,000', gender:'여자', route:'카카오', owner:false, partnerType:'agency'},
+  {id:8, name:'윤시우', email:'siwoo.yoon@example.com', phone:'010-3333-4444', grade:'일반회원', group:'그룹없음', joined:'2026-06-30', point:'0', amount:'0', gender:'남자', route:'네이버', owner:false, partnerType:null},
+];
+
+let selected = new Set();
+const gradeBadgeClass = {'일반회원':'badge-grade-general','VIP회원':'badge-grade-vip','VVIP회원':'badge-grade-vvip','사업자회원':'badge-grade-biz'};
+const partnerTypeLabel = { distributor:'총판', agency:'대리점' };
+const partnerTypeClass = { distributor:'badge-owner', agency:'badge-grade-general' };
+
+function renderTable(){
+  const tbody = document.getElementById('memberTbody');
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const filtered = members.filter(m => !q || m.name.toLowerCase().includes(q) || m.email.toLowerCase().includes(q) || m.phone.includes(q));
+
+  document.getElementById('emptyState').style.display = filtered.length ? 'none' : 'block';
+  document.getElementById('totalCount').textContent = members.length;
+
+  tbody.innerHTML = filtered.map(m => `
+    <tr id="row-${m.id}" class="${selected.has(m.id) ? 'selected':''}">
+      <td><input type="checkbox" class="chk" data-id="${m.id}" ${selected.has(m.id)?'checked':''} onclick="toggleOne(${m.id})"></td>
+      <td>
+        <div class="member-cell">
+          <div style="min-width:0;overflow:hidden;">
+            <div class="member-name" onclick="openDetail(${m.id})" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.name} ${m.owner? '<span class="badge badge-owner">소유자</span>':''}</div>
+            <div class="member-email" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.email}</div>
+          </div>
+        </div>
+      </td>
+      <td>${m.partnerType ? `<span class="badge ${partnerTypeClass[m.partnerType]}">${partnerTypeLabel[m.partnerType]}</span>` : '<span style="color:var(--text-faint);font-size:12px;">-</span>'}</td>
+      <td class="text-sub" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.phone}</td>
+      <td><span class="badge ${gradeBadgeClass[m.grade]}">${m.grade}</span></td>
+      <td style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.group === '그룹없음' ? `<span class="badge badge-group-none">그룹없음</span>` : m.group}</td>
+      <td class="text-sub">${m.joined}</td>
+      <td class="text-sub">${m.route || '표시 없음'}</td>
+      <td class="text-sub">${m.point}원</td>
+      <td class="text-sub">${m.amount}원</td>
+      <td>
+        <div class="dropdown">
+          <button class="row-menu-btn" onclick="toggleRowMenu(event, ${m.id})">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+          </button>
+          <div class="dropdown-menu" id="menu-${m.id}">
+            <button onclick="openDetail(${m.id})">상세보기</button>
+            <button onclick="closeAllMenus(); openGradeModal([${m.id}])">등급 변경</button>
+            <button onclick="closeAllMenus(); openGroupModal([${m.id}])">그룹 변경</button>
+            <div class="sep"></div>
+            <button class="danger" onclick="closeAllMenus(); openDeleteModal([${m.id}])">삭제</button>
+          </div>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+  syncBulkBar();
+}
+
+/* ===== selection ===== */
+function toggleOne(id){
+  if(selected.has(id)) selected.delete(id); else selected.add(id);
+  renderTable();
+}
+function toggleAll(cb){
+  if(cb.checked){ members.forEach(m=>selected.add(m.id)); } else { selected.clear(); }
+  renderTable();
+}
+function clearSelection(){ selected.clear(); renderTable(); }
+function syncBulkBar(){
+  const bar = document.getElementById('bulkBar');
+  const n = selected.size;
+  document.getElementById('selCount').textContent = `${n}명 선택됨`;
+  bar.classList.toggle('show', n>0);
+  document.getElementById('selectAll').checked = n>0 && n===members.length;
+}
+
+/* ===== row dropdown ===== */
+/* ===== search / filter ===== */
+function applySearch(){ renderTable(); }
+function toggleFilter(){
+  const p = document.getElementById('filterPanel');
+  const btn = document.getElementById('filterToggleBtn');
+  p.classList.toggle('open');
+  btn.classList.toggle('is-open');
+}
+
+/* ===== tabs ===== */
+function switchTab(el, type){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('memberPanel').style.display = type==='partner' ? 'none' : 'block';
+  document.getElementById('partnerPanel').style.display = type==='partner' ? 'block' : 'none';
+  if(type==='partner'){ renderPartnerAcctTable(); return; }
+  if(type==='left'){
+    document.getElementById('memberTbody').innerHTML = '';
+    document.getElementById('emptyState').style.display='block';
+    document.getElementById('emptyState').textContent = '탈퇴한 회원 1명';
+  } else {
+    document.getElementById('emptyState').textContent = '검색 조건에 맞는 회원이 없습니다.';
+    renderTable();
+  }
+}
+
+/* ================= 파트너 계정 (총판·대리점) ================= */
+const partnerAcctTierLabel = { distributor:'총판', agency:'대리점' };
+const partnerAcctTierClass = { distributor:'badge-owner', agency:'badge-grade-general' };
+const partnerAcctStatusLabel = { active:'거래중', pending:'승인대기', suspended:'정지' };
+const partnerAcctStatusClass = { active:'badge-grade-biz', pending:'badge-group-none', suspended:'badge-owner' };
+const partnerAccounts = [
+  { name:'강남플라워스튜디오', loginId:'gangnam_p', tier:'distributor', parent:'-', commission:12, joinDate:'2026-04-02', status:'active' },
+  { name:'해운대꽃마당', loginId:'busan_p', tier:'distributor', parent:'-', commission:10, joinDate:'2026-04-10', status:'active' },
+  { name:'수원블룸', loginId:'suwon_a', tier:'agency', parent:'강남플라워스튜디오', commission:8, joinDate:'2026-05-08', status:'active' },
+  { name:'분당플로리스트', loginId:'bundang_a', tier:'agency', parent:'강남플라워스튜디오', commission:7, joinDate:'2026-05-20', status:'active' },
+  { name:'광안리플라워', loginId:'gwangan_a', tier:'agency', parent:'해운대꽃마당', commission:6, joinDate:'2026-06-01', status:'active' },
+  { name:'서면꽃집', loginId:'seomyeon_a', tier:'agency', parent:'해운대꽃마당', commission:6, joinDate:'2026-06-14', status:'suspended' },
+  { name:'일산플라워', loginId:'ilsan_a', tier:'agency', parent:'강남플라워스튜디오', commission:7, joinDate:'2026-07-15', status:'pending' },
+];
+function renderPartnerAcctTable(){
+  const kw = document.getElementById('partnerAcctSearch').value.trim().toLowerCase();
+  const filtered = partnerAccounts.filter(p => !kw || p.name.toLowerCase().includes(kw) || p.loginId.toLowerCase().includes(kw));
+  document.getElementById('partnerAcctTbody').innerHTML = filtered.map(p => `
+    <tr>
+      <td style="font-weight:600;cursor:pointer;color:var(--accent);" onclick="location.href='33_리셀러목록.html'">${p.name}</td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${p.loginId}</td>
+      <td><span class="badge ${partnerAcctTierClass[p.tier]}">${partnerAcctTierLabel[p.tier]}</span></td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${p.parent}</td>
+      <td style="font-weight:700;">${p.commission}%</td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${p.joinDate}</td>
+      <td><span class="badge ${partnerAcctStatusClass[p.status]}">${partnerAcctStatusLabel[p.status]}</span></td>
+      <td><button class="btn" style="padding:6px 12px;font-size:12px;" onclick="location.href='33_리셀러목록.html'">상세</button></td>
+    </tr>
+  `).join('');
+}
+
+/* ===== modals ===== */
+let bulkTarget = [];
+function openGradeModal(ids){
+  bulkTarget = ids || Array.from(selected);
+  document.getElementById('gradeTargetCount').textContent = bulkTarget.length+'명';
+  document.getElementById('gradeModal').classList.add('open');
+}
+function openGroupModal(ids){
+  bulkTarget = ids || Array.from(selected);
+  document.getElementById('groupTargetCount').textContent = bulkTarget.length+'명';
+  document.getElementById('groupModal').classList.add('open');
+}
+function openDeleteModal(ids){
+  bulkTarget = ids || Array.from(selected);
+  const names = members.filter(m=>bulkTarget.includes(m.id)).map(m=>m.name).join(', ');
+  document.getElementById('deleteTargetNames').textContent = names;
+  document.getElementById('deleteModal').classList.add('open');
+}
+function applyGrade(){
+  const val = document.getElementById('gradeSelect').value;
+  members.forEach(m=>{ if(bulkTarget.includes(m.id)) m.grade = val; });
+  closeModal('gradeModal');
+  renderTable();
+  showToast(`${bulkTarget.length}명의 등급이 '${val}'(으)로 변경되었습니다`);
+}
+function applyGroup(){
+  const val = document.getElementById('groupSelect').value;
+  members.forEach(m=>{ if(bulkTarget.includes(m.id)) m.group = val; });
+  closeModal('groupModal');
+  renderTable();
+  showToast(`${bulkTarget.length}명의 그룹이 '${val}'(으)로 변경되었습니다`);
+}
+function confirmDelete(){
+  const idx = bulkTarget;
+  for(let i=members.length-1;i>=0;i--){ if(idx.includes(members[i].id)){ selected.delete(members[i].id); members.splice(i,1); } }
+  closeModal('deleteModal');
+  renderTable();
+  showToast('선택한 회원이 삭제되었습니다');
+}
+
+/* ===== slide-over detail ===== */
+let currentMemberId = null;
+function openDetail(id){
+  const m = members.find(x=>x.id===id);
+  if(!m) return;
+  currentMemberId = id;
+  document.getElementById('soTitle').textContent = '회원 상세';
+  document.getElementById('soName').textContent = m.name;
+  document.getElementById('soEmail').textContent = m.email;
+  document.getElementById('v_grade').textContent = m.grade;
+  document.getElementById('v_group').textContent = m.group;
+  document.getElementById('v_account').textContent = m.email;
+  document.getElementById('v_name').textContent = m.name;
+  document.getElementById('v_phone').textContent = m.phone;
+  document.getElementById('v_gender').textContent = m.gender;
+  document.getElementById('v_route').textContent = m.route;
+  document.getElementById('v_joined').textContent = m.joined;
+
+  document.getElementById('e_grade').value = m.grade;
+  document.getElementById('e_group').value = m.group;
+  document.getElementById('e_account').value = m.email;
+  document.getElementById('e_name').value = m.name;
+  document.getElementById('e_phone').value = m.phone;
+  document.getElementById('e_gender').value = m.gender;
+  document.getElementById('e_route').value = m.route;
+
+  document.getElementById('slideover').classList.remove('edit-mode');
+  document.getElementById('slideover').classList.add('view-mode');
+  document.getElementById('slideover').classList.add('open');
+  document.getElementById('soOverlay').classList.add('open');
+}
+function closeSlideover(){
+  document.getElementById('slideover').classList.remove('open');
+  document.getElementById('soOverlay').classList.remove('open');
+}
+function enterEditMode(){
+  document.getElementById('slideover').classList.remove('view-mode');
+  document.getElementById('slideover').classList.add('edit-mode');
+}
+function cancelEditMode(){
+  document.getElementById('slideover').classList.remove('edit-mode');
+  document.getElementById('slideover').classList.add('view-mode');
+}
+function saveEditMode(){
+  const m = members.find(x=>x.id===currentMemberId);
+  if(!m) return;
+  m.grade = document.getElementById('e_grade').value;
+  m.group = document.getElementById('e_group').value;
+  m.email = document.getElementById('e_account').value;
+  m.name = document.getElementById('e_name').value;
+  m.phone = document.getElementById('e_phone').value;
+  m.gender = document.getElementById('e_gender').value;
+  m.route = document.getElementById('e_route').value;
+
+  document.getElementById('slideover').classList.remove('edit-mode');
+  document.getElementById('slideover').classList.add('view-mode');
+  openDetail(m.id);
+  renderTable();
+  showToast('회원 정보가 저장되었습니다');
+}
+function soAskDeleteSingle(){
+  closeSlideover();
+  openDeleteModal([currentMemberId]);
+}
+
+/* ===== group create modal ===== */
+let memberGroups = [
+  { name:'단골 고객', type:'general' },
+  { name:'운영진 그룹', type:'admin' },
+];
+
+function openGroupListModal(){
+  renderGroupList();
+  document.getElementById('groupListModal').classList.add('open');
+}
+function renderGroupList(){
+  document.getElementById('groupListTbody').innerHTML = memberGroups.map(g => {
+    const count = members.filter(m => m.group === g.name).length;
+    return `
+    <tr>
+      <td style="font-weight:600;">${g.name}</td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${g.type === 'admin' ? '운영진' : '일반회원'}</td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${count}명</td>
+      <td><button class="btn btn-danger-outline" style="padding:5px 10px;font-size:12px;" onclick="deleteGroup('${g.name}')">삭제</button></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--text-faint);padding:20px 0;">등록된 그룹이 없어요</td></tr>';
+}
+function deleteGroup(name){
+  memberGroups = memberGroups.filter(g => g.name !== name);
+  members.forEach(m => { if(m.group === name) m.group = '그룹없음'; });
+  renderGroupList();
+  renderTable();
+  showToast('그룹이 삭제되었습니다');
+}
+function openGroupCreateModal(){
+  document.getElementById('ng_name').value = '';
+  document.getElementById('ng_type').value = 'general';
+  onGroupTypeChange();
+  document.getElementById('groupCreateModal').classList.add('open');
+}
+function onGroupTypeChange(){
+  const type = document.getElementById('ng_type').value;
+  document.getElementById('ng_generalBlock').style.display = type==='general' ? 'block' : 'none';
+  document.getElementById('ng_adminBlock').style.display = type==='admin' ? 'block' : 'none';
+}
+function createGroup(){
+  const name = document.getElementById('ng_name').value.trim();
+  if(!name){ showToast('그룹명을 입력해주세요'); return; }
+  const type = document.getElementById('ng_type').value;
+  memberGroups.push({ name, type });
+  closeModal('groupCreateModal');
+  showToast(`'${name}' 그룹이 생성되었습니다`);
+}
+
+/* ===== member add modal ===== */
+function formatBizRegNo(el){
+  let v = el.value.replace(/[^0-9]/g,'').slice(0,10);
+  if(v.length > 3 && v.length <= 5){
+    v = v.slice(0,3) + '-' + v.slice(3);
+  } else if(v.length > 5){
+    v = v.slice(0,3) + '-' + v.slice(3,5) + '-' + v.slice(5);
+  }
+  el.value = v;
+}
+function onMemberTypeChange(){
+  const isBiz = document.getElementById('na_grade').value === '사업자회원';
+  document.getElementById('na_bizBlock').style.display = isBiz ? 'block' : 'none';
+}
+function openAddMemberModal(){
+  ['na_account','na_password','na_password2','na_name','na_phone','na_bizName','na_bizOwner','na_bizRegNo','na_bizType','na_bizItem','na_bizAddress'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('na_agree14').checked = false;
+  document.getElementById('na_pwMismatch').style.display = 'none';
+  document.getElementById('na_grade').value = '일반회원';
+  document.getElementById('na_bizBlock').style.display = 'none';
+  document.getElementById('memberAddModal').classList.add('open');
+}
+function createMember(){
+  const name = document.getElementById('na_name').value.trim();
+  const account = document.getElementById('na_account').value.trim();
+  const password = document.getElementById('na_password').value;
+  const password2 = document.getElementById('na_password2').value;
+  const grade = document.getElementById('na_grade').value;
+  const isBiz = grade === '사업자회원';
+
+  if(!account || !password || !password2 || !name){ showToast('필수 항목을 모두 입력해주세요'); return; }
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!emailPattern.test(account)){ showToast('이메일 형식이 올바르지 않습니다'); return; }
+
+  const pwPattern = /^(?=.*[A-Za-z])(?=.*[0-9]).{6,}$/;
+  if(!pwPattern.test(password)){ showToast('비밀번호는 영문+숫자 조합 6자리 이상이어야 합니다'); return; }
+
+  if(password !== password2){
+    document.getElementById('na_pwMismatch').style.display = 'block';
+    showToast('비밀번호가 일치하지 않습니다');
+    return;
+  }
+  document.getElementById('na_pwMismatch').style.display = 'none';
+
+  if(isBiz){
+    const bizName = document.getElementById('na_bizName').value.trim();
+    const bizOwner = document.getElementById('na_bizOwner').value.trim();
+    const bizRegNo = document.getElementById('na_bizRegNo').value.trim();
+    if(!bizName || !bizOwner || !bizRegNo){ showToast('사업자 정보 필수 항목을 입력해주세요'); return; }
+  }
+
+  const newMember = {
+    id: Math.max(...members.map(m=>m.id)) + 1,
+    name, email: account,
+    phone: document.getElementById('na_phone').value.trim() || '-',
+    grade: grade,
+    group: '그룹없음',
+    joined: new Date().toISOString().slice(0,10),
+    point:'0', amount:'0',
+    gender:'선택안함',
+    route:'자체 가입', owner:false
+  };
+  members.unshift(newMember);
+  closeModal('memberAddModal');
+  renderTable();
+  showToast(`${name} 회원이 추가되었습니다`);
+}
+
+/* ===== toast ===== */
+renderTable();
+</script>
+</body>
+</html>

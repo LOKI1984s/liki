@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메뉴설정 · 관리자</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===== Global Header ===== -->
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='대시보드.html'">
+      <div class="mark">S</div>
+      <div class="name">ADMIN관리자</div>
+    </div>
+
+    <div class="gh-quick">
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'inquiry')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="gh-notif-label">문의</span>
+          <span class="badge-dot">3</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-inquiry">
+          <div class="gh-notif-panel-head">신규 문의 <b>3건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">배송이 너무 늦어요</div><div class="sub">김민준 · 5분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">사이즈 교환 문의</div><div class="sub">이서연 · 22분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">결제가 안돼요</div><div class="sub">박도윤 · 1시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('문의 전체보기로 이동합니다')">문의 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'order')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="gh-notif-label">주문</span>
+          <span class="badge-dot">12</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-order">
+          <div class="gh-notif-panel-head">신규 주문 <b>12건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-042 · 88,000원</div><div class="sub">최지우 · 3분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-041 · 132,000원</div><div class="sub">정하은 · 18분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-040 · 45,000원</div><div class="sub">윤시우 · 40분 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('주문 전체보기로 이동합니다')">주문 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'delivery')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17h4V5H2v12h3"/><path d="M14 9h4l3 3v5h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="gh-notif-label">배송</span>
+          <span class="badge-dot">5</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-delivery">
+          <div class="gh-notif-panel-head">배송 대기 <b>5건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-118 발송 대기</div><div class="sub">김민준 · 2시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-117 발송 대기</div><div class="sub">이서연 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-116 지연 접수</div><div class="sub">박도윤 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('배송 현황으로 이동합니다')">배송 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'comment')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+          <span class="gh-notif-label">댓글</span>
+          <span class="badge-dot">2</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-comment">
+          <div class="gh-notif-panel-head">새 댓글 <b>2건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"배송 진짜 빠르네요!"</div><div class="sub">최지우 · 30분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"재입고 언제 되나요?"</div><div class="sub">정하은 · 2시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('댓글 전체보기로 이동합니다')">댓글 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'newmember')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+          <span class="gh-notif-label">신규회원</span>
+          <span class="badge-dot">4</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-newmember">
+          <div class="gh-notif-panel-head">신규 가입 <b>4명</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">정하은</div><div class="sub">카카오 가입 · 40분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">박도윤</div><div class="sub">자체 가입 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">윤시우</div><div class="sub">네이버 가입 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('회원목록으로 이동합니다')">신규회원 전체보기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">김도현 관리자님</div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>192.168.0.1 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="showToast('로그아웃 되었습니다')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll">
+      <div class="nav-group">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">사이트관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="01_카테고리.html"><span class="dot"></span>카테고리</a>
+          <a class="nav-item active" href="02_메뉴설정.html"><span class="dot"></span>메뉴설정</a>
+          <a class="nav-item" href="03_공지사항.html"><span class="dot"></span>공지사항</a>
+          <a class="nav-item" href="04_팝업배너.html"><span class="dot"></span>팝업·배너</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="ng-text">회원관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="05_회원목록.html"><span class="dot"></span>회원목록</a>
+          <a class="nav-item" href="06_회원등급.html"><span class="dot"></span>회원등급</a>
+          <a class="nav-item" href="07_회원설정.html"><span class="dot"></span>회원설정</a>
+          <a class="nav-item" href="08_추천인설정.html"><span class="dot"></span>추천인설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="ng-text">주문관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="09_입금관리.html"><span class="dot"></span>입금관리</a>
+          <a class="nav-item" href="10_상품관리.html"><span class="dot"></span>상품관리</a>
+          <a class="nav-item" href="11_주문관리.html"><span class="dot"></span>주문관리</a>
+          <a class="nav-item" href="12_배송관리.html"><span class="dot"></span>배송관리</a>
+          <a class="nav-item" href="13_정기구독.html"><span class="dot"></span>정기구독</a>
+          <a class="nav-item" href="14_문의.html"><span class="dot"></span>문의</a>
+          <a class="nav-item" href="15_구매평.html"><span class="dot"></span>구매평</a>
+          <a class="nav-item" href="16_재입고알림.html"><span class="dot"></span>재입고알림</a>
+          <a class="nav-item" href="17_세금계산서.html"><span class="dot"></span>세금계산서</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 12l9 9 11-11-2-8-8-2Z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">프로모션</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="18_쿠폰.html"><span class="dot"></span>쿠폰</a>
+          <a class="nav-item" href="19_적립금.html"><span class="dot"></span>적립금</a>
+          <a class="nav-item" href="20_이벤트.html"><span class="dot"></span>이벤트</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14v3M12 10v7M17 6v11"/></svg>
+          <span class="ng-text">통계</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="21_개요.html"><span class="dot"></span>개요</a>
+          <a class="nav-item" href="22_매출.html"><span class="dot"></span>매출</a>
+          <a class="nav-item" href="23_기간별분석.html"><span class="dot"></span>기간별분석</a>
+          <a class="nav-item" href="24_유입통계.html"><span class="dot"></span>유입통계</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ng-text">메세지</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="25_문자발송.html"><span class="dot"></span>문자발송</a>
+          <a class="nav-item" href="26_자동메일.html"><span class="dot"></span>자동메일</a>
+          <a class="nav-item" href="27_환경설정.html"><span class="dot"></span>환경설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.2 4.2l2.8 2.8m10 10 2.8 2.8M1 12h4m14 0h4M4.2 19.8l2.8-2.8m10-10 2.8-2.8"/></svg>
+          <span class="ng-text">시스템</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="28_일반설정.html"><span class="dot"></span>일반설정</a>
+          <a class="nav-item" href="29_약관개인정보.html"><span class="dot"></span>약관·개인정보</a>
+          <a class="nav-item" href="30_도메인관리.html"><span class="dot"></span>도메인관리</a>
+          <a class="nav-item" href="31_전자결제.html"><span class="dot"></span>전자결제</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5z"/></svg>
+          <span class="ng-text">권한관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="32_관리자계정.html"><span class="dot"></span>관리자계정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+          <span class="ng-text">파트너</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="33_리셀러목록.html"><span class="dot"></span>리셀러목록</a>
+          <a class="nav-item" href="34_리셀러설정.html"><span class="dot"></span>리셀러설정</a>
+          <a class="nav-item" href="35_리셀러트리.html"><span class="dot"></span>리셀러트리</a>
+          <a class="nav-item" href="36_리셀러정산.html"><span class="dot"></span>리셀러정산</a>
+          <a class="nav-item" href="37_리셀러도메인.html"><span class="dot"></span>리셀러도메인</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== Main ===== -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">메뉴설정</div>
+        <div class="breadcrumb">사이트관리 &nbsp;/&nbsp; 메뉴설정</div>
+      </div>
+      <button class="btn btn-primary" onclick="addMenu(null)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        메뉴 추가
+      </button>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <div class="tabs" style="border-bottom:none;padding:10px 10px 0;">
+        <div class="tab active" data-pos="gnb" onclick="switchPosition(this,'gnb')">상단메뉴 (GNB)</div>
+        <div class="tab" data-pos="footer" onclick="switchPosition(this,'footer')">하단메뉴 (푸터)</div>
+        <div class="tab" data-pos="side" onclick="switchPosition(this,'side')">사이드메뉴</div>
+      </div>
+    </div>
+
+    <div class="content cat-layout" style="margin-top:0;">
+      <div class="card cat-tree-panel">
+        <div class="cat-tree-head">메뉴 항목 <span class="cat-count" id="catCount">0개</span></div>
+        <div class="cat-tree" id="catTree"></div>
+      </div>
+
+      <div class="card cat-detail-panel" id="catDetailPanel">
+        <div class="cat-detail-empty" id="catEmptyState">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          <div>왼쪽에서 메뉴를 선택하거나<br>새 메뉴를 추가하세요.</div>
+        </div>
+
+        <div id="catForm" style="display:none;">
+          <div class="cat-detail-head">
+            <div class="cat-detail-title" id="cd_title">메뉴 편집</div>
+            <button class="btn btn-danger-outline" style="padding:7px 12px;font-size:12px;" onclick="openDeleteMenuModal()">삭제</button>
+          </div>
+
+          <div class="field">
+            <label>메뉴명 <span class="req">(필수)</span></label>
+            <input type="text" id="cd_name" placeholder="메뉴명을 입력하세요">
+          </div>
+
+          <div class="field">
+            <label>연결 타입</label>
+            <select id="cd_connectType" onchange="onConnectTypeChange()">
+              <option value="category">카테고리 연결</option>
+              <option value="link">링크 연결 (링크설정에서 선택)</option>
+              <option value="url">직접 URL 입력</option>
+              <option value="page">내부 페이지 연결</option>
+            </select>
+          </div>
+
+          <div class="field" id="connectBlock-category">
+            <label>연결할 카테고리</label>
+            <select id="cd_connectCategory"></select>
+          </div>
+          <div class="field" id="connectBlock-link" style="display:none;">
+            <label>연결할 링크</label>
+            <select id="cd_connectLink"></select>
+            <div style="font-size:11.5px;color:var(--text-faint);margin-top:6px;">새 링크는 링크설정에서 추가할 수 있습니다.</div>
+          </div>
+          <div class="field" id="connectBlock-url" style="display:none;">
+            <label>URL</label>
+            <input type="text" id="cd_connectUrl" placeholder="/event 또는 https://example.com">
+          </div>
+          <div class="field" id="connectBlock-page" style="display:none;">
+            <label>연결할 페이지</label>
+            <select id="cd_connectPage"></select>
+          </div>
+
+          <div class="field">
+            <label>새창 열기</label>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <label class="switch"><input type="checkbox" id="cd_newTab"><span class="track"></span></label>
+              <span style="font-size:12.5px;color:var(--text-sub);">클릭 시 새 탭에서 열기</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>노출 기기</label>
+            <div style="display:flex;flex-direction:column;gap:9px;padding-top:2px;">
+              <label class="radio-row2"><input type="radio" name="cd_device" value="both" checked> PC + 모바일</label>
+              <label class="radio-row2"><input type="radio" name="cd_device" value="pc"> PC만</label>
+              <label class="radio-row2"><input type="radio" name="cd_device" value="mobile"> 모바일만</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>접근 권한</label>
+            <select id="cd_access" onchange="onAccessChange()">
+              <option value="public">전체공개</option>
+              <option value="member">로그인 회원만</option>
+              <option value="grade">특정 등급 이상</option>
+            </select>
+            <select id="cd_accessGrade" style="margin-top:8px;display:none;">
+              <option>일반회원</option>
+              <option>VIP회원</option>
+              <option>VVIP회원</option>
+              <option>사업자회원</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>노출 여부</label>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <label class="switch"><input type="checkbox" id="cd_visible" onchange="onDetailVisibleChange()"><span class="track"></span></label>
+              <span style="font-size:12.5px;color:var(--text-sub);" id="cd_visibleLabel">노출함</span>
+            </div>
+          </div>
+
+          <div class="cat-detail-foot">
+            <button class="btn" onclick="deselectMenu()">취소</button>
+            <button class="btn btn-primary" onclick="saveMenu()">저장</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<!-- ===== 메뉴 삭제 확인 모달 ===== -->
+<div class="modal-overlay" id="catDeleteModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>메뉴 삭제</h3>
+      <button class="modal-close" onclick="closeModal('catDeleteModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="warn-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        <div>
+          <div id="catDeleteMsg">삭제 후에는 복구할 수 없습니다.</div>
+          <div class="name-list" id="catDeleteName">메뉴명</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('catDeleteModal')">취소</button>
+      <button class="btn" style="background:var(--danger);border-color:var(--danger);color:#fff;" onclick="confirmDeleteMenu()">삭제</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">저장되었습니다</span>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+/* ================= 헤더 알림 패널 ================= */
+/* ================= 참조 데이터 (카테고리 / 링크 / 페이지) ================= */
+const categoryOptions = ['여성의류','　└ 상의','　└ 하의','　└ 아우터','남성의류','　└ 상의','　└ 하의','액세서리','VIP 전용관'];
+const linkOptions = ['공식 블로그','이벤트 페이지','카카오채널 상담','인스타그램'];
+const pageOptions = ['회사소개','이용약관','개인정보처리방침','자주묻는질문','오시는길'];
+
+/* ================= 메뉴 데이터 (위치별) ================= */
+let menusByPosition = {
+  gnb: [
+    {id:1, name:'홈', parentId:null, order:0, visible:true, connectType:'url', connectValue:'/', newTab:false, device:'both', access:'public', accessGrade:'일반회원'},
+    {id:2, name:'여성', parentId:null, order:1, visible:true, connectType:'category', connectValue:'여성의류', newTab:false, device:'both', access:'public', accessGrade:'일반회원'},
+    {id:3, name:'남성', parentId:null, order:2, visible:true, connectType:'category', connectValue:'남성의류', newTab:false, device:'both', access:'public', accessGrade:'일반회원'},
+    {id:4, name:'액세서리', parentId:null, order:3, visible:true, connectType:'category', connectValue:'액세서리', newTab:false, device:'both', access:'public', accessGrade:'일반회원'},
+    {id:5, name:'VIP 전용관', parentId:null, order:4, visible:true, connectType:'category', connectValue:'VIP 전용관', newTab:false, device:'both', access:'grade', accessGrade:'VIP회원'},
+    {id:6, name:'이벤트', parentId:null, order:5, visible:true, connectType:'link', connectValue:'이벤트 페이지', newTab:false, device:'both', access:'public', accessGrade:'일반회원'},
+    {id:7, name:'고객센터', parentId:null, order:6, visible:true, connectType:'page', connectValue:'자주묻는질문', newTab:false, device:'both', access:'public', accessGrade:'일반회원'},
+  ],
+  footer: [
+    {id:101, name:'회사소개', parentId:null, order:0, visible:true, connectType:'page', connectValue:'회사소개', newTab:false, device:'both', access:'public', accessGrade:'일반회원'},
+    {id:102, name:'이용약관', parentId:null, order:1, visible:true, connectType:'page', connectValue:'이용약관', newTab:false, device:'both', access:'public', accessGrade:'일반회원'},
+    {id:103, name:'개인정보처리방침', parentId:null, order:2, visible:true, connectType:'page', connectValue:'개인정보처리방침', newTab:false, device:'both', access:'public', accessGrade:'일반회원'},
+    {id:104, name:'인스타그램', parentId:null, order:3, visible:true, connectType:'link', connectValue:'인스타그램', newTab:true, device:'both', access:'public', accessGrade:'일반회원'},
+  ],
+  side: [
+    {id:201, name:'마이페이지', parentId:null, order:0, visible:true, connectType:'url', connectValue:'/mypage', newTab:false, device:'mobile', access:'member', accessGrade:'일반회원'},
+    {id:202, name:'장바구니', parentId:null, order:1, visible:true, connectType:'url', connectValue:'/cart', newTab:false, device:'mobile', access:'public', accessGrade:'일반회원'},
+  ],
+};
+let nextMenuId = 300;
+let currentPosition = 'gnb';
+let expandedIds = new Set();
+let selectedId = null;
+let dragId = null;
+
+/* ================= 위치 탭 전환 ================= */
+function switchPosition(el, pos){
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentPosition = pos;
+  selectedId = null;
+  expandedIds = new Set();
+  deselectMenu();
+  renderTree();
+}
+
+/* ================= 트리 렌더링 ================= */
+function menus(){ return menusByPosition[currentPosition]; }
+function getChildren(parentId){
+  return menus().filter(c => c.parentId === parentId).sort((a,b)=>a.order-b.order);
+}
+
+const connectTypeLabel = { category:'카테고리', link:'링크', url:'URL', page:'페이지' };
+
+function renderTree(){
+  const root = document.getElementById('catTree');
+  document.getElementById('catCount').textContent = menus().length + '개';
+
+  function renderNode(item, depth){
+    const children = getChildren(item.id);
+    const isOpen = expandedIds.has(item.id);
+    const leaf = children.length === 0;
+    let html = `
+      <div class="cat-row ${selectedId===item.id?'selected':''}" draggable="true"
+           data-id="${item.id}"
+           style="padding-left:${depth*16 + 6}px"
+           onclick="selectMenu(${item.id})"
+           ondragstart="handleDragStart(event, ${item.id})"
+           ondragover="handleDragOver(event, ${item.id})"
+           ondragleave="handleDragLeave(event, ${item.id})"
+           ondrop="handleDrop(event, ${item.id})">
+        <span class="cat-drag">⠿</span>
+        <button class="cat-toggle ${leaf?'leaf':''} ${isOpen?'open':''}" onclick="event.stopPropagation();toggleExpand(${item.id})">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m9 6 6 6-6 6"/></svg>
+        </button>
+        <span class="cat-name ${item.visible?'':'hidden-cat'}">${item.name}</span>
+        <span class="cat-badge">${connectTypeLabel[item.connectType]}</span>
+        <label class="mini-switch" onclick="event.stopPropagation()">
+          <input type="checkbox" ${item.visible?'checked':''} onchange="toggleVisible(${item.id}, this.checked)">
+          <span class="track"></span>
+        </label>
+        <button class="cat-add-child" onclick="event.stopPropagation();addMenu(${item.id})" title="하위 메뉴 추가">+</button>
+      </div>`;
+    if(isOpen){
+      children.forEach(child => { html += renderNode(child, depth+1); });
+    }
+    return html;
+  }
+
+  const roots = getChildren(null);
+  root.innerHTML = roots.map(c => renderNode(c, 0)).join('');
+}
+
+function toggleExpand(id){
+  if(expandedIds.has(id)) expandedIds.delete(id); else expandedIds.add(id);
+  renderTree();
+}
+
+/* ================= 연결대상 select 채우기 ================= */
+function fillConnectSelect(selectEl, options, currentValue){
+  selectEl.innerHTML = options.map(o => `<option value="${o.trim()}" ${o.trim()===currentValue?'selected':''}>${o}</option>`).join('');
+}
+
+/* ================= 선택 / 상세 편집 ================= */
+function selectMenu(id){
+  selectedId = id;
+  const item = menus().find(c => c.id === id);
+  if(!item) return;
+
+  document.getElementById('catEmptyState').style.display = 'none';
+  document.getElementById('catForm').style.display = 'block';
+  document.getElementById('cd_title').textContent = item.name + ' 편집';
+
+  document.getElementById('cd_name').value = item.name;
+  document.getElementById('cd_connectType').value = item.connectType;
+
+  fillConnectSelect(document.getElementById('cd_connectCategory'), categoryOptions, item.connectType==='category' ? item.connectValue : categoryOptions[0].trim());
+  fillConnectSelect(document.getElementById('cd_connectLink'), linkOptions, item.connectType==='link' ? item.connectValue : linkOptions[0]);
+  fillConnectSelect(document.getElementById('cd_connectPage'), pageOptions, item.connectType==='page' ? item.connectValue : pageOptions[0]);
+  document.getElementById('cd_connectUrl').value = item.connectType==='url' ? item.connectValue : '';
+
+  showConnectBlock(item.connectType);
+
+  document.getElementById('cd_newTab').checked = item.newTab;
+  document.querySelector(`input[name="cd_device"][value="${item.device}"]`).checked = true;
+
+  document.getElementById('cd_access').value = item.access;
+  document.getElementById('cd_accessGrade').value = item.accessGrade || '일반회원';
+  document.getElementById('cd_accessGrade').style.display = item.access === 'grade' ? 'block' : 'none';
+
+  document.getElementById('cd_visible').checked = item.visible;
+  document.getElementById('cd_visibleLabel').textContent = item.visible ? '노출함' : '숨김';
+
+  renderTree();
+}
+
+function deselectMenu(){
+  selectedId = null;
+  document.getElementById('catForm').style.display = 'none';
+  document.getElementById('catEmptyState').style.display = 'flex';
+  renderTree();
+}
+
+function showConnectBlock(type){
+  ['category','link','url','page'].forEach(t => {
+    document.getElementById('connectBlock-'+t).style.display = (t === type) ? 'block' : 'none';
+  });
+}
+function onConnectTypeChange(){
+  showConnectBlock(document.getElementById('cd_connectType').value);
+}
+function onDetailVisibleChange(){
+  const on = document.getElementById('cd_visible').checked;
+  document.getElementById('cd_visibleLabel').textContent = on ? '노출함' : '숨김';
+}
+function onAccessChange(){
+  const val = document.getElementById('cd_access').value;
+  document.getElementById('cd_accessGrade').style.display = val === 'grade' ? 'block' : 'none';
+}
+
+function saveMenu(){
+  const item = menus().find(c => c.id === selectedId);
+  if(!item) return;
+  const name = document.getElementById('cd_name').value.trim();
+  if(!name){ showToast('메뉴명을 입력해주세요'); return; }
+
+  item.name = name;
+  item.connectType = document.getElementById('cd_connectType').value;
+  if(item.connectType === 'category') item.connectValue = document.getElementById('cd_connectCategory').value;
+  else if(item.connectType === 'link') item.connectValue = document.getElementById('cd_connectLink').value;
+  else if(item.connectType === 'page') item.connectValue = document.getElementById('cd_connectPage').value;
+  else item.connectValue = document.getElementById('cd_connectUrl').value.trim();
+
+  item.newTab = document.getElementById('cd_newTab').checked;
+  item.device = document.querySelector('input[name="cd_device"]:checked').value;
+  item.access = document.getElementById('cd_access').value;
+  item.accessGrade = item.access === 'grade' ? document.getElementById('cd_accessGrade').value : null;
+  item.visible = document.getElementById('cd_visible').checked;
+
+  if(item.parentId !== null) expandedIds.add(item.parentId);
+  renderTree();
+  document.getElementById('cd_title').textContent = item.name + ' 편집';
+  showToast('메뉴가 저장되었습니다');
+}
+
+/* ================= 추가 ================= */
+function addMenu(parentId){
+  const siblings = getChildren(parentId);
+  const newItem = {
+    id: nextMenuId++,
+    name: '새 메뉴',
+    parentId: parentId,
+    order: siblings.length,
+    visible: true,
+    connectType: 'url',
+    connectValue: '',
+    newTab: false,
+    device: 'both',
+    access: 'public',
+    accessGrade: '일반회원'
+  };
+  menus().push(newItem);
+  if(parentId !== null) expandedIds.add(parentId);
+  renderTree();
+  selectMenu(newItem.id);
+  const nameInput = document.getElementById('cd_name');
+  nameInput.focus();
+  nameInput.select();
+}
+
+/* ================= 노출 토글 ================= */
+function toggleVisible(id, checked){
+  const item = menus().find(c => c.id === id);
+  if(!item) return;
+  item.visible = checked;
+  if(selectedId === id){
+    document.getElementById('cd_visible').checked = checked;
+    document.getElementById('cd_visibleLabel').textContent = checked ? '노출함' : '숨김';
+  }
+  renderTree();
+}
+
+/* ================= 삭제 ================= */
+function getDescendantCount(id){
+  const children = getChildren(id);
+  let count = children.length;
+  children.forEach(c => count += getDescendantCount(c.id));
+  return count;
+}
+function openDeleteMenuModal(){
+  const item = menus().find(c => c.id === selectedId);
+  if(!item) return;
+  const descCount = getDescendantCount(item.id);
+  document.getElementById('catDeleteName').textContent = item.name;
+  document.getElementById('catDeleteMsg').textContent = descCount > 0
+    ? `하위 메뉴 ${descCount}개도 함께 삭제됩니다. 삭제 후에는 복구할 수 없습니다.`
+    : '삭제 후에는 복구할 수 없습니다.';
+  document.getElementById('catDeleteModal').classList.add('open');
+}
+function confirmDeleteMenu(){
+  const idsToDelete = new Set([selectedId]);
+  let changed = true;
+  while(changed){
+    changed = false;
+    menus().forEach(c => {
+      if(c.parentId !== null && idsToDelete.has(c.parentId) && !idsToDelete.has(c.id)){
+        idsToDelete.add(c.id);
+        changed = true;
+      }
+    });
+  }
+  menusByPosition[currentPosition] = menus().filter(c => !idsToDelete.has(c.id));
+  closeModal('catDeleteModal');
+  deselectMenu();
+  showToast('메뉴가 삭제되었습니다');
+}
+
+/* ================= 드래그 정렬 ================= */
+function handleDragStart(e, id){
+  dragId = id;
+  e.dataTransfer.effectAllowed = 'move';
+}
+function handleDragOver(e, id){
+  if(dragId === null || dragId === id) return;
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+}
+function handleDragLeave(e, id){
+  e.currentTarget.classList.remove('drag-over');
+}
+function isDescendant(ancestorId, nodeId){
+  let cur = menus().find(c => c.id === nodeId);
+  while(cur && cur.parentId !== null){
+    if(cur.parentId === ancestorId) return true;
+    cur = menus().find(c => c.id === cur.parentId);
+  }
+  return false;
+}
+function handleDrop(e, targetId){
+  e.preventDefault();
+  document.querySelectorAll('.cat-row.drag-over').forEach(el => el.classList.remove('drag-over'));
+  if(dragId === null || dragId === targetId) return;
+
+  if(isDescendant(dragId, targetId)){
+    showToast('하위 메뉴 안으로는 이동할 수 없습니다');
+    dragId = null;
+    return;
+  }
+  const dragItem = menus().find(c => c.id === dragId);
+  const targetItem = menus().find(c => c.id === targetId);
+  if(!dragItem || !targetItem) return;
+
+  dragItem.parentId = targetItem.parentId;
+  const siblings = menus()
+    .filter(c => c.parentId === targetItem.parentId && c.id !== dragItem.id)
+    .sort((a,b) => a.order - b.order);
+  const targetIndex = siblings.findIndex(c => c.id === targetId);
+  siblings.splice(targetIndex, 0, dragItem);
+  siblings.forEach((c, i) => c.order = i);
+
+  dragId = null;
+  renderTree();
+  showToast('메뉴 순서가 변경되었습니다');
+}
+
+/* ================= 모달 공통 ================= */
+/* ================= 토스트 ================= */
+renderTree();
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 /*
- * SMS 중계 재판매 시스템 — 인터랙티브 구조도 (개발 페이지 팝업)
+ * SMS 중계 재판매 시스템 — 인터랙티브 구조도 (사업 모델 페이지 팝업)
  * 문자 한 통이 고객사 → 플랫폼(접수·검증·큐·라우팅) → 중계사 → 통신사 → 수신자로 가고,
  * 결과(DLR)가 아래 경로로 돌아오는 흐름을 시뮬레이션한다.
  * 아이콘: Lucide (ISC License)
@@ -20,7 +20,7 @@
     relayB:  { label: "중계사 B", sub: "SMPP · HTTP", icon: "radio-tower", desc: "이중화용 두 번째 중계사입니다. 평소엔 트래픽을 나눠 받고, A 장애 시 전량을 받습니다." },
     carrier: { label: "통신사", sub: "SMSC · 3사", icon: "antenna", desc: "통신사 문자센터(SMSC)가 수신자 단말로 문자를 전달하고 결과를 남깁니다." },
     phone:   { label: "수신자", sub: "단말 도착", icon: "smartphone", desc: "문자가 도착하면 통신사가 성공·실패 결과(DLR)를 만들어 돌려보냅니다." },
-    dlr:     { label: "결과 수신", sub: "DLR 리포트", icon: "receipt", desc: "통신사 → 중계사를 거쳐 온 전달 결과를 받아 발송 건과 짝지어 기록합니다." },
+    dlr:     { label: "결과 수신", sub: "DLR 리포트", icon: "receipt", desc: "통신사와 중계사를 거쳐 온 전달 결과를 받아 발송 건과 짝지어 기록합니다." },
     log:     { label: "이력 · 과금", sub: "과금 · 환불", icon: "database", desc: "성공 건은 과금하고 실패 건은 잔액을 돌려줍니다. 발송 이력은 법정 기간 동안 보관합니다." },
     hook:    { label: "결과 알림", sub: "웹훅 · 조회 API", icon: "webhook", desc: "고객사 서버로 결과를 웹훅으로 보내고, 조회 API로도 확인할 수 있게 합니다." },
   };

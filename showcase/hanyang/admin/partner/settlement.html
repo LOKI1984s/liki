@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>정산관리 · 파트너센터</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===== Global Header ===== -->
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='dashboard.html'">
+      <div class="mark">P</div>
+      <div class="name">파트너센터</div>
+    </div>
+
+    <div class="gh-quick"></div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">강남플라워스튜디오님 <span class="p-tier-badge">총판</span></div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>정상 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="location.href='login.html'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll" style="padding-top:14px;">
+      <div class="p-nav-section">파트너센터</div>
+      <a class="p-nav-item" href="dashboard.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>대시보드</span></a>
+      <a class="p-nav-item" href="members.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>회원목록</span></a>
+      <a class="p-nav-item active" href="settlement.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span>정산관리</span></a>
+      <a class="p-nav-item" href="agencies.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3.5"/><path d="M2.5 21v-1.5A4.5 4.5 0 0 1 7 15h4a4.5 4.5 0 0 1 4.5 4.5V21"/><circle cx="18" cy="8" r="2.5"/><path d="M15.5 15.2A4 4 0 0 1 21.5 19v2"/></svg><span>하위 대리점</span></a>
+      <a class="p-nav-item" href="domain.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span>도메인</span></a>
+      <a class="p-nav-item" href="account.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg><span>내 정보</span></a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">정산관리</div>
+        <div class="breadcrumb">보유금액으로 정산을 신청하고 지급 내역을 확인하세요</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="kpi-grid" style="margin-bottom:16px;">
+        <div class="kpi-card"><div class="kpi-label">정산 가능 보유금액</div><div class="kpi-value" id="kpiAvailable">340,800원</div></div>
+        <div class="kpi-card"><div class="kpi-label">정산 신청중</div><div class="kpi-value" id="kpiRequesting">0원</div></div>
+        <div class="kpi-card"><div class="kpi-label">지급 완료 (누적)</div><div class="kpi-value">23,520원</div></div>
+        <div class="kpi-card"><div class="kpi-label">현재 커미션율</div><div class="kpi-value">12%</div></div>
+      </div>
+
+      <div class="card">
+        <div class="tabs">
+          <div class="tab active" data-ptab="request" onclick="switchPTab(this,'request')">정산신청</div>
+          <div class="tab" data-ptab="history" onclick="switchPTab(this,'history')">정산내역</div>
+        </div>
+
+        <!-- ===== 정산신청 탭 ===== -->
+        <div id="ptab-request" style="padding:24px;">
+          <div class="info-note" style="margin-bottom:20px;">
+            보유금액 범위 내에서만 신청할 수 있어요. 신청 후 본사 검토를 거쳐 입력하신 계좌로 지급됩니다.
+          </div>
+
+          <div style="max-width:480px;">
+            <div class="field">
+              <label>은행명 <span class="req">(필수)</span></label>
+              <input type="text" id="rq_bank" placeholder="예) 국민은행">
+            </div>
+            <div class="field">
+              <label>계좌번호 <span class="req">(필수)</span></label>
+              <input type="text" id="rq_account" placeholder="'-' 없이 숫자만 입력">
+            </div>
+            <div class="field">
+              <label>예금주</label>
+              <input type="text" id="rq_holder" value="강남플라워스튜디오">
+            </div>
+            <div class="field" style="margin-bottom:0;">
+              <label>신청 금액 <span class="req">(필수)</span></label>
+              <div class="amt-input-row" style="max-width:220px;">
+                <input type="text" id="rq_amount" placeholder="0" oninput="formatPriceInput(this)">
+                <span class="amt-prefix">원</span>
+              </div>
+              <div class="settings-desc" style="margin-top:6px;">정산 가능 보유금액: <b id="rq_availableNote" style="color:var(--text);">340,800원</b> <a style="color:var(--accent);cursor:pointer;" onclick="fillFullAmount()">전액 신청</a></div>
+            </div>
+
+            <button class="btn btn-primary" style="width:100%;margin-top:18px;" onclick="submitRequest()">정산 신청하기</button>
+          </div>
+
+          <div style="margin-top:32px;">
+            <div style="font-size:13.5px;font-weight:800;margin-bottom:10px;">신청 내역</div>
+            <div style="overflow-x:auto;">
+            <table style="table-layout:fixed;">
+              <colgroup><col style="width:20%;"><col style="width:24%;"><col style="width:20%;"><col style="width:18%;"><col style="width:18%;"></colgroup>
+              <thead><tr><th>신청일</th><th>계좌</th><th>신청금액</th><th>상태</th><th></th></tr></thead>
+              <tbody id="requestTbody"></tbody>
+            </table>
+            </div>
+            <div class="empty-state" id="requestEmpty" style="display:none;">신청 내역이 없어요</div>
+          </div>
+        </div>
+
+        <!-- ===== 정산내역 탭 ===== -->
+        <div id="ptab-history" style="display:none;">
+          <div class="status-tabs" style="padding:14px 16px 0;">
+            <div class="status-tab active" data-sstatus="all" onclick="filterHistory(this,'all')">전체 <span class="cnt">2</span></div>
+            <div class="status-tab" data-sstatus="pending" onclick="filterHistory(this,'pending')">정산대기 <span class="cnt">1</span></div>
+            <div class="status-tab" data-sstatus="done" onclick="filterHistory(this,'done')">지급완료 <span class="cnt">1</span></div>
+          </div>
+          <div class="toolbar" style="padding:14px 16px;">
+            <div style="font-size:13px;color:var(--text-sub);">전체 <b style="color:var(--text);">2</b>건</div>
+            <div style="flex:1;"></div>
+            <select style="max-width:140px;"><option>2026년 7월</option><option>2026년 6월</option></select>
+          </div>
+          <div style="overflow-x:auto;">
+          <table style="table-layout:fixed;">
+            <colgroup><col style="width:20%;"><col style="width:22%;"><col style="width:16%;"><col style="width:22%;"><col style="width:20%;"></colgroup>
+            <thead><tr><th>정산기간</th><th>매출액</th><th>커미션율</th><th>정산액</th><th>상태</th></tr></thead>
+            <tbody id="historyTbody"></tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">저장되었습니다</span>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+function switchPTab(el, tab){
+  document.querySelectorAll('.content > .card > .tabs .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('ptab-request').style.display = tab==='request' ? 'block' : 'none';
+  document.getElementById('ptab-history').style.display = tab==='history' ? 'block' : 'none';
+}
+
+/* ================= 정산신청 ================= */
+let availableBalance = 340800;
+let requests = [];
+
+function fillFullAmount(){
+  document.getElementById('rq_amount').value = availableBalance.toLocaleString();
+}
+function renderRequests(){
+  document.getElementById('requestEmpty').style.display = requests.length ? 'none' : 'block';
+  document.getElementById('requestTbody').innerHTML = requests.map(r => `
+    <tr>
+      <td style="color:var(--text-sub);font-size:12.5px;">${r.date}</td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${r.bank} ${r.account}</td>
+      <td style="font-weight:700;">${r.amount.toLocaleString()}원</td>
+      <td><span class="badge badge-group-none">${r.status}</span></td>
+      <td><button class="btn btn-danger-outline" style="padding:5px 10px;font-size:11.5px;" onclick="cancelRequest(${r.id})">신청취소</button></td>
+    </tr>
+  `).join('');
+}
+let nextReqId = 1;
+function submitRequest(){
+  const bank = document.getElementById('rq_bank').value;
+  const account = document.getElementById('rq_account').value.trim();
+  const holder = document.getElementById('rq_holder').value.trim();
+  const amountRaw = document.getElementById('rq_amount').value.replace(/,/g,'');
+  const amount = Number(amountRaw);
+
+  if(!bank){ showToast('은행명을 입력해주세요'); return; }
+  if(!account){ showToast('계좌번호를 입력해주세요'); return; }
+  if(!amount || amount <= 0){ showToast('신청 금액을 입력해주세요'); return; }
+  if(amount > availableBalance){ showToast('보유금액(' + availableBalance.toLocaleString() + '원)을 초과할 수 없어요'); return; }
+
+  requests.unshift({ id: nextReqId++, date: new Date().toISOString().slice(0,10), bank, account, holder, amount, status:'승인대기' });
+  availableBalance -= amount;
+  document.getElementById('kpiAvailable').textContent = availableBalance.toLocaleString() + '원';
+  document.getElementById('rq_availableNote').textContent = availableBalance.toLocaleString() + '원';
+  document.getElementById('kpiRequesting').textContent = requests.reduce((s,r)=>s+r.amount,0).toLocaleString() + '원';
+  document.getElementById('rq_account').value = '';
+  document.getElementById('rq_amount').value = '';
+  renderRequests();
+  showToast('정산 신청이 접수되었습니다');
+}
+function cancelRequest(id){
+  const r = requests.find(x=>x.id===id);
+  if(!r) return;
+  availableBalance += r.amount;
+  requests = requests.filter(x=>x.id!==id);
+  document.getElementById('kpiAvailable').textContent = availableBalance.toLocaleString() + '원';
+  document.getElementById('rq_availableNote').textContent = availableBalance.toLocaleString() + '원';
+  document.getElementById('kpiRequesting').textContent = requests.reduce((s,x)=>s+x.amount,0).toLocaleString() + '원';
+  renderRequests();
+  showToast('신청이 취소되었습니다');
+}
+
+/* ================= 정산내역 (읽기전용) ================= */
+const mySettlements = [
+  { period:'2026-07', sales:2840000, rate:12, amount:340800, status:'pending' },
+  { period:'2026-06', sales:196000, rate:12, amount:23520, status:'done' },
+];
+const label = { pending:'정산대기', done:'지급완료' };
+const cls = { pending:'badge-group-none', done:'badge-grade-biz' };
+let hFilter = 'all';
+function renderHistory(){
+  const filtered = hFilter==='all' ? mySettlements : mySettlements.filter(s=>s.status===hFilter);
+  document.getElementById('historyTbody').innerHTML = filtered.map(s => `
+    <tr>
+      <td style="font-weight:600;">${s.period}</td>
+      <td>${s.sales.toLocaleString()}원</td>
+      <td>${s.rate}%</td>
+      <td style="font-weight:700;">${s.amount.toLocaleString()}원</td>
+      <td><span class="badge ${cls[s.status]}">${label[s.status]}</span></td>
+    </tr>
+  `).join('');
+}
+function filterHistory(el, status){
+  document.querySelectorAll('#ptab-history .status-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  hFilter = status;
+  renderHistory();
+}
+
+renderRequests();
+renderHistory();
+</script>
+</body>
+</html>

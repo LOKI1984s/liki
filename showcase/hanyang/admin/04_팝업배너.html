@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>팝업배너 · 관리자</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===== Global Header ===== -->
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='대시보드.html'">
+      <div class="mark">S</div>
+      <div class="name">ADMIN관리자</div>
+    </div>
+
+    <div class="gh-quick">
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'inquiry')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="gh-notif-label">문의</span>
+          <span class="badge-dot">3</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-inquiry">
+          <div class="gh-notif-panel-head">신규 문의 <b>3건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">배송이 너무 늦어요</div><div class="sub">김민준 · 5분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">사이즈 교환 문의</div><div class="sub">이서연 · 22분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">결제가 안돼요</div><div class="sub">박도윤 · 1시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('문의 전체보기로 이동합니다')">문의 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'order')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="gh-notif-label">주문</span>
+          <span class="badge-dot">12</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-order">
+          <div class="gh-notif-panel-head">신규 주문 <b>12건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-042 · 88,000원</div><div class="sub">최지우 · 3분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-041 · 132,000원</div><div class="sub">정하은 · 18분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-040 · 45,000원</div><div class="sub">윤시우 · 40분 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('주문 전체보기로 이동합니다')">주문 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'delivery')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17h4V5H2v12h3"/><path d="M14 9h4l3 3v5h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="gh-notif-label">배송</span>
+          <span class="badge-dot">5</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-delivery">
+          <div class="gh-notif-panel-head">배송 대기 <b>5건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-118 발송 대기</div><div class="sub">김민준 · 2시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-117 발송 대기</div><div class="sub">이서연 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-116 지연 접수</div><div class="sub">박도윤 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('배송 현황으로 이동합니다')">배송 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'comment')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+          <span class="gh-notif-label">댓글</span>
+          <span class="badge-dot">2</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-comment">
+          <div class="gh-notif-panel-head">새 댓글 <b>2건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"배송 진짜 빠르네요!"</div><div class="sub">최지우 · 30분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"재입고 언제 되나요?"</div><div class="sub">정하은 · 2시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('댓글 전체보기로 이동합니다')">댓글 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'newmember')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+          <span class="gh-notif-label">신규회원</span>
+          <span class="badge-dot">4</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-newmember">
+          <div class="gh-notif-panel-head">신규 가입 <b>4명</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">정하은</div><div class="sub">카카오 가입 · 40분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">박도윤</div><div class="sub">자체 가입 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">윤시우</div><div class="sub">네이버 가입 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('회원목록으로 이동합니다')">신규회원 전체보기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">김도현 관리자님</div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>192.168.0.1 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="showToast('로그아웃 되었습니다')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll">
+      <div class="nav-group">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">사이트관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="01_카테고리.html"><span class="dot"></span>카테고리</a>
+          <a class="nav-item" href="02_메뉴설정.html"><span class="dot"></span>메뉴설정</a>
+          <a class="nav-item" href="03_공지사항.html"><span class="dot"></span>공지사항</a>
+          <a class="nav-item active" href="04_팝업배너.html"><span class="dot"></span>팝업·배너</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="ng-text">회원관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="05_회원목록.html"><span class="dot"></span>회원목록</a>
+          <a class="nav-item" href="06_회원등급.html"><span class="dot"></span>회원등급</a>
+          <a class="nav-item" href="07_회원설정.html"><span class="dot"></span>회원설정</a>
+          <a class="nav-item" href="08_추천인설정.html"><span class="dot"></span>추천인설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="ng-text">주문관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="09_입금관리.html"><span class="dot"></span>입금관리</a>
+          <a class="nav-item" href="10_상품관리.html"><span class="dot"></span>상품관리</a>
+          <a class="nav-item" href="11_주문관리.html"><span class="dot"></span>주문관리</a>
+          <a class="nav-item" href="12_배송관리.html"><span class="dot"></span>배송관리</a>
+          <a class="nav-item" href="13_정기구독.html"><span class="dot"></span>정기구독</a>
+          <a class="nav-item" href="14_문의.html"><span class="dot"></span>문의</a>
+          <a class="nav-item" href="15_구매평.html"><span class="dot"></span>구매평</a>
+          <a class="nav-item" href="16_재입고알림.html"><span class="dot"></span>재입고알림</a>
+          <a class="nav-item" href="17_세금계산서.html"><span class="dot"></span>세금계산서</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 12l9 9 11-11-2-8-8-2Z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">프로모션</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="18_쿠폰.html"><span class="dot"></span>쿠폰</a>
+          <a class="nav-item" href="19_적립금.html"><span class="dot"></span>적립금</a>
+          <a class="nav-item" href="20_이벤트.html"><span class="dot"></span>이벤트</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14v3M12 10v7M17 6v11"/></svg>
+          <span class="ng-text">통계</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="21_개요.html"><span class="dot"></span>개요</a>
+          <a class="nav-item" href="22_매출.html"><span class="dot"></span>매출</a>
+          <a class="nav-item" href="23_기간별분석.html"><span class="dot"></span>기간별분석</a>
+          <a class="nav-item" href="24_유입통계.html"><span class="dot"></span>유입통계</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ng-text">메세지</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="25_문자발송.html"><span class="dot"></span>문자발송</a>
+          <a class="nav-item" href="26_자동메일.html"><span class="dot"></span>자동메일</a>
+          <a class="nav-item" href="27_환경설정.html"><span class="dot"></span>환경설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.2 4.2l2.8 2.8m10 10 2.8 2.8M1 12h4m14 0h4M4.2 19.8l2.8-2.8m10-10 2.8-2.8"/></svg>
+          <span class="ng-text">시스템</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="28_일반설정.html"><span class="dot"></span>일반설정</a>
+          <a class="nav-item" href="29_약관개인정보.html"><span class="dot"></span>약관·개인정보</a>
+          <a class="nav-item" href="30_도메인관리.html"><span class="dot"></span>도메인관리</a>
+          <a class="nav-item" href="31_전자결제.html"><span class="dot"></span>전자결제</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5z"/></svg>
+          <span class="ng-text">권한관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="32_관리자계정.html"><span class="dot"></span>관리자계정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+          <span class="ng-text">파트너</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="33_리셀러목록.html"><span class="dot"></span>리셀러목록</a>
+          <a class="nav-item" href="34_리셀러설정.html"><span class="dot"></span>리셀러설정</a>
+          <a class="nav-item" href="35_리셀러트리.html"><span class="dot"></span>리셀러트리</a>
+          <a class="nav-item" href="36_리셀러정산.html"><span class="dot"></span>리셀러정산</a>
+          <a class="nav-item" href="37_리셀러도메인.html"><span class="dot"></span>리셀러도메인</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== Main ===== -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">팝업설정</div>
+        <div class="breadcrumb">콘텐츠 &nbsp;/&nbsp; 팝업설정</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn" onclick="showToast('사이트를 새 탭에서 확인합니다')">사이트 확인하기</button>
+        <button class="btn btn-primary" onclick="openPopupForm()">팝업 추가</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="card">
+        <div id="popupListWrap"></div>
+        <div class="pop-empty" id="popupEmpty" style="display:none;">
+          <div class="pop-empty-icon">i</div>
+          <div class="pop-empty-title">등록된 팝업/배너가 없습니다.</div>
+          <div class="pop-empty-desc">내 사이트에 중요한 소식을 알리고 싶으면 등록해 주세요.</div>
+          <button class="btn btn-primary" onclick="openPopupForm()">팝업 추가</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<!-- ===== 팝업 생성/수정 모달 ===== -->
+<div class="modal-overlay" id="popupFormModal">
+  <div class="modal modal-xl">
+    <div class="modal-head">
+      <h3 id="popupFormTitle">팝업 추가</h3>
+      <button class="modal-close" onclick="closeModal('popupFormModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="pop-row">
+        <div class="pop-label">제목</div>
+        <div class="pop-value">
+          <input type="text" id="pf_title" placeholder="관리용 제목(사용자에겐 표시되지 않습니다)">
+        </div>
+      </div>
+
+      <div class="pop-row">
+        <div class="pop-label">본문 <span style="font-weight:500;color:var(--text-faint);">(선택, HTML 또는 일반 텍스트)</span></div>
+        <div class="pop-value">
+          <textarea id="pf_content" class="ta" style="min-height:110px;font-size:16px;padding:13px 14px;" placeholder="이벤트 안내 등"></textarea>
+        </div>
+      </div>
+
+      <div class="pop-row">
+        <div class="pop-label">기간</div>
+        <div class="pop-value">
+          <div class="pop-period-row">
+            <input type="datetime-local" id="pf_start" value="2026-07-17T06:11">
+            <span class="pop-period-tilde">~</span>
+            <input type="datetime-local" id="pf_end" value="2026-07-24T23:59">
+          </div>
+        </div>
+      </div>
+
+      <div class="pop-row">
+        <div class="pop-label">대상 기기</div>
+        <div class="pop-value">
+          <div class="pop-radio-row">
+            <label class="pop-check"><input type="checkbox" checked> 데스크톱</label>
+            <label class="pop-check"><input type="checkbox"> 모바일</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="pop-row">
+        <div class="pop-label">노출 페이지</div>
+        <div class="pop-value">
+          <div class="pop-radio-row">
+            <label class="pop-radio"><input type="radio" name="pf_page" value="home" checked onchange="onExposurePageChange()"> 홈 화면</label>
+            <label class="pop-radio"><input type="radio" name="pf_page" value="custom" onchange="onExposurePageChange()"> 사용자 정의</label>
+            <label class="pop-radio"><input type="radio" name="pf_page" value="product" onchange="onExposurePageChange()"> 상품 별</label>
+          </div>
+
+          <!-- 사용자 정의: 페이지 트리 -->
+          <div id="pageTreeBlock" style="display:none;border-left:3px solid var(--accent);padding:6px 0 6px 16px;margin-top:12px;">
+            <label class="pop-check" style="display:flex;padding:7px 0;font-size:15.5px;"><input type="checkbox"> Home</label>
+            <label class="pop-check" style="display:flex;padding:7px 0;font-size:15.5px;"><input type="checkbox"> 오늘도착 +</label>
+            <label class="pop-check" style="display:flex;padding:7px 0 7px 24px;font-size:15px;"><input type="checkbox"> 꽃선물</label>
+            <label class="pop-check" style="display:flex;padding:7px 0 7px 24px;font-size:15px;"><input type="checkbox"> 개업화분</label>
+            <label class="pop-check" style="display:flex;padding:7px 0 7px 24px;font-size:15px;"><input type="checkbox"> 승진/취임</label>
+            <label class="pop-check" style="display:flex;padding:7px 0 7px 24px;font-size:15px;"><input type="checkbox"> 결혼/장례</label>
+            <label class="pop-check" style="display:flex;padding:7px 0;font-size:15.5px;"><input type="checkbox"> 꽃다발</label>
+            <label class="pop-check" style="display:flex;padding:7px 0;font-size:15.5px;"><input type="checkbox"> 화분</label>
+            <label class="pop-check" style="display:flex;padding:7px 0;font-size:15.5px;"><input type="checkbox"> 난</label>
+            <label class="pop-check" style="display:flex;padding:7px 0;font-size:15.5px;"><input type="checkbox"> 프리저브드</label>
+            <label class="pop-check" style="display:flex;padding:7px 0;font-size:15.5px;"><input type="checkbox"> 축하화환</label>
+            <label class="pop-check" style="display:flex;padding:7px 0;font-size:15.5px;"><input type="checkbox"> 근조화환</label>
+            <label class="pop-check" style="display:flex;padding:7px 0;font-size:15.5px;"><input type="checkbox"> 정기구독 ✓</label>
+            <label class="pop-check" style="display:flex;padding:7px 0;font-size:15.5px;"><input type="checkbox"> 기업제휴 ⓒ</label>
+          </div>
+
+          <!-- 상품 별: 상품 테이블 -->
+          <div id="productBlock" style="display:none;margin-top:12px;">
+            <div style="display:flex;gap:8px;margin-bottom:10px;">
+              <button class="btn btn-primary" style="padding:9px 14px;font-size:14.5px;" onclick="openPopupProductPicker()">상품추가</button>
+              <button class="btn" style="padding:9px 14px;font-size:14.5px;" onclick="removeSelectedPopupProducts()">선택 상품 삭제</button>
+            </div>
+            <div style="border:1px solid var(--border-strong);border-radius:10px;overflow:hidden;">
+              <table style="table-layout:fixed;">
+                <colgroup><col style="width:40px;"><col><col style="width:100px;"></colgroup>
+                <thead><tr><th><input type="checkbox" onclick="toggleAllPopupProducts(this)"></th><th>상품명</th><th>상태</th></tr></thead>
+                <tbody id="popupProductTbody"></tbody>
+              </table>
+              <div class="empty-state" id="popupProductEmpty" style="padding:30px 20px;">
+                <div>등록된 상품이 없습니다</div>
+                <a style="color:var(--accent);font-weight:700;cursor:pointer;font-size:14.5px;" onclick="openPopupProductPicker()">노출상품 추가</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pop-row">
+        <div class="pop-label">적용 조건</div>
+        <div class="pop-value">
+          <div class="pop-radio-row">
+            <label class="pop-radio"><input type="radio" name="pf_target" checked> 모든 방문자</label>
+            <label class="pop-radio"><input type="radio" name="pf_target"> 로그인 방문자</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="pop-row">
+        <div class="pop-label">버튼 설정</div>
+        <div class="pop-value">
+          <div class="pop-radio-row">
+            <label class="pop-radio"><input type="radio" name="pf_btn" checked> 배너 하단 버튼 표시</label>
+            <label class="pop-radio"><input type="radio" name="pf_btn"> 표시 안 함</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="pop-row">
+        <div class="pop-label">우측 상단 닫기 설정</div>
+        <div class="pop-value">
+          <div class="pop-radio-row">
+            <label class="pop-radio"><input type="radio" name="pf_close" checked> 닫기</label>
+            <label class="pop-radio"><input type="radio" name="pf_close"> 오늘 하루 다시 보지 않기</label>
+            <label class="pop-radio"><input type="radio" name="pf_close"> 표시 안 함</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="pop-row">
+        <div class="pop-label">PC 팝업 위치</div>
+        <div class="pop-value" style="max-width:260px;">
+          <select id="pf_position">
+            <option>가운데</option>
+            <option>화면 왼쪽에서</option>
+            <option>화면 오른쪽에서</option>
+            <option>본문 왼쪽에서</option>
+            <option>본문 오른쪽에서</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="pop-row">
+        <div class="pop-label">이미지 <span style="font-weight:500;color:var(--text-faint);">(URL 또는 파일 업로드)</span></div>
+        <div class="pop-value">
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="pf_imageUrl" placeholder="/scraped/... 또는 https://..." style="flex:1;">
+            <button class="btn" style="flex-shrink:0;font-size:15px;padding:0 18px;" onclick="showToast('파일 선택 창을 엽니다')">파일 선택</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pop-row">
+        <div class="pop-label">클릭 시 이동 URL <span style="font-weight:500;color:var(--text-faint);">(선택)</span></div>
+        <div class="pop-value">
+          <input type="text" id="pf_link" placeholder="/category/bouquet">
+          <label class="pop-check" style="margin-top:4px;"><input type="checkbox"> 새 창에서 열기</label>
+        </div>
+      </div>
+
+      <div class="pop-row">
+        <div class="pop-label">너비</div>
+        <div class="pop-value">
+          <div class="pop-width-row">
+            <input type="text" id="pf_width" value="320">
+            <span class="unit">px</span>
+          </div>
+          <div class="settings-desc" style="margin-top:2px;">높이는 이미지·본문 내용에 맞춰 자동으로 조정돼요.</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-foot" style="justify-content:flex-end;">
+      <button class="btn btn-primary" onclick="submitPopup()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 노출상품 선택 모달 ===== -->
+<div class="modal-overlay" id="popupProductPickerModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>노출 상품 추가</h3>
+      <button class="modal-close" onclick="closeModal('popupProductPickerModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="search-box" style="margin-bottom:6px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="popupProductSearch" placeholder="상품을 검색해 보세요" oninput="renderPopupProductPickList()">
+      </div>
+      <div id="popupProductPickList"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('popupProductPickerModal')">취소</button>
+      <button class="btn btn-primary" onclick="confirmAddPopupProducts()">추가</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 팝업 삭제 확인 모달 ===== -->
+<div class="modal-overlay" id="popupDeleteModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>팝업 삭제</h3>
+      <button class="modal-close" onclick="closeModal('popupDeleteModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="warn-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        <div>삭제 후에는 복구할 수 없습니다.
+          <div class="name-list" id="popupDeleteName">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('popupDeleteModal')">취소</button>
+      <button class="btn" style="background:var(--danger);border-color:var(--danger);color:#fff;" onclick="confirmDeletePopup()">삭제</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">저장되었습니다</span>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+/* ================= 헤더 알림 패널 ================= */
+/* ================= 팝업 데이터 ================= */
+const popups = [
+  {id:1, title:'여름 세일 안내 팝업', start:'2026-07-15 00:00', end:'2026-07-31 23:59', device:'데스크톱, 모바일', page:'홈 화면', status:'progress'},
+  {id:2, title:'추석 연휴 배송 안내', start:'2026-09-14 00:00', end:'2026-09-20 23:59', device:'데스크톱', page:'홈 화면', status:'scheduled'},
+  {id:3, title:'신규 회원 쿠폰 팝업', start:'2026-06-01 00:00', end:'2026-06-30 23:59', device:'데스크톱, 모바일', page:'사용자 정의', status:'ended'},
+];
+let nextPopupId = 4;
+const statusLabelP = {progress:'진행중', scheduled:'예정', ended:'종료'};
+const statusClassP = {progress:'ps-progress', scheduled:'ps-scheduled', ended:'ps-ended'};
+
+function renderPopupList(){
+  const wrap = document.getElementById('popupListWrap');
+  const empty = document.getElementById('popupEmpty');
+
+  if(popups.length === 0){
+    wrap.innerHTML = '';
+    empty.style.display = 'flex';
+    return;
+  }
+  empty.style.display = 'none';
+
+  wrap.innerHTML = `
+    <div style="overflow-x:auto;">
+    <table style="table-layout:fixed;">
+      <colgroup>
+        <col style="width:24%;"><col style="width:100px;"><col style="width:26%;">
+        <col style="width:16%;"><col style="width:14%;"><col style="width:44px;">
+      </colgroup>
+      <thead>
+        <tr><th>제목</th><th>상태</th><th>기간</th><th>대상 기기</th><th>노출 페이지</th><th></th></tr>
+      </thead>
+      <tbody>
+        ${popups.map(p => `
+          <tr>
+            <td style="font-weight:700;color:var(--text);cursor:pointer;" onclick="openPopupForm(${p.id})">${p.title}</td>
+            <td><span class="pop-status-pill ${statusClassP[p.status]}">${statusLabelP[p.status]}</span></td>
+            <td class="text-sub">${p.start} ~ ${p.end}</td>
+            <td class="text-sub">${p.device}</td>
+            <td class="text-sub">${p.page}</td>
+            <td>
+              <div class="dropdown">
+                <button class="row-menu-btn" onclick="toggleRowMenu(event,${p.id})">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+                </button>
+                <div class="dropdown-menu" id="menu-${p.id}">
+                  <button onclick="closeAllMenus(); openPopupForm(${p.id})">수정</button>
+                  <button onclick="closeAllMenus(); duplicatePopup(${p.id})">복제</button>
+                  <div class="sep"></div>
+                  <button class="danger" onclick="closeAllMenus(); openDeletePopupModal(${p.id})">삭제</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+    </div>
+  `;
+}
+function duplicatePopup(id){
+  const p = popups.find(x=>x.id===id);
+  if(!p) return;
+  popups.unshift({...p, id: nextPopupId++, title: p.title+' (사본)', status:'scheduled'});
+  renderPopupList();
+  showToast('팝업이 복제되었습니다');
+}
+
+/* ================= 삭제 ================= */
+let deleteTargetPopupId = null;
+function openDeletePopupModal(id){
+  deleteTargetPopupId = id;
+  const p = popups.find(x=>x.id===id);
+  document.getElementById('popupDeleteName').textContent = p ? p.title : '';
+  document.getElementById('popupDeleteModal').classList.add('open');
+}
+function confirmDeletePopup(){
+  const idx = popups.findIndex(p=>p.id===deleteTargetPopupId);
+  if(idx>-1) popups.splice(idx,1);
+  closeModal('popupDeleteModal');
+  renderPopupList();
+  showToast('팝업이 삭제되었습니다');
+}
+
+/* ================= 생성/수정 폼 ================= */
+let editingPopupId = null;
+function openPopupForm(id){
+  editingPopupId = id || null;
+  const isEdit = !!id;
+  document.getElementById('popupFormTitle').textContent = isEdit ? '팝업 수정' : '팝업 추가';
+  document.getElementById('pf_title').value = isEdit ? popups.find(p=>p.id===id).title : '';
+  document.querySelector('input[name="pf_page"][value="home"]').checked = true;
+  onExposurePageChange();
+  document.getElementById('popupFormModal').classList.add('open');
+}
+
+/* ================= 노출 페이지 전환 ================= */
+function onExposurePageChange(){
+  const val = document.querySelector('input[name="pf_page"]:checked').value;
+  document.getElementById('pageTreeBlock').style.display = val === 'custom' ? 'block' : 'none';
+  document.getElementById('productBlock').style.display = val === 'product' ? 'block' : 'none';
+}
+
+/* ================= 노출 상품 선택 ================= */
+const popupProductCatalog = [
+  {id:62, name:'감귤', emoji:'🍊', bg:'#FFF3E0'},
+  {id:61, name:'바나나', emoji:'🍌', bg:'#FFF9DB'},
+  {id:60, name:'레몬', emoji:'🍋', bg:'#FEFCE8'},
+  {id:59, name:'아보카도', emoji:'🥑', bg:'#F0FDF4'},
+  {id:40, name:'딸기', emoji:'🍓', bg:'#FFF1F2'},
+];
+let popupSelectedProducts = [];
+let popupPickTemp = new Set();
+
+function openPopupProductPicker(){
+  document.getElementById('popupProductSearch').value = '';
+  popupPickTemp = new Set(popupSelectedProducts.map(p=>p.id));
+  renderPopupProductPickList();
+  document.getElementById('popupProductPickerModal').classList.add('open');
+}
+function renderPopupProductPickList(){
+  const q = document.getElementById('popupProductSearch').value.trim().toLowerCase();
+  const list = popupProductCatalog.filter(p => !q || p.name.toLowerCase().includes(q));
+  document.getElementById('popupProductPickList').innerHTML = list.map(p => `
+    <label class="padd-select-row" style="cursor:pointer;">
+      <input type="checkbox" ${popupPickTemp.has(p.id)?'checked':''} onchange="togglePopupPick(${p.id}, this.checked)" style="width:16px;height:16px;accent-color:var(--accent);">
+      <div class="thumb" style="background:${p.bg}">${p.emoji}</div>
+      <div class="pname">${p.name}</div>
+    </label>
+  `).join('');
+}
+function togglePopupPick(id, checked){
+  if(checked) popupPickTemp.add(id); else popupPickTemp.delete(id);
+}
+function confirmAddPopupProducts(){
+  popupSelectedProducts = popupProductCatalog.filter(p => popupPickTemp.has(p.id));
+  closeModal('popupProductPickerModal');
+  renderPopupProductTable();
+  showToast('노출 상품이 추가되었습니다');
+}
+function renderPopupProductTable(){
+  const tbody = document.getElementById('popupProductTbody');
+  const empty = document.getElementById('popupProductEmpty');
+  if(popupSelectedProducts.length === 0){
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  tbody.innerHTML = popupSelectedProducts.map(p => `
+    <tr>
+      <td><input type="checkbox" class="popup-prod-chk" value="${p.id}"></td>
+      <td style="display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:600;">
+        <span style="width:26px;height:26px;border-radius:7px;background:${p.bg};display:inline-flex;align-items:center;justify-content:center;font-size:14px;">${p.emoji}</span>
+        ${p.name}
+      </td>
+      <td class="text-sub">판매중</td>
+    </tr>
+  `).join('');
+}
+function toggleAllPopupProducts(cb){
+  document.querySelectorAll('.popup-prod-chk').forEach(c => c.checked = cb.checked);
+}
+function removeSelectedPopupProducts(){
+  const checkedIds = Array.from(document.querySelectorAll('.popup-prod-chk:checked')).map(c => Number(c.value));
+  if(checkedIds.length === 0){ showToast('삭제할 상품을 선택해주세요'); return; }
+  popupSelectedProducts = popupSelectedProducts.filter(p => !checkedIds.includes(p.id));
+  renderPopupProductTable();
+  showToast('선택한 상품을 삭제했습니다');
+}
+
+function submitPopup(){
+  const title = document.getElementById('pf_title').value.trim();
+  if(!title){ showToast('제목을 입력해주세요'); return; }
+
+  if(editingPopupId){
+    const p = popups.find(x=>x.id===editingPopupId);
+    if(p) p.title = title;
+    closeModal('popupFormModal');
+    renderPopupList();
+    showToast('팝업이 수정되었습니다');
+    editingPopupId = null;
+    return;
+  }
+
+  popups.unshift({
+    id: nextPopupId++, title,
+    start:'2026-07-17 06:11', end:'2026-07-24 23:59',
+    device:'데스크톱', page:'홈 화면', status:'scheduled'
+  });
+  closeModal('popupFormModal');
+  renderPopupList();
+  showToast('팝업이 등록되었습니다');
+}
+
+/* ================= 토스트 ================= */
+renderPopupList();
+</script>
+</body>
+</html>

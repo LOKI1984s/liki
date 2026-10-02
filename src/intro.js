@@ -318,11 +318,11 @@ function init() {
   /* ---- 메뉴 반응 ---- */
   const BASE = { speed: 1, spread: 0, run: 0, bright: 0, hue: 0 };
   const MODES = {
-    skills: { speed: 2.8 },                    // 빨라짐
+    models: { bright: 1, speed: 1.6 },         // 밝아짐
     history: { speed: 0.3, spread: 0.35 },     // 느려지며 흩어짐
-    dev: { run: 1, speed: 1.3 },               // 가장자리 빛이 빠르게 흐름
-    projects: { bright: 1, speed: 1.6 },       // 밝아짐
-    references: { hue: 1, speed: 0.8 },        // 민트로 물듦
+    partners: { hue: 1, speed: 0.8 },          // 민트로 물듦
+    skills: { speed: 2.8 },                    // 빨라짐
+    contact: { run: 1, speed: 1.3 },           // 가장자리 빛이 빠르게 흐름
   };
   const cur = { ...BASE };
   let goal = { ...BASE };
@@ -361,21 +361,53 @@ function init() {
     wide = w > 900;
     camera.position.set(0, 0, wide ? 9 : 12.5);
     camera.updateProjectionMatrix();
+    place();
+  }
+  function place() {
+    const w = innerWidth, h = innerHeight;
     if (wide) {
       world.position.set(3.0, 0, 0);
       world.scale.setScalar(0.86);
     } else {
-      // 세로 화면: 제목 오른쪽 옆, 화면 위에서 38% 지점
+      // 좁은 화면: 실제 제목(.intro-name) 오른쪽 빈칸에 가로 ∞를 맞춰 넣는다
       const halfH = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
-      const halfW = halfH * camera.aspect;
-      const nx = w >= 500 ? 0.0 : 0.3;
-      world.position.set(nx * halfW, (1 - 2 * 0.38) * halfH, 0);
-      world.scale.setScalar(w >= 500 ? 0.62 : 0.5);
+      const upp = (2 * halfH) / h; // 화면 1px당 월드 단위
+      const t = document.querySelector(".intro-name");
+      const r = t?.getBoundingClientRect();
+      // 제목 칸은 가로 전체라서, 글자 자체의 오른쪽 끝을 Range로 잰다
+      let textR = w * 0.45;
+      if (t) {
+        const rg = document.createRange();
+        const ends = [];
+        const walk = document.createTreeWalker(t, NodeFilter.SHOW_TEXT);
+        for (let n = walk.nextNode(); n; n = walk.nextNode()) { rg.selectNodeContents(n); ends.push(rg.getBoundingClientRect().right); }
+        if (ends.length) textR = Math.max(...ends);
+      }
+      // 태블릿처럼 글 영역 오른쪽이 넉넉하면 그 빈 공간 전체에, 휴대폰은 제목 오른쪽에 넣는다
+      const col = document.querySelector(".intro-text")?.getBoundingClientRect();
+      const side = col && w - col.right - 32 >= 200;
+      const left = side ? col.right + 24 : textR + 20, right = w - 16;
+      const cx = (left + right) / 2;
+      const cy = side ? col.top + col.height * 0.42 : r ? r.top + r.height / 2 : h * 0.22;
+      const EXT_W = SIZE + WIDTH + 0.2, EXT_H = 1.7; // 회전 · 띠 폭을 감안한 ∞ 반폭 · 반높이 (월드 단위)
+      const maxHpx = side ? col.height * 0.85 : Math.min(r ? r.height * 1.35 : 120, 150);
+      // 옆 공간(세로로 긴 영역)은 8자로 세우고, 제목 옆(가로로 긴 영역)은 눕힌다
+      const [ew, eh] = side ? [EXT_H, EXT_W] : [EXT_W, EXT_H];
+      const s = Math.min(((right - left) / 2) * upp / ew, (maxHpx / 2) * upp / eh);
+      world.position.set((cx - w / 2) * upp, -(cy - h / 2) * upp, 0);
+      world.scale.setScalar(Math.max(s, 0.12));
+      world.rotation.z = side ? Math.PI / 2 : 0;
+      return;
     }
-    world.rotation.z = wide ? 0 : Math.PI / 2; // 세로 화면에선 8자로 세움
+    world.rotation.z = 0;
   }
   addEventListener("resize", resize);
   resize();
+  // 글꼴 로딩 · 제목 스크램블이 끝나면 제목 폭이 확정되므로 다시 맞춘다
+  document.fonts?.ready.then(resize);
+  setTimeout(resize, 1800);
+  // 스크롤해도 제목을 따라가도록 (좁은 화면은 인트로가 화면보다 길 수 있음)
+  addEventListener("scroll", () => { if (!wide) place(); }, { passive: true });
 
   /* ---- Loop ---- */
   const clock = new Clock();

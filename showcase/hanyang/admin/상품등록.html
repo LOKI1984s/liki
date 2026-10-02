@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상품 등록 · 관리자</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===== Global Header ===== -->
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='대시보드.html'">
+      <div class="mark">S</div>
+      <div class="name">ADMIN관리자</div>
+    </div>
+
+    <div class="gh-quick">
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'inquiry')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="gh-notif-label">문의</span>
+          <span class="badge-dot">3</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-inquiry">
+          <div class="gh-notif-panel-head">신규 문의 <b>3건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">배송이 너무 늦어요</div><div class="sub">김민준 · 5분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">사이즈 교환 문의</div><div class="sub">이서연 · 22분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">결제가 안돼요</div><div class="sub">박도윤 · 1시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('문의 전체보기로 이동합니다')">문의 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'order')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="gh-notif-label">주문</span>
+          <span class="badge-dot">12</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-order">
+          <div class="gh-notif-panel-head">신규 주문 <b>12건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-042 · 88,000원</div><div class="sub">최지우 · 3분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-041 · 132,000원</div><div class="sub">정하은 · 18분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-040 · 45,000원</div><div class="sub">윤시우 · 40분 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('주문 전체보기로 이동합니다')">주문 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'delivery')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17h4V5H2v12h3"/><path d="M14 9h4l3 3v5h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="gh-notif-label">배송</span>
+          <span class="badge-dot">5</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-delivery">
+          <div class="gh-notif-panel-head">배송 대기 <b>5건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-118 발송 대기</div><div class="sub">김민준 · 2시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-117 발송 대기</div><div class="sub">이서연 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-116 지연 접수</div><div class="sub">박도윤 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('배송 현황으로 이동합니다')">배송 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'comment')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+          <span class="gh-notif-label">댓글</span>
+          <span class="badge-dot">2</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-comment">
+          <div class="gh-notif-panel-head">새 댓글 <b>2건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"배송 진짜 빠르네요!"</div><div class="sub">최지우 · 30분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"재입고 언제 되나요?"</div><div class="sub">정하은 · 2시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('댓글 전체보기로 이동합니다')">댓글 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'newmember')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+          <span class="gh-notif-label">신규회원</span>
+          <span class="badge-dot">4</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-newmember">
+          <div class="gh-notif-panel-head">신규 가입 <b>4명</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">정하은</div><div class="sub">카카오 가입 · 40분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">박도윤</div><div class="sub">자체 가입 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">윤시우</div><div class="sub">네이버 가입 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('회원목록으로 이동합니다')">신규회원 전체보기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">김도현 관리자님</div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>192.168.0.1 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="showToast('로그아웃 되었습니다')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll">
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">사이트관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="01_카테고리.html"><span class="dot"></span>카테고리</a>
+          <a class="nav-item" href="02_메뉴설정.html"><span class="dot"></span>메뉴설정</a>
+          <a class="nav-item" href="03_공지사항.html"><span class="dot"></span>공지사항</a>
+          <a class="nav-item" href="04_팝업배너.html"><span class="dot"></span>팝업·배너</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="ng-text">회원관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="05_회원목록.html"><span class="dot"></span>회원목록</a>
+          <a class="nav-item" href="06_회원등급.html"><span class="dot"></span>회원등급</a>
+          <a class="nav-item" href="07_회원설정.html"><span class="dot"></span>회원설정</a>
+          <a class="nav-item" href="08_추천인설정.html"><span class="dot"></span>추천인설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="ng-text">주문관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="09_입금관리.html"><span class="dot"></span>입금관리</a>
+          <a class="nav-item" href="10_상품관리.html"><span class="dot"></span>상품관리</a>
+          <a class="nav-item" href="11_주문관리.html"><span class="dot"></span>주문관리</a>
+          <a class="nav-item" href="12_배송관리.html"><span class="dot"></span>배송관리</a>
+          <a class="nav-item" href="13_정기구독.html"><span class="dot"></span>정기구독</a>
+          <a class="nav-item" href="14_문의.html"><span class="dot"></span>문의</a>
+          <a class="nav-item" href="15_구매평.html"><span class="dot"></span>구매평</a>
+          <a class="nav-item" href="16_재입고알림.html"><span class="dot"></span>재입고알림</a>
+          <a class="nav-item" href="17_세금계산서.html"><span class="dot"></span>세금계산서</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 12l9 9 11-11-2-8-8-2Z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">프로모션</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="18_쿠폰.html"><span class="dot"></span>쿠폰</a>
+          <a class="nav-item" href="19_적립금.html"><span class="dot"></span>적립금</a>
+          <a class="nav-item" href="20_이벤트.html"><span class="dot"></span>이벤트</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14v3M12 10v7M17 6v11"/></svg>
+          <span class="ng-text">통계</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="21_개요.html"><span class="dot"></span>개요</a>
+          <a class="nav-item" href="22_매출.html"><span class="dot"></span>매출</a>
+          <a class="nav-item" href="23_기간별분석.html"><span class="dot"></span>기간별분석</a>
+          <a class="nav-item" href="24_유입통계.html"><span class="dot"></span>유입통계</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ng-text">메세지</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="25_문자발송.html"><span class="dot"></span>문자발송</a>
+          <a class="nav-item" href="26_자동메일.html"><span class="dot"></span>자동메일</a>
+          <a class="nav-item" href="27_환경설정.html"><span class="dot"></span>환경설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.2 4.2l2.8 2.8m10 10 2.8 2.8M1 12h4m14 0h4M4.2 19.8l2.8-2.8m10-10 2.8-2.8"/></svg>
+          <span class="ng-text">시스템</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="28_일반설정.html"><span class="dot"></span>일반설정</a>
+          <a class="nav-item" href="29_약관개인정보.html"><span class="dot"></span>약관·개인정보</a>
+          <a class="nav-item" href="30_도메인관리.html"><span class="dot"></span>도메인관리</a>
+          <a class="nav-item" href="31_전자결제.html"><span class="dot"></span>전자결제</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5z"/></svg>
+          <span class="ng-text">권한관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="32_관리자계정.html"><span class="dot"></span>관리자계정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+          <span class="ng-text">파트너</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="33_리셀러목록.html"><span class="dot"></span>리셀러목록</a>
+          <a class="nav-item" href="34_리셀러설정.html"><span class="dot"></span>리셀러설정</a>
+          <a class="nav-item" href="35_리셀러트리.html"><span class="dot"></span>리셀러트리</a>
+          <a class="nav-item" href="36_리셀러정산.html"><span class="dot"></span>리셀러정산</a>
+          <a class="nav-item" href="37_리셀러도메인.html"><span class="dot"></span>리셀러도메인</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== Main ===== -->
+  <main class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button class="reg-topbar-btn" onclick="location.href='10_상품관리.html'">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <div>
+          <div class="page-title">상품 등록</div>
+          <div class="breadcrumb">쇼핑 &nbsp;/&nbsp; 상품관리 &nbsp;/&nbsp; 상품 등록</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="submitProduct()">상품 등록 완료</button>
+    </div>
+
+    <div class="content">
+      <div class="reg-shell">
+      <div class="reg-left-group">
+
+        <!-- 좌측 퀵네비 -->
+        <div class="reg-nav" id="regNav">
+          <div class="reg-nav-item active" data-target="sec-info" onclick="scrollToSection('sec-info')">상품 정보</div>
+          <div class="reg-nav-item" data-target="sec-detail" onclick="scrollToSection('sec-detail')">상품 상세 설명</div>
+          <div class="reg-nav-item" data-target="sec-price" onclick="scrollToSection('sec-price')">가격</div>
+          <div class="reg-nav-item" data-target="sec-discount" onclick="scrollToSection('sec-discount')">할인 및 적립금 설정</div>
+          <div class="reg-nav-item" data-target="sec-shipping" onclick="scrollToSection('sec-shipping')">배송</div>
+          <div class="reg-nav-item" data-target="sec-stock" onclick="scrollToSection('sec-stock')">재고 관리</div>
+          <div class="reg-nav-item" data-target="sec-option" onclick="scrollToSection('sec-option')">옵션</div>
+          <div class="reg-nav-item" data-target="sec-emphasis" onclick="scrollToSection('sec-emphasis')">상품 강조 설정</div>
+          <div class="reg-nav-item" data-target="sec-sale" onclick="scrollToSection('sec-sale')">판매 설정</div>
+          <div class="reg-nav-item" data-target="sec-related" onclick="scrollToSection('sec-related')">연관상품</div>
+          <div class="reg-nav-item" data-target="sec-addon" onclick="scrollToSection('sec-addon')">추가 상품</div>
+          <div class="reg-nav-item" data-target="sec-display" onclick="scrollToSection('sec-display')">상품 전시</div>
+          <div class="reg-nav-item" data-target="sec-limit" onclick="scrollToSection('sec-limit')">구매 제한 및 기타 설정</div>
+        </div>
+
+        <!-- 메인 폼 -->
+        <div class="reg-main">
+
+          <!-- 상품 정보 -->
+          <div class="card reg-section" id="sec-info">
+            <div class="reg-section-title">상품 정보</div>
+
+            <div class="field">
+              <label>이미지 <span class="req">*</span></label>
+              <div class="img-upload-box" onclick="showToast('이미지를 업로드해주세요')">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                이미지 등록
+              </div>
+              <div class="img-upload-hint">이미지 형식 PNG, GIF, JPG/JPEG, BMP / 권장 해상도 750px*750px 이상, GIF 3MB 이하 (초과 시 정적 이미지로 변환)</div>
+            </div>
+
+            <div class="reg-grid2">
+              <div class="field">
+                <label>상품명 <span class="req">*</span></label>
+                <input type="text" id="f_name" placeholder="상품명을 입력해 주세요." oninput="syncPreview()">
+              </div>
+              <div class="field">
+                <label>카테고리 <span class="req">*</span></label>
+                <select id="f_category">
+                  <option value="">카테고리 선택</option>
+                  <option>Fruit</option>
+                  <option>Vegetable</option>
+                  <option>1-2인가구</option>
+                  <option>3-5인가구</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>요약 설명 <span style="color:var(--text-faint);font-weight:500;">(테스트, 크기와 굵기 등 표시 형식 지정 가능)</span></label>
+              <div class="rte-toolbar">
+                <button class="rte-btn" type="button" style="font-weight:800;">B</button>
+                <button class="rte-btn" type="button" style="font-style:italic;">I</button>
+                <button class="rte-btn" type="button" style="text-decoration:underline;">U</button>
+                <button class="rte-btn" type="button">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+                </button>
+                <button class="rte-btn" type="button">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-6"/><path d="M4 4h6v6H4z"/></svg>
+                </button>
+                <button class="rte-btn" type="button">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7 7l1.5-1.5a5 5 0 0 0-7-7L10 13Z"/></svg>
+                </button>
+              </div>
+              <textarea class="rte-body" placeholder="내용을 입력해주세요."></textarea>
+            </div>
+
+            <div class="reg-section-title" style="margin-top:6px;font-size:13px;">추가 정보</div>
+            <div class="reg-grid2">
+              <div class="field"><label>원산지</label><input type="text" placeholder="원산지를 입력해 주세요."></div>
+              <div class="field"><label>제조사</label><input type="text" placeholder="제조사를 입력해 주세요."></div>
+              <div class="field"><label>브랜드</label><input type="text" placeholder="브랜드를 입력해 주세요."></div>
+            </div>
+          </div>
+
+          <!-- 상품 상세 설명 -->
+          <div class="card reg-section" id="sec-detail">
+            <div class="reg-section-title">상품 상세 설명</div>
+            <div class="tabs" style="border-bottom:1px solid var(--border);padding:0 0 12px;margin-bottom:16px;">
+              <div class="tab active" style="padding:0 14px 10px;">이미지로 등록</div>
+              <div class="tab" style="padding:0 14px 10px;">에디터로 등록</div>
+            </div>
+            <div class="img-upload-box" style="width:100%;height:110px;" onclick="showToast('상세설명 이미지를 업로드해주세요')">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+              이미지 등록
+            </div>
+            <div class="img-upload-hint">이미지 형식 PNG, GIF, JPG/JPEG, BMP</div>
+
+            <div class="reg-section-title" style="margin-top:20px;font-size:13px;">고급 설정</div>
+            <div class="reg-grid2">
+              <div class="field"><label>상품 상세 상단 공통</label><select><option>사용 안함</option><option>공통 상단 사용</option></select></div>
+              <div class="field"><label>상품 상세 하단 공통</label><select><option>기본 하단 공통</option><option>사용 안함</option></select></div>
+            </div>
+
+            <div class="toggle-row">
+              <span class="lbl">상품정보제공고시</span>
+              <label class="switch"><input type="checkbox"><span class="track"></span></label>
+            </div>
+            <div class="toggle-row">
+              <span class="lbl">모바일 전용 상세 설명</span>
+              <label class="switch"><input type="checkbox"><span class="track"></span></label>
+            </div>
+          </div>
+
+          <!-- 가격 -->
+          <div class="card reg-section" id="sec-price">
+            <div class="reg-section-title" style="justify-content:space-between;">
+              <span>가격</span>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:500;color:var(--text-sub);">
+                가격 없음
+                <label class="switch"><input type="checkbox" id="f_noPrice" onchange="onNoPriceChange()"><span class="track"></span></label>
+              </div>
+            </div>
+            <div class="reg-grid2">
+              <div class="field">
+                <label>판매가 <span class="req">*</span></label>
+                <input type="text" id="f_price" placeholder="0" oninput="formatPriceInput(this); syncPreview()">
+              </div>
+              <div class="field">
+                <label>정상가</label>
+                <input type="text" id="f_originPrice" placeholder="0" oninput="formatPriceInput(this); calcPriceFromRatio();">
+              </div>
+            </div>
+
+            <div class="field">
+              <label>상품가격비율 추가</label>
+              <div style="display:flex;align-items:center;gap:8px;max-width:160px;">
+                <input type="text" id="f_priceRatio" placeholder="0" value="0" oninput="calcPriceFromRatio()">
+                <span style="font-size:13px;color:var(--text-sub);flex-shrink:0;">%</span>
+              </div>
+              <div class="settings-desc" style="margin-top:6px;">
+                정상가에 비율을 더해 판매가를 자동으로 계산합니다.<br>
+                예: 정상가 10,000원에 30%를 지정하면 판매가가 13,000원으로 자동 설정돼요.
+              </div>
+            </div>
+
+            <label class="radio-opt" style="margin-top:4px;"><input type="checkbox" checked> 세금이 포함된 가격</label>
+            <div class="toggle-row">
+              <span class="lbl">즉시/기간할인</span>
+              <label class="switch"><input type="checkbox"><span class="track"></span></label>
+            </div>
+          </div>
+
+          <!-- 할인 및 적립금 설정 -->
+          <div class="card reg-section" id="sec-discount">
+            <div class="reg-section-title">할인 및 적립금 설정</div>
+            <div class="field">
+              <label>적용 가능 할인</label>
+              <div style="display:flex;gap:20px;padding-top:2px;">
+                <label class="radio-opt"><input type="checkbox" checked> 쇼핑 등급 할인</label>
+                <label class="radio-opt"><input type="checkbox" checked> 쿠폰 할인</label>
+              </div>
+            </div>
+            <div class="reg-info-box">
+              여러 할인이 함께 적용되면, 즉시/기간할인 → 쇼핑 등급 할인 → 쿠폰 → 적립금 순으로 계산돼요.<br>
+              앞 단계에서 할인이 적용된 가격을 기준으로, 다음 할인이 순차적으로 계산됩니다.
+            </div>
+          </div>
+
+          <!-- 배송 -->
+          <div class="card reg-section" id="sec-shipping">
+            <div class="reg-section-title">배송</div>
+            <div class="field">
+              <label>배송 방법 <span style="color:var(--text-faint);font-weight:500;">(중복 선택 가능)</span></label>
+              <div class="badge-check-row">
+                <label><input type="checkbox" name="shipMethod" value="nationwide" checked> 전국배송</label>
+                <label><input type="checkbox" name="shipMethod" value="seoul_quick"> 서울퀵</label>
+                <label><input type="checkbox" name="shipMethod" value="same_day"> 당일배송</label>
+                <label><input type="checkbox" name="shipMethod" value="regional"> 지방배송</label>
+                <label><input type="checkbox" name="shipMethod" value="free"> 무료배송</label>
+              </div>
+            </div>
+            <div class="field">
+              <label>상품무게 (kg)</label>
+              <input type="text" placeholder="1">
+            </div>
+            <div class="field">
+              <label>배송 관련 안내</label>
+              <textarea class="ta" placeholder="입력된 배송 관련 안내가 없습니다."></textarea>
+              <label class="radio-opt" style="margin-top:8px;"><input type="checkbox"> 직접 입력</label>
+            </div>
+          </div>
+
+          <!-- 재고 관리 -->
+          <div class="card reg-section" id="sec-stock">
+            <div class="reg-section-title">재고 관리</div>
+            <div class="reg-grid2">
+              <div class="field"><label>재고번호(SKU)</label><input type="text" placeholder="영문 또는 숫자를 입력해 주세요."></div>
+              <div class="field"><label>자체 상품 코드</label><input type="text" placeholder="고유한 코드를 입력해 주세요."></div>
+            </div>
+            <div class="toggle-row">
+              <span class="lbl">재고 수량 관리</span>
+              <label class="switch"><input type="checkbox"><span class="track"></span></label>
+            </div>
+          </div>
+
+          <!-- 옵션 -->
+          <div class="card reg-section" id="sec-option">
+            <div class="reg-section-title">옵션</div>
+            <div class="empty-illust">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="21" r="1.4"/><circle cx="18" cy="21" r="1.4"/><path d="M2 3h2l2.6 12.2a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.6L21 8H6"/></svg>
+              <div>옵션을 설정하면 고객이 상품을 구매할 때 원하는 항목을 선택할 수 있어요.<br>색상, 사이즈, 추가 구성 등 여러 조건을 조합해 등록할 수 있어요.</div>
+              <div style="display:flex;gap:8px;">
+                <button class="btn btn-primary" onclick="showToast('옵션 추가 화면으로 이동합니다')">옵션 추가</button>
+                <button class="btn" onclick="showToast('다른 상품의 옵션을 불러옵니다')">다른 상품 옵션 불러오기</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 상품 강조 설정 -->
+          <div class="card reg-section" id="sec-emphasis">
+            <div class="reg-section-title">상품 강조 설정</div>
+            <div class="field">
+              <label>상품 배지</label>
+              <div class="badge-check-row">
+                <label><input type="checkbox"> 신상품</label>
+                <label><input type="checkbox"> 베스트</label>
+                <label><input type="checkbox"> MD추천</label>
+                <label><input type="checkbox"> 주문폭주</label>
+                <label><input type="checkbox"> 오늘출발</label>
+              </div>
+            </div>
+            <div class="toggle-row">
+              <span class="lbl">대표 이미지 하단 배지</span>
+              <label class="switch"><input type="checkbox"><span class="track"></span></label>
+            </div>
+            <div class="toggle-row">
+              <span class="lbl">대표 이미지 하단 강조 배지</span>
+              <label class="switch"><input type="checkbox"><span class="track"></span></label>
+            </div>
+          </div>
+
+          <!-- 판매 설정 -->
+          <div class="card reg-section" id="sec-sale">
+            <div class="reg-section-title">판매 설정</div>
+            <div class="field">
+              <label>판매 선택</label>
+              <div style="display:flex;gap:20px;padding-top:2px;">
+                <label class="radio-row2"><input type="radio" name="f_saleStatus" checked> 판매중</label>
+                <label class="radio-row2"><input type="radio" name="f_saleStatus"> 품절</label>
+                <label class="radio-row2"><input type="radio" name="f_saleStatus"> 숨김</label>
+              </div>
+            </div>
+            <div class="toggle-row">
+              <span class="lbl">판매 기간 설정</span>
+              <label class="switch"><input type="checkbox" onchange="togglePeriod(this)"><span class="track"></span></label>
+            </div>
+            <div class="reg-grid2" id="periodBlock" style="display:none;margin-top:12px;">
+              <div class="field"><label>판매 시작일</label><input type="date"></div>
+              <div class="field"><label>판매 종료일</label><input type="date"></div>
+            </div>
+          </div>
+
+          <!-- 연관상품 -->
+          <div class="card reg-section" id="sec-related">
+            <div class="reg-section-title">연관상품</div>
+            <div class="field">
+              <label>상품 추가</label>
+              <div class="search-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="text" placeholder="상품명으로 검색해 주세요.">
+              </div>
+            </div>
+          </div>
+
+          <!-- 추가 상품 -->
+          <div class="card reg-section" id="sec-addon">
+            <div class="reg-section-title">추가 상품</div>
+            <div class="field">
+              <label>상품 추가</label>
+              <div class="search-box"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="text" placeholder="상품명으로 검색해 주세요.">
+              </div>
+            </div>
+          </div>
+
+          <!-- 상품 전시 -->
+          <div class="card reg-section" id="sec-display">
+            <div class="reg-section-title">상품 전시</div>
+            <div class="field plan-select-wrap">
+              <label>기획전</label>
+              <button type="button" class="plan-select-btn" id="planSelectBtn" onclick="togglePlanDropdown(event)">
+                <span id="planSelectLabel">기획전을 선택해 주세요</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <div class="plan-dropdown" id="planDropdown">
+                <button class="link-add" type="button" onclick="showToast('기획전 추가 화면으로 이동합니다')">+ 기획전 추가</button>
+                <label class="plan-option"><input type="checkbox" value="Best Item" onchange="updatePlanLabel()"> Best Item</label>
+                <label class="plan-option"><input type="checkbox" value="New Item" onchange="updatePlanLabel()"> New Item</label>
+                <label class="plan-option"><input type="checkbox" value="List &gt; Curation" onchange="updatePlanLabel()"> List &gt; Curation</label>
+                <label class="plan-option"><input type="checkbox" value="sale" onchange="updatePlanLabel()"> sale</label>
+              </div>
+            </div>
+            <div class="toggle-row">
+              <span class="lbl">사이트 내 검색결과 노출</span>
+              <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+            </div>
+          </div>
+
+          <!-- 구매 제한 및 기타 설정 -->
+          <div class="card reg-section" id="sec-limit">
+            <div class="reg-section-title">구매 제한 및 기타 설정</div>
+
+            <div class="field">
+              <label>최소 구매수량</label>
+              <input type="text" placeholder="0" style="max-width:160px;">
+            </div>
+
+            <div class="reg-grid2">
+              <div class="field">
+                <label>1회 최대 구매 수량</label>
+                <select>
+                  <option>본품/옵션수량 합산</option>
+                  <option>옵션별 수량</option>
+                  <option>옵션별 수량 (필수옵션만)</option>
+                  <option>옵션별 수량 (선택옵션만)</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>1인 최대 구매 수량</label>
+                <input type="text" placeholder="0">
+              </div>
+            </div>
+
+            <div class="field">
+              <label>0원 선택 옵션 구매시 최대 구매 수량</label>
+              <select id="f_zeroOption" onchange="onZeroOptionChange()">
+                <option>본 상품 구매 수량 만큼 구매 가능</option>
+                <option>최대 구매 수량 제한</option>
+                <option>1개만 구매 가능</option>
+              </select>
+              <label class="radio-opt" style="margin-top:8px;"><input type="checkbox"> 개별 설정</label>
+            </div>
+
+            <div class="toggle-row">
+              <span class="lbl">리셀러 구매 가능</span>
+              <label class="switch"><input type="checkbox"><span class="track"></span></label>
+            </div>
+
+            <div class="toggle-row">
+              <span class="lbl">개인통관고유부호 사용 설정</span>
+              <label class="switch"><input type="checkbox"><span class="track"></span></label>
+            </div>
+
+            <label class="radio-opt"><input type="checkbox"> 개별 설정</label>
+          </div>
+
+        </div>
+
+      </div>
+
+        <!-- 우측 미리보기 -->
+        <div class="reg-preview">
+          <div class="phone-frame">
+            <div class="phone-screen">
+              <div class="phone-status">
+                <span>9:41</span>
+                <span>▂▄▆ ▪ ▮</span>
+              </div>
+              <div class="phone-image">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+              </div>
+              <div class="phone-body">
+                <div class="phone-name" id="pv_name">상품명</div>
+                <div class="phone-price" id="pv_price">0 원</div>
+                <div class="phone-icons">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a3 3 0 1 0-2.8-4H15A3 3 0 1 0 12 7v.2L7 10a3 3 0 1 0 0 4l5 2.8V17a3 3 0 1 0 3-3 3 3 0 0 0-2 .8L8 12a3 3 0 0 0 0-1l5-2.8c.5.5 1.2.8 2 .8Z"/></svg>
+                </div>
+                <div class="phone-ship-row">
+                  배송 방법
+                  <select class="phone-select"><option>택배</option></select>
+                </div>
+                <div class="phone-actions">
+                  <div class="phone-btn outline">장바구니</div>
+                  <div class="phone-btn primary">구매하기</div>
+                </div>
+
+                <div class="phone-sep"></div>
+
+                <div class="phone-info-row">
+                  <span>배송비 결제</span>
+                  <select class="phone-select"><option>선결제</option><option>착불</option></select>
+                </div>
+
+                <div class="phone-ship-info">
+                  <span>배송</span>
+                  <div class="r">택배 · 기본 0원<br>0원 이상 구매 시 무료배송</div>
+                </div>
+
+                <div class="phone-tabs">
+                  <div class="phone-tab active">상세정보</div>
+                  <div class="phone-tab">구매평</div>
+                  <div class="phone-tab">Q&amp;A</div>
+                </div>
+
+                <div class="phone-detail-text">&lt;교환 및 반품 가능 기간&gt;
+- 계약내용에 관한 서면을 받은 날부터 7일. 다만, 그 서면을 받은 때보다 재화등의 공급이 늦게 이루어진 경우에는 재화등을 공급받거나 재화등의 공급이 시작된 날부터 7일
+- 공급받은 상품 및 용역의 내용이 표시·광고의 내용과 다르거나 계약내용과 다르게 이행된 경우에는 그 재화등을 공급받은 날부터 3개월 이내, 그 사실을 안 날 또는 알 수 있었던 날부터 30일이내</div>
+
+                <div class="phone-footnote">디자인 모드의 상세 설정에 따라 실제와 다를 수 있어요.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">저장되었습니다</span>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+/* ================= 헤더 알림 패널 ================= */
+/* ================= 좌측 퀵네비: 클릭 스크롤 + 스크롤스파이 ================= */
+function scrollToSection(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
+}
+const sectionIds = ['sec-info','sec-detail','sec-price','sec-discount','sec-shipping','sec-stock','sec-option','sec-emphasis','sec-sale','sec-related','sec-addon','sec-display','sec-limit'];
+const navItems = {};
+sectionIds.forEach(id => { navItems[id] = document.querySelector(`.reg-nav-item[data-target="${id}"]`); });
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      Object.values(navItems).forEach(el => el.classList.remove('active'));
+      navItems[entry.target.id].classList.add('active');
+    }
+  });
+}, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+
+sectionIds.forEach(id => observer.observe(document.getElementById(id)));
+
+/* ================= 가격 포맷 ================= */
+function onNoPriceChange(){
+  const noPrice = document.getElementById('f_noPrice').checked;
+  document.getElementById('f_price').disabled = noPrice;
+  if(noPrice) document.getElementById('f_price').value = '';
+  syncPreview();
+}
+
+/* ================= 상품가격비율 추가 → 판매가 자동계산 ================= */
+function calcPriceFromRatio(){
+  const originRaw = document.getElementById('f_originPrice').value.replace(/[^0-9]/g,'');
+  const ratioRaw = document.getElementById('f_priceRatio').value.replace(/[^0-9.\-]/g,'');
+  const origin = originRaw ? Number(originRaw) : 0;
+  const ratio = ratioRaw ? Number(ratioRaw) : 0;
+
+  if(origin > 0){
+    const calculated = Math.round(origin * (1 + ratio/100));
+    document.getElementById('f_price').value = calculated.toLocaleString();
+    syncPreview();
+  }
+}
+
+/* ================= 미리보기 동기화 ================= */
+function syncPreview(){
+  const name = document.getElementById('f_name').value.trim();
+  document.getElementById('pv_name').textContent = name || '상품명';
+  const priceRaw = document.getElementById('f_price').value.replace(/[^0-9]/g,'');
+  document.getElementById('pv_price').textContent = (priceRaw ? Number(priceRaw).toLocaleString() : '0') + ' 원';
+}
+
+/* ================= 판매기간 토글 ================= */
+function togglePeriod(el){
+  document.getElementById('periodBlock').style.display = el.checked ? 'grid' : 'none';
+}
+
+/* ================= 기획전 멀티셀렉트 ================= */
+function togglePlanDropdown(e){
+  e.stopPropagation();
+  const dd = document.getElementById('planDropdown');
+  const wasOpen = dd.classList.contains('open');
+  closeAllMenus();
+  if(!wasOpen) dd.classList.add('open');
+}
+function updatePlanLabel(){
+  const checked = Array.from(document.querySelectorAll('.plan-option input:checked')).map(el => el.value.replace('&gt;','>'));
+  const label = document.getElementById('planSelectLabel');
+  const btn = document.getElementById('planSelectBtn');
+  if(checked.length === 0){
+    label.textContent = '기획전을 선택해 주세요';
+    btn.classList.remove('has-value');
+  } else {
+    label.textContent = checked.join(', ');
+    btn.classList.add('has-value');
+  }
+}
+document.getElementById('planDropdown').addEventListener('click', e => e.stopPropagation());
+
+/* ================= 0원 옵션 select 안내 ================= */
+function onZeroOptionChange(){
+  // 시각적 데모용 - 실제 개별설정 UI는 백엔드 연동 시 구현
+}
+
+/* ================= 등록 완료 ================= */
+function submitProduct(){
+  const name = document.getElementById('f_name').value.trim();
+  const category = document.getElementById('f_category').value;
+  const price = document.getElementById('f_price').value.trim();
+  const noPrice = document.getElementById('f_noPrice').checked;
+
+  if(!name){ showToast('상품명을 입력해주세요'); scrollToSection('sec-info'); return; }
+  if(!category){ showToast('카테고리를 선택해주세요'); scrollToSection('sec-info'); return; }
+  if(!noPrice && !price){ showToast('판매가를 입력해주세요'); scrollToSection('sec-price'); return; }
+
+  showToast('상품이 등록되었습니다');
+  setTimeout(() => { location.href = '10_상품관리.html'; }, 900);
+}
+
+/* ================= 토스트 ================= */
+</script>
+</body>
+</html>

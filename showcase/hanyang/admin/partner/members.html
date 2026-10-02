@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회원목록 · 파트너센터</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===== Global Header ===== -->
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='dashboard.html'">
+      <div class="mark">P</div>
+      <div class="name">파트너센터</div>
+    </div>
+
+    <div class="gh-quick"></div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">강남플라워스튜디오님 <span class="p-tier-badge">총판</span></div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>정상 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="location.href='login.html'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll" style="padding-top:14px;">
+      <div class="p-nav-section">파트너센터</div>
+      <a class="p-nav-item" href="dashboard.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>대시보드</span></a>
+      <a class="p-nav-item active" href="members.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>회원목록</span></a>
+      <a class="p-nav-item" href="settlement.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span>정산관리</span></a>
+      <a class="p-nav-item" href="agencies.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3.5"/><path d="M2.5 21v-1.5A4.5 4.5 0 0 1 7 15h4a4.5 4.5 0 0 1 4.5 4.5V21"/><circle cx="18" cy="8" r="2.5"/><path d="M15.5 15.2A4 4 0 0 1 21.5 19v2"/></svg><span>하위 대리점</span></a>
+      <a class="p-nav-item" href="domain.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span>도메인</span></a>
+      <a class="p-nav-item" href="account.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg><span>내 정보</span></a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">회원목록</div>
+        <div class="breadcrumb">내 도메인을 통해 가입·구매한 고객이에요 (읽기 전용)</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="kpi-grid" style="margin-bottom:16px;">
+        <div class="kpi-card"><div class="kpi-label">전체 회원</div><div class="kpi-value">4명</div></div>
+        <div class="kpi-card"><div class="kpi-label">이번달 신규</div><div class="kpi-value">1명</div></div>
+        <div class="kpi-card"><div class="kpi-label">누적 구매금액</div><div class="kpi-value">1,842,000원</div></div>
+      </div>
+
+      <div class="card">
+        <div class="toolbar" style="padding:16px;">
+          <div style="font-size:13px;color:var(--text-sub);">전체 <b style="color:var(--text);">4</b>명</div>
+          <div style="flex:1;"></div>
+          <button class="btn" onclick="exportMembersExcel()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-1px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+            엑셀다운로드
+          </button>
+          <div class="search-box" style="width:240px;flex:none;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="searchInput" type="text" placeholder="이름, 연락처 검색" oninput="render()">
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+        <table style="table-layout:fixed;">
+          <colgroup><col style="width:15%;"><col style="width:16%;"><col style="width:13%;"><col style="width:12%;"><col style="width:13%;"><col style="width:11%;"><col style="width:20%;"></colgroup>
+          <thead><tr><th>이름</th><th>연락처</th><th>가입일</th><th>가입경로</th><th>구분</th><th>주문건수</th><th>누적 구매금액</th></tr></thead>
+          <tbody id="memberTbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+const memberTypeLabel = { distributor:'총판회원', agency:'대리점회원' };
+const memberTypeClass = { distributor:'badge-owner', agency:'badge-grade-general' };
+const myMembers = [
+  { name:'서지훈', phone:'010-2345-6789', joined:'2026-05-12', route:'자체 가입', type:'distributor', orders:5, amount:842000 },
+  { name:'한소율', phone:'010-3456-7890', joined:'2026-06-01', route:'카카오', type:'agency', orders:2, amount:340000 },
+  { name:'유하준', phone:'010-4567-8901', joined:'2026-06-20', route:'네이버', type:'agency', orders:3, amount:520000 },
+  { name:'배지안', phone:'010-5678-9012', joined:'2026-07-14', route:'자체 가입', type:'distributor', orders:1, amount:140000 },
+];
+function render(){
+  const kw = document.getElementById('searchInput').value.trim().toLowerCase();
+  const filtered = myMembers.filter(m => !kw || m.name.toLowerCase().includes(kw) || m.phone.includes(kw));
+  document.getElementById('memberTbody').innerHTML = filtered.map(m => `
+    <tr>
+      <td style="font-weight:600;">${m.name}</td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${m.phone}</td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${m.joined}</td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${m.route}</td>
+      <td><span class="badge ${memberTypeClass[m.type]}">${memberTypeLabel[m.type]}</span></td>
+      <td>${m.orders}건</td>
+      <td>${m.amount.toLocaleString()}원</td>
+    </tr>
+  `).join('');
+}
+function exportMembersExcel(){
+  const rows = [['이름','연락처','가입일','가입경로','구분','주문건수','누적 구매금액']];
+  myMembers.forEach(m => rows.push([m.name, m.phone, m.joined, m.route, memberTypeLabel[m.type], m.orders, m.amount]));
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = '내회원목록_' + new Date().toISOString().slice(0,10) + '.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('엑셀 파일을 다운로드했습니다');
+}
+render();
+</script>
+</body>
+</html>

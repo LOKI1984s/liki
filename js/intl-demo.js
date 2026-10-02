@@ -1,5 +1,5 @@
 /*
- * 국제 메시징 플랫폼 — 인터랙티브 구조도 (개발 페이지 팝업)
+ * 국제 메시징 플랫폼 — 인터랙티브 구조도 (사업 모델 페이지 팝업)
  * 탭: A2P 양방향 / OTP · 룩업 / 로밍 eSIM   목적지: 국가 선택
  * 공통 경로: 한국 플랫폼 → 미국 게이트웨이(수신·재발신) → Tier1 GSM 허브 → 목적지 통신사 → 단말
  * 한국 목적지는 1차 수신 통신사를 거쳐 '통신사 코드 + 대표번호'로 표시된다.
@@ -28,7 +28,7 @@
     svc:      N({ label: "기업 서비스", sub: "가입 · 로그인 · 결제", icon: "building-2", mt: "사용자가 인증번호 요청", mo: "인증 완료", desc: "OTP를 도입한 기업의 서비스입니다. 회원가입 때 휴대폰 번호를 인증하고, 로그인·결제 때는 비밀번호 대신 문자 인증번호를 씁니다." }),
     platform: N({ label: "A2P 플랫폼", sub: "KR · 발신", icon: "server", mt: "한국 플랫폼에서 발신 · 대표번호 확인 · 과금", mo: "플랫폼이 원래 발송 건과 매칭", desc: "한국에 있는 발송 플랫폼입니다. 대표번호 확인, 과금, 발송 건 번호 부여를 하고 국제망으로 내보냅니다. 답장이 오면 원래 발송 건과 짝지어 고객에게 돌려줍니다." }),
     otp:      N({ label: "OTP API", sub: "발급 · 룩업 · 검증", icon: "key-round", mt: "OTP 발급 · 6자리 생성 · 유효 3분", mo: "검증 API · 일치 · 유효시간 확인", desc: "기업 서버가 호출하는 OTP API입니다. 인증번호를 만들고(원문 대신 암호화 저장), 보내기 전에 룩업으로 번호를 확인하고, 사용자가 입력한 번호를 검증합니다. 재요청·시도 횟수 제한이 걸려 있습니다." }),
-    usIn:     N({ label: "US 게이트웨이", sub: "수신", icon: "globe", mt: "미국 게이트웨이 수신", mo: "미국 → 한국", desc: "미국 게이트웨이가 한국에서 보낸 메시지를 받습니다. 여기서부터 우회 구간입니다." }),
+    usIn:     N({ label: "US 게이트웨이", sub: "수신", icon: "globe", mt: "미국 게이트웨이 수신", mo: "미국에서 한국으로", desc: "미국 게이트웨이가 한국에서 보낸 메시지를 받습니다. 여기서부터 우회 구간입니다." }),
     usOut:    N({ label: "US 게이트웨이", sub: "재발신", icon: "send", mt: "미국에서 재발신 · 우회 구간", mo: "미국 게이트웨이 경유", desc: "미국에서 국제 사업자망으로 다시 발신합니다." }),
     hub:      N({ label: "Tier1 GSM 허브", sub: "IPX · SS7 · 글로벌 코드", icon: "network", mt: "Tier1 GSM 허브 · 사업자망으로 목적지 진입", mo: "Tier1 허브 · 국제망으로 회신", desc: "전 세계 통신사와 직접 연결된 사업자망입니다. 국가별 단독 코드가 아니라 글로벌 코드로 연결돼 있어 허브의 전 세계 라우팅망을 그대로 씁니다. 도착은 문서 기준 약 2초, 실무 10초 이내입니다." }),
     krGate:   N({ label: "1차 수신 통신사", sub: "국내 국제관문", icon: "antenna", mt: "1차 수신 통신사 · 통신사 코드 + 대표번호 표시", mo: "1차 수신 통신사 경유", desc: "국제 메시지를 가장 먼저 받는 국내 사업자입니다. 발신번호가 '통신사 코드 + 대표번호'로 붙어서, 국제발신이지만 한국 대표번호로 표시됩니다." }),
@@ -78,8 +78,8 @@
   const CARRIERS = ["MNO-A", "MNO-B", "MNO-C"];
   // OTP 시나리오: 회원가입(룩업으로 가짜 계정 차단) / 로그인
   const FLOW = {
-    signup: { title: "휴대폰 번호로 회원가입", ask: "사용자가 가입 중 번호 인증 요청", done: "가입 완료 · 번호 인증된 계정 생성", fraud: "대량 가입 감지: 가상번호로 인증 요청", fraudDone: "가상번호로 판단해 가입과 발송을 막았습니다.", fraudCap: "③ 룩업 결과 가상번호 → 가짜 계정 가입 차단 · 문자 비용 0", ok: "가입 완료" },
-    login:  { title: "휴대폰 인증으로 로그인", ask: "사용자가 로그인 인증번호 요청", done: "인증 완료 · 로그인되었습니다.", fraud: "대량 요청 감지: 가짜 번호로 인증번호 요청", fraudDone: "가짜 번호로 판단해 발송하지 않았습니다.", fraudCap: "③ 룩업 결과 무효 → 발송 차단 · 문자 비용 0", ok: "로그인 완료" },
+    signup: { title: "휴대폰 번호로 회원가입", ask: "사용자가 가입 중 번호 인증 요청", done: "가입 완료 · 번호 인증된 계정 생성", fraud: "대량 가입 감지: 가상번호로 인증 요청", fraudDone: "가상번호로 판단해 가입과 발송을 막았습니다.", fraudCap: "③ 룩업 결과 가상번호, 가짜 계정 가입 차단 · 문자 비용 0", ok: "가입 완료" },
+    login:  { title: "휴대폰 인증으로 로그인", ask: "사용자가 로그인 인증번호 요청", done: "인증 완료 · 로그인되었습니다.", fraud: "대량 요청 감지: 가짜 번호로 인증번호 요청", fraudDone: "가짜 번호로 판단해 발송하지 않았습니다.", fraudCap: "③ 룩업 결과 무효, 발송 차단 · 문자 비용 0", ok: "로그인 완료" },
   };
   const SPEED = 430;
 
@@ -185,17 +185,17 @@
             <div class="otp-stats">
               <div><span>가입 · 로그인</span><b data-os="ok">0</b></div>
               <div><span>공격 차단</span><b data-os="blocked" class="bad">0</b></div>
-              <div><span>평균 도착</span><b data-os="avg">–</b></div>
+              <div><span>평균 도착</span><b data-os="avg">대기</b></div>
             </div>
           </section>
           <section class="otp-side">
             <div class="lookup-card" aria-live="polite">
               <div class="panel-head"><span class="mono">LOOKUP</span><span class="lk-state mono">대기</span></div>
               <dl>
-                <dt>번호 상태</dt><dd data-lk="valid">–</dd>
-                <dt>통신사</dt><dd data-lk="carrier">–</dd>
-                <dt>번호이동</dt><dd data-lk="ported">–</dd>
-                <dt>로밍</dt><dd data-lk="roaming">–</dd>
+                <dt>번호 상태</dt><dd data-lk="valid">대기</dd>
+                <dt>통신사</dt><dd data-lk="carrier">대기</dd>
+                <dt>번호이동</dt><dd data-lk="ported">대기</dd>
+                <dt>로밍</dt><dd data-lk="roaming">대기</dd>
               </dl>
             </div>
             <div class="timer">
@@ -381,8 +381,8 @@
     el("polyline", { points: lanePts(1, S.order.slice().reverse()), class: `flow ${tab === "a2p" ? "mo" : "mint"}` }, svg);
     const ti = tab === "esim" && m === "h" ? 4 : 1; // 차선 이름 위치 (eSIM은 허브 ↔ 방문망 구간)
     const [mx, my] = pt(S.order[ti], -1), [ox, oy] = pt(S.order[ti], 1), mid = pt(S.order[ti + 1]);
-    const t1 = { a2p: ["MT 발신 →", "MT ↓"], otp: ["요청 · 발송 →", "↓"], esim: ["발급 · 승인 →", "↓"] }[tab];
-    const t2 = { a2p: ["← MO 답장", "MO ↑"], otp: ["← 응답 · 결과", "↑"], esim: ["← 인증 요청 · 데이터", "↑"] }[tab];
+    const t1 = { a2p: ["MT 발신", "MT"], otp: ["요청 · 발송", ""], esim: ["발급 · 승인", ""] }[tab];
+    const t2 = { a2p: ["MO 답장", "MO"], otp: ["응답 · 결과", ""], esim: ["인증 요청 · 데이터", ""] }[tab];
     el("text", m === "h" ? { x: (mx + mid[0]) / 2, y: my - 8, class: "lane-tag", "text-anchor": "middle" } : { x: mx - 8, y: (my + mid[1]) / 2, class: "lane-tag", "text-anchor": "end" }, svg).textContent = m === "h" ? t1[0] : t1[1];
     el("text", m === "h" ? { x: (ox + mid[0]) / 2, y: oy + 18, class: `lane-tag ${tab === "a2p" ? "mo" : "mint"}`, "text-anchor": "middle" } : { x: ox + 8, y: (oy + mid[1]) / 2, class: `lane-tag ${tab === "a2p" ? "mo" : "mint"}` }, svg).textContent = m === "h" ? t2[0] : t2[1];
 
@@ -516,7 +516,7 @@
   function showOtpStats() {
     $('[data-os="ok"]').textContent = otpStats.ok;
     $('[data-os="blocked"]').textContent = otpStats.blocked;
-    const t = otpStats.times; $('[data-os="avg"]').textContent = t.length ? `${(t.reduce((a, b) => a + b, 0) / t.length).toFixed(1)}s` : "–";
+    const t = otpStats.times; $('[data-os="avg"]').textContent = t.length ? `${(t.reduce((a, b) => a + b, 0) / t.length).toFixed(1)}s` : "대기";
   }
   function setStatus(text, cls = "") { const s = $(".otp-status"); s.textContent = text; s.className = `otp-status ${cls}`; }
   function setLookup(r, pending) {
@@ -524,7 +524,7 @@
     st.textContent = pending ? "조회 중…" : r ? (r.valid ? "통과" : "차단") : "대기";
     st.className = `lk-state mono ${r ? (r.valid ? "ok" : "bad") : pending ? "run" : ""}`;
     const set = (k, v, cls = "") => { const dd = $(`[data-lk="${k}"]`); dd.textContent = v; dd.className = cls; };
-    if (!r) { ["valid", "carrier", "ported", "roaming"].forEach((k) => set(k, pending ? "…" : "–")); return; }
+    if (!r) { ["valid", "carrier", "ported", "roaming"].forEach((k) => set(k, pending ? "…" : "대기")); return; }
     set("valid", r.valid ? "유효" : "무효 · 가상번호", r.valid ? "ok" : "bad");
     set("carrier", r.carrier); set("ported", r.ported); set("roaming", r.roaming, r.roaming.startsWith("로밍") ? "warn" : "");
   }
@@ -571,7 +571,7 @@
             onDone: () => {
               if (fraud) {
                 timing = false; setTimer(0, "");
-                setLookup({ valid: false, carrier: "확인 불가", ported: "–", roaming: "–" });
+                setLookup({ valid: false, carrier: "확인 불가", ported: "해당 없음", roaming: "해당 없음" });
                 flash(otp, "bad");
                 capEl.textContent = F.fraudCap;
                 setStatus(F.fraudDone, "bad");
@@ -598,12 +598,12 @@
                   const boxes = dlg.querySelectorAll(".code-boxes span");
                   [...code].forEach((ch, i) => later(0.6 + i * 0.16, () => { boxes[i].textContent = ch; boxes[i].className = "on"; }));
                   later(0.6 + 6 * 0.16 + 0.2, () => {
-                    capEl.textContent = "⑤ 사용자가 인증번호 입력 → 검증 요청";
+                    capEl.textContent = "⑤ 사용자가 인증번호 입력, 검증 요청";
                     launch({
                       kind: "vf", ids: [svc, otp], lane: -1, hit: "hit-dlr",
                       onDone: () => launch({
                         kind: "vf", ids: [otp, svc], lane: 1, hit: "hit-dlr",
-                        cap: (id) => (id === svc ? `⑥ 검증 통과 · 일치 · 유효시간 안 → ${F.ok}` : ""),
+                        cap: (id) => (id === svc ? `⑥ 검증 통과 · 일치 · 유효시간 안, ${F.ok}` : ""),
                         onDone: () => {
                           boxes.forEach((b) => (b.className = "ok"));
                           setStatus(F.done, "ok");
@@ -770,7 +770,7 @@
       let timing = true;
       const tk = () => { if (!timing || !running || tab !== "esim") return; setETimer(Math.min(((clock - t0) / total) * target, target), "run"); later(0.05, tk); };
       tk();
-      cap(`⑤ ${d.ko} 도착 · 폰 켜짐 → ${d.ko} 방문망 ${biz ? "자동 연결 (추가 가입 없음)" : "접속"}`);
+      cap(`⑤ ${d.ko} 도착 · 폰 켜짐, ${d.ko} 방문망 ${biz ? "자동 연결 (추가 가입 없음)" : "접속"}`);
       esimScreen(`<p class="e-msg">망 검색 중…</p>`, "Searching…", 1);
       launch({
         kind: "lk", ids: req, lane: 1, speed: SPEED * 1.4, hit: "hit-lk",

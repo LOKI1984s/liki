@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>일반설정 · 관리자</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='대시보드.html'">
+      <div class="mark">S</div>
+      <div class="name">ADMIN관리자</div>
+    </div>
+
+    <div class="gh-quick">
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'inquiry')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="gh-notif-label">문의</span>
+          <span class="badge-dot">3</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-inquiry">
+          <div class="gh-notif-panel-head">신규 문의 <b>3건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">배송이 너무 늦어요</div><div class="sub">김민준 · 5분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">사이즈 교환 문의</div><div class="sub">이서연 · 22분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">결제가 안돼요</div><div class="sub">박도윤 · 1시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('문의 전체보기로 이동합니다')">문의 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'order')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="gh-notif-label">주문</span>
+          <span class="badge-dot">12</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-order">
+          <div class="gh-notif-panel-head">신규 주문 <b>12건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-042 · 88,000원</div><div class="sub">최지우 · 3분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-041 · 132,000원</div><div class="sub">정하은 · 18분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-040 · 45,000원</div><div class="sub">윤시우 · 40분 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('주문 전체보기로 이동합니다')">주문 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'delivery')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17h4V5H2v12h3"/><path d="M14 9h4l3 3v5h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="gh-notif-label">배송</span>
+          <span class="badge-dot">5</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-delivery">
+          <div class="gh-notif-panel-head">배송 대기 <b>5건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-118 발송 대기</div><div class="sub">김민준 · 2시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-117 발송 대기</div><div class="sub">이서연 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-116 지연 접수</div><div class="sub">박도윤 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('배송 현황으로 이동합니다')">배송 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'comment')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+          <span class="gh-notif-label">댓글</span>
+          <span class="badge-dot">2</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-comment">
+          <div class="gh-notif-panel-head">새 댓글 <b>2건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"배송 진짜 빠르네요!"</div><div class="sub">최지우 · 30분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"재입고 언제 되나요?"</div><div class="sub">정하은 · 2시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('댓글 전체보기로 이동합니다')">댓글 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'newmember')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+          <span class="gh-notif-label">신규회원</span>
+          <span class="badge-dot">4</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-newmember">
+          <div class="gh-notif-panel-head">신규 가입 <b>4명</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">정하은</div><div class="sub">카카오 가입 · 40분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">박도윤</div><div class="sub">자체 가입 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">윤시우</div><div class="sub">네이버 가입 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('회원목록으로 이동합니다')">신규회원 전체보기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">김도현 관리자님</div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>192.168.0.1 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="showToast('로그아웃 되었습니다')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll">
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">사이트관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="01_카테고리.html"><span class="dot"></span>카테고리</a>
+          <a class="nav-item" href="02_메뉴설정.html"><span class="dot"></span>메뉴설정</a>
+          <a class="nav-item" href="03_공지사항.html"><span class="dot"></span>공지사항</a>
+          <a class="nav-item" href="04_팝업배너.html"><span class="dot"></span>팝업·배너</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="ng-text">회원관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="05_회원목록.html"><span class="dot"></span>회원목록</a>
+          <a class="nav-item" href="06_회원등급.html"><span class="dot"></span>회원등급</a>
+          <a class="nav-item" href="07_회원설정.html"><span class="dot"></span>회원설정</a>
+          <a class="nav-item" href="08_추천인설정.html"><span class="dot"></span>추천인설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="ng-text">주문관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="09_입금관리.html"><span class="dot"></span>입금관리</a>
+          <a class="nav-item" href="10_상품관리.html"><span class="dot"></span>상품관리</a>
+          <a class="nav-item" href="11_주문관리.html"><span class="dot"></span>주문관리</a>
+          <a class="nav-item" href="12_배송관리.html"><span class="dot"></span>배송관리</a>
+          <a class="nav-item" href="13_정기구독.html"><span class="dot"></span>정기구독</a>
+          <a class="nav-item" href="14_문의.html"><span class="dot"></span>문의</a>
+          <a class="nav-item" href="15_구매평.html"><span class="dot"></span>구매평</a>
+          <a class="nav-item" href="16_재입고알림.html"><span class="dot"></span>재입고알림</a>
+          <a class="nav-item" href="17_세금계산서.html"><span class="dot"></span>세금계산서</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 12l9 9 11-11-2-8-8-2Z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">프로모션</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="18_쿠폰.html"><span class="dot"></span>쿠폰</a>
+          <a class="nav-item" href="19_적립금.html"><span class="dot"></span>적립금</a>
+          <a class="nav-item" href="20_이벤트.html"><span class="dot"></span>이벤트</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14v3M12 10v7M17 6v11"/></svg>
+          <span class="ng-text">통계</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="21_개요.html"><span class="dot"></span>개요</a>
+          <a class="nav-item" href="22_매출.html"><span class="dot"></span>매출</a>
+          <a class="nav-item" href="23_기간별분석.html"><span class="dot"></span>기간별분석</a>
+          <a class="nav-item" href="24_유입통계.html"><span class="dot"></span>유입통계</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ng-text">메세지</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="25_문자발송.html"><span class="dot"></span>문자발송</a>
+          <a class="nav-item" href="26_자동메일.html"><span class="dot"></span>자동메일</a>
+          <a class="nav-item" href="27_환경설정.html"><span class="dot"></span>환경설정</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.2 4.2l2.8 2.8m10 10 2.8 2.8M1 12h4m14 0h4M4.2 19.8l2.8-2.8m10-10 2.8-2.8"/></svg>
+          <span class="ng-text">시스템</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item active" href="28_일반설정.html"><span class="dot"></span>일반설정</a>
+          <a class="nav-item" href="29_약관개인정보.html"><span class="dot"></span>약관·개인정보</a>
+          <a class="nav-item" href="30_도메인관리.html"><span class="dot"></span>도메인관리</a>
+          <a class="nav-item" href="31_전자결제.html"><span class="dot"></span>전자결제</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5z"/></svg>
+          <span class="ng-text">권한관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="32_관리자계정.html"><span class="dot"></span>관리자계정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+          <span class="ng-text">파트너</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="33_리셀러목록.html"><span class="dot"></span>리셀러목록</a>
+          <a class="nav-item" href="34_리셀러설정.html"><span class="dot"></span>리셀러설정</a>
+          <a class="nav-item" href="35_리셀러트리.html"><span class="dot"></span>리셀러트리</a>
+          <a class="nav-item" href="36_리셀러정산.html"><span class="dot"></span>리셀러정산</a>
+          <a class="nav-item" href="37_리셀러도메인.html"><span class="dot"></span>리셀러도메인</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">일반설정</div>
+        <div class="breadcrumb">시스템 &nbsp;/&nbsp; 일반설정</div>
+      </div>
+      <button class="btn btn-primary" onclick="showToast('저장되었습니다')">저장</button>
+    </div>
+
+    <div class="content">
+      <div class="card">
+        <div class="tabs">
+          <div class="tab active" data-gtab="basic" onclick="switchGenTab(this,'basic')">기본 설정</div>
+          <div class="tab" data-gtab="shop" onclick="switchGenTab(this,'shop')">쇼핑몰·사이트 정보</div>
+          <div class="tab" data-gtab="access" onclick="switchGenTab(this,'access')">접속 및 이동</div>
+          <div class="tab" data-gtab="pay" onclick="switchGenTab(this,'pay')">결제·채널</div>
+          <div class="tab" data-gtab="lang" onclick="switchGenTab(this,'lang')">기본 언어 설정</div>
+          <div class="tab" data-gtab="security" onclick="switchGenTab(this,'security')">운영진 보안설정</div>
+        </div>
+
+        <!-- ===== 기본 설정 ===== -->
+        <div id="gtab-basic" style="padding:24px;">
+          <div style="font-size:12.5px;color:var(--text-sub);line-height:1.6;margin-bottom:22px;">
+            사이트 정보와 관련된 기본적인 설정을 합니다. 검색엔진 최적화를 위해 사이트 설명을 입력해 주세요.
+          </div>
+
+          <div class="settings-row">
+            <div class="settings-label">사이트 기본 정보</div>
+            <div class="settings-value">
+              <label style="font-size:13px;font-weight:700;display:block;margin-bottom:4px;">사이트 이름</label>
+              <div class="settings-desc" style="margin:0 0 8px;">브라우저 탭이나 소셜 미디어에 공유할 때 표시됩니다.</div>
+              <div style="display:flex;align-items:center;gap:10px;max-width:640px;">
+                <input type="text" id="gen_siteName" value="꽃배달" maxlength="20" style="flex:1;" oninput="document.getElementById('gen_siteNameLen').textContent=this.value.length">
+                <span style="flex:none;font-size:11.5px;color:var(--text-faint);white-space:nowrap;"><span id="gen_siteNameLen">3</span>/20</span>
+              </div>
+
+              <label style="font-size:13px;font-weight:700;display:block;margin:18px 0 4px;">사이트 설명</label>
+              <div class="settings-desc" style="margin:0 0 8px;">사이트를 대표하는 은샹이나 키워드 사용을 추천합니다.</div>
+              <textarea class="ta" style="max-width:640px;width:100%;min-height:90px;" placeholder="사이트 설명을 입력해주세요"></textarea>
+            </div>
+          </div>
+
+          <div class="settings-row">
+            <div class="settings-label">사이트 언어</div>
+            <div class="settings-value">
+              <label style="font-size:13px;font-weight:700;display:block;margin-bottom:8px;">기본 언어</label>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <select id="gen_lang" style="max-width:220px;">
+                  <option>한국어</option>
+                  <option>영어</option>
+                  <option>중국어</option>
+                  <option>일본어</option>
+                  <option>베트남어</option>
+                </select>
+              </div>
+              <div class="settings-desc" style="margin-top:10px;">- 설정한 언어에 따라 사이트에 고정으로 표시되는 기본 문구, 유효성 문구, 알림창에서 표시되는 문구가 선택한 언어로 표시됩니다.</div>
+            </div>
+          </div>
+
+          <div class="settings-row">
+            <div class="settings-label">사이트 설정</div>
+            <div class="settings-value">
+              <div style="margin-bottom:18px;">
+                <div class="settings-desc" style="margin:0 0 8px;font-weight:700;color:var(--text);">사이트 공개</div>
+                <div class="seg-group" id="seg_sitePublic">
+                  <button type="button" class="seg-btn active" onclick="setSeg(this,'seg_sitePublic')">전체 공개</button>
+                  <button type="button" class="seg-btn" onclick="setSeg(this,'seg_sitePublic')">회원 공개</button>
+                  <button type="button" class="seg-btn" onclick="setSeg(this,'seg_sitePublic')">성인 공개</button>
+                  <button type="button" class="seg-btn" onclick="setSeg(this,'seg_sitePublic')">비공개</button>
+                </div>
+                <div class="settings-desc" style="margin-top:10px;">
+                  - 회원 공개 또는 비공개로 설정 후 사이트 접속 시 설정별 인트로 페이지로 이동됩니다.<br>
+                  - 성인 공개로 선택 시 본인인증 기능을 통해 회원 또는 비회원 접속 시 성인 여부를 확인 후 사이트 접속이 가능합니다.<br>
+                  - 설정별 인트로 페이지는 디자인 모드에서 편집하실 수 있습니다. <a style="color:var(--accent);cursor:pointer;" onclick="showToast('디자인 모드로 이동합니다')">자세히보기</a><br>
+                  - 사이트가 비공개로 설정되더라도 관리자 로그인 상태에서는 접속이 가능합니다.
+                </div>
+              </div>
+
+              <div style="margin-bottom:18px;">
+                <div class="settings-desc" style="margin:0 0 8px;font-weight:700;color:var(--text);">마우스 우클릭 금지</div>
+                <div class="seg-group" id="seg_rclick">
+                  <button type="button" class="seg-btn active" onclick="setSeg(this,'seg_rclick')">사용안함</button>
+                  <button type="button" class="seg-btn" onclick="setSeg(this,'seg_rclick')">사용함</button>
+                </div>
+                <div class="settings-desc" style="margin-top:10px;">
+                  - '사용함' 설정 시 데스크탑 환경에서 마우스 오른쪽 버튼 기능이 동작하지 않습니다.<br>
+                  - 모바일 환경에서는 이미지 저장 기능이 동작하지 않습니다.
+                </div>
+              </div>
+
+              <div>
+                <div class="settings-desc" style="margin:0 0 8px;font-weight:700;color:var(--text);">마우스 드래그 금지</div>
+                <div class="seg-group" id="seg_drag">
+                  <button type="button" class="seg-btn active" onclick="setSeg(this,'seg_drag')">사용안함</button>
+                  <button type="button" class="seg-btn" onclick="setSeg(this,'seg_drag')">사용함</button>
+                </div>
+                <div class="settings-desc" style="margin-top:10px;">- '사용함' 설정 시 마우스 드래그 기능이 동작하지 않습니다.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-row" style="border-bottom:none;">
+            <div class="settings-label">SNS 연결</div>
+            <div class="settings-value">
+              <div class="settings-desc" style="margin:0 0 12px;">SNS URL주소를 등록하시면 사이트 하단(Footer) 화면에 SNS 아이콘을 노출할 수 있습니다.</div>
+              <div id="snsList" style="max-width:640px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 쇼핑몰·사이트 정보 설정 ===== -->
+        <div id="gtab-shop" style="display:none;padding:24px;">
+          <div class="info-note" style="margin-top:0;">
+            입력하신 정보를 토대로 회원 가입 시 주소 입력 형식 등이 자동으로 변경되므로 정확한 정보를 입력해 주세요.
+          </div>
+
+          <div class="settings-row">
+            <div class="settings-label">사업자</div>
+            <div class="settings-value">
+              <div class="reg-grid2" style="max-width:520px;">
+                <div class="field"><label>회사·단체명</label><input type="text"></div>
+                <div></div>
+                <div class="field"><label>대표자 이름</label><input type="text"></div>
+                <div class="field"><label>대표 연락처</label><input type="text"></div>
+              </div>
+              <div class="field" style="max-width:520px;">
+                <label>대표 메일</label>
+                <input type="text" value="admin@example.com">
+              </div>
+              <div class="field" style="margin-bottom:0;">
+                <label>소재지</label>
+                <div style="display:flex;gap:18px;">
+                  <label class="radio-row2"><input type="radio" name="gen_bizLoc" checked onchange="onBizLocChange()"> 국내</label>
+                  <label class="radio-row2"><input type="radio" name="gen_bizLoc" onchange="onBizLocChange()"> 해외</label>
+                </div>
+                <div id="bizLocCountryWrap" style="display:none;margin-top:10px;">
+                  <select id="bizLocCountry" style="max-width:260px;">
+                    <option>미국</option>
+                    <option>중국</option>
+                    <option>일본</option>
+                    <option>필리핀</option>
+                    <option>홍콩</option>
+                    <option>베트남</option>
+                    <option>태국</option>
+                    <option>영국</option>
+                    <option>호주</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-row">
+            <div class="settings-label">주소</div>
+            <div class="settings-value">
+              <div class="field" style="max-width:420px;">
+                <label>지역</label>
+                <select><option>대한민국 (Korea, Republic of)</option><option>기타 국가</option></select>
+              </div>
+              <div class="field" style="max-width:520px;">
+                <label>주소</label>
+                <div style="display:flex;gap:8px;">
+                  <input type="text" disabled style="background:var(--bg);flex:1;">
+                  <button class="btn" style="white-space:nowrap;" onclick="showToast('주소 검색 화면을 엽니다')">주소 검색</button>
+                </div>
+              </div>
+              <div class="reg-grid2" style="max-width:520px;margin-bottom:0;">
+                <div class="field" style="margin-bottom:0;"><label>우편 번호</label><input type="text" disabled style="background:var(--bg);"></div>
+                <div class="field" style="margin-bottom:0;"><label>상세 주소</label><input type="text"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-row" style="border-bottom:none;">
+            <div class="settings-label">사업자 등록</div>
+            <div class="settings-value">
+              <div class="reg-grid2" style="max-width:520px;">
+                <div class="field"><label>사업자등록번호</label><input type="text" placeholder="000-00-00000"></div>
+                <div class="field"><label>통신판매업신고번호</label><input type="text" placeholder="제2025-서울강남-0001호"></div>
+              </div>
+              <div class="reg-grid2" style="max-width:520px;margin-bottom:0;">
+                <div class="field" style="margin-bottom:0;">
+                  <label>업태</label>
+                  <select><option>선택</option><option>도소매업</option><option>서비스업</option><option>제조업</option></select>
+                </div>
+                <div class="field" style="margin-bottom:0;"><label>종목</label><input type="text" placeholder="화훼 및 원예용품 소매업"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 접속 및 이동 설정 ===== -->
+        <div id="gtab-access" style="display:none;padding:24px;">
+          <div class="settings-row">
+            <div class="settings-label">접근</div>
+            <div class="settings-value">
+              <div class="toggle-row" style="padding:0 0 10px;">
+                <span class="lbl" style="font-weight:700;">해외 접속 허용</span>
+                <label class="switch"><input type="checkbox" onchange="showToast(this.checked ? '해외 접속이 허용됩니다' : '해외 접속이 차단됩니다')"><span class="track"></span></label>
+              </div>
+              <div class="warn-box" style="margin-top:0;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+                <div>
+                  중요한 기능 제약이 발생하므로 해외 접속을 크게 고려할 때만 신중히 선택해 주세요.<br>
+                  이 옵션을 활성화 해야 해외에서 접속이 원활합니다. 단, Google, Facebook, Instagram, YouTube 및 소셜 로그인, 네이버페이 구매, 다음 주소찾기, 일부 전환추적, 각종 공유 등의 기능을 사용할 수 없게 됩니다.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-row">
+            <div class="settings-label"></div>
+            <div class="settings-value">
+              <div class="toggle-row">
+                <span class="lbl" style="font-weight:700;">접속 언어로 사이트 자동 이동</span>
+                <label class="switch"><input type="checkbox"><span class="track"></span></label>
+              </div>
+              <div class="settings-desc">다국어 사이트 운영시 접속자의 언어에 따라 자동으로 이동시켜줍니다.</div>
+            </div>
+          </div>
+
+          <div class="settings-row" style="border-bottom:none;">
+            <div class="settings-label"></div>
+            <div class="settings-value">
+              <div class="toggle-row">
+                <span class="lbl" style="font-weight:700;">없는 페이지 접근 시 홈으로 이동</span>
+                <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+              </div>
+              <div class="settings-desc">존재하지 않는 주소로 접속시 에러 페이지가 아닌 홈으로 이동시켜줍니다.</div>
+            </div>
+          </div>
+
+          <div class="settings-row" style="border-bottom:none;">
+            <div class="settings-label">통계</div>
+            <div class="settings-value">
+              <div class="toggle-row">
+                <span class="lbl" style="font-weight:700;">관리자 방문자 통계 포함하지 않기</span>
+                <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+              </div>
+              <div class="settings-desc">소유자 및 운영진 그룹 회원 접속시 사이트 방문자 통계에 포함되지 않는 설정입니다.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 결제·채널 ===== -->
+        <div id="gtab-pay" style="display:none;padding:24px;">
+          <div class="settings-row" style="border-bottom:none;">
+            <div class="settings-label">무통장 입금 계좌</div>
+            <div class="settings-value">
+              <button class="btn" style="margin-bottom:6px;" onclick="addBankRow()">계좌 추가</button>
+              <span style="font-size:12px;color:var(--text-faint);margin-left:8px;">(최대 5개까지 등록 가능)</span>
+              <div id="bankList" style="margin-top:14px;max-width:720px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 기본 언어 설정 ===== -->
+        <div id="gtab-lang" style="display:none;padding:24px;">
+          <div class="settings-row">
+            <div class="settings-label">지역 및 시간대 설정</div>
+            <div class="settings-value">
+              <select style="max-width:320px;">
+                <option>Seoul (GMT +9)</option>
+                <option>Tokyo (GMT +9)</option>
+                <option>Beijing (GMT +8)</option>
+                <option>Bangkok (GMT +7)</option>
+                <option>London (GMT +0)</option>
+                <option>Los Angeles (GMT -8)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-row">
+            <div class="settings-label">언어</div>
+            <div class="settings-value">
+              <select style="max-width:320px;">
+                <option>한국어</option>
+                <option>영어</option>
+                <option>중국어</option>
+                <option>일본어</option>
+                <option>베트남어</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-row">
+            <div class="settings-label">국가/국기</div>
+            <div class="settings-value">
+              <select style="max-width:320px;">
+                <option>언어의 국가와 동일</option>
+                <option>대한민국</option>
+                <option>미국</option>
+                <option>일본</option>
+                <option>중국</option>
+                <option>베트남</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-row" style="border-bottom:none;">
+            <div class="settings-label">통화</div>
+            <div class="settings-value">
+              <div class="reg-grid2" style="max-width:640px;">
+                <div class="field" style="margin-bottom:0;">
+                  <label>통화 단위</label>
+                  <select><option>원화 (KRW)</option><option>달러 (USD)</option><option>위안 (CNY)</option><option>엔화 (JPY)</option><option>동 (VND)</option></select>
+                </div>
+                <div class="field" style="margin-bottom:0;">
+                  <label>통화 표시 방식</label>
+                  <select><option>화폐단위 (1,000원)</option><option>화폐단위 (1,000.00원)</option><option>기호 (₩1,000)</option></select>
+                </div>
+              </div>
+              <div class="settings-desc" style="margin-top:14px;">
+                · 통화 단위를 변경하면 상품 및 옵션, 적립금 등이 아래 환율에 따라 변경 시점에 한해 변경됩니다.<br>
+                · 대한민국 원화(KRW), 중국 위안(CNY)은 Paypal 및 엑심베이 결제가 불가합니다. <a style="color:var(--accent);cursor:pointer;" onclick="showToast('자세히 알아봅니다')">자세히 알아보기</a><br>
+                · 베트남 동(VND)은 Paypal 결제가 불가하며 엑심베이·MOLPay로 결제받을 수 있습니다. <a style="color:var(--accent);cursor:pointer;" onclick="showToast('자세히 알아봅니다')">자세히 알아보기</a><br>
+                · 대한민국 원화(KRW) 외 모든 통화는 국내 PG결제(KCP, 이니시스, 네이버페이 등)가 불가합니다.<br>
+                · 통화 단위 변경시 진행 전 생성한 쿠폰은 모두 삭제됩니다.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 운영진 보안설정 ===== -->
+        <div id="gtab-security" style="display:none;padding:24px;">
+          <div class="settings-row">
+            <div class="settings-label">접속 보안</div>
+            <div class="settings-value">
+              <label class="check-row" style="margin-bottom:12px;">
+                <input type="checkbox" checked> 여러 기기에서 동시 로그인 불가
+                <span class="qmark" title="한 계정으로 동시에 여러 기기에서 로그인할 수 없도록 제한합니다.">?</span>
+              </label>
+
+              <label class="check-row" onchange="onIpAllowChange()" id="ipAllowRow">
+                <input type="checkbox" id="ipAllowToggle" onchange="onIpAllowChange()"> 관리 페이지 접속이 허용되는 IP 등록
+                <span class="qmark" title="등록된 IP에서만 관리자 페이지에 접속할 수 있도록 제한합니다.">?</span>
+              </label>
+
+              <div id="ipAllowBody" style="display:none;margin-top:12px;">
+                <div style="display:flex;gap:8px;margin-bottom:10px;">
+                  <button class="btn" onclick="openIpAddModal()">추가</button>
+                  <button class="btn" onclick="deleteSelectedIps()">삭제</button>
+                </div>
+                <div style="border:1px solid var(--border);border-radius:9px;overflow:hidden;">
+                  <table style="table-layout:fixed;margin-bottom:0;">
+                    <colgroup><col style="width:40px;"><col></colgroup>
+                    <thead><tr><th><input type="checkbox" id="ipSelectAll" onclick="toggleAllIp(this)"></th><th>허용한 IP 주소 목록</th></tr></thead>
+                  </table>
+                  <div id="ipListEmpty" style="padding:40px 20px;text-align:center;color:var(--text-faint);font-size:13px;">허용한 IP가 없습니다.</div>
+                  <table style="table-layout:fixed;margin-bottom:0;" id="ipListTableWrap">
+                    <colgroup><col style="width:40px;"><col></colgroup>
+                    <tbody id="ipListTbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-row">
+            <div class="settings-label">2단계 인증</div>
+            <div class="settings-value">
+              <label class="check-row" style="margin-bottom:14px;">
+                <input type="checkbox" id="tfaToggle" checked onchange="onTfaChange()"> 운영진 로그인 2단계 보안인증
+                <span class="qmark" title="로그인 시 아이디/비밀번호 외 추가 인증을 요구합니다.">?</span>
+              </label>
+
+              <div id="tfaBody">
+                <label class="radio-row2" style="margin-bottom:8px;"><input type="radio" name="tfaMethod" checked onchange="onTfaMethodChange()"> 이메일 인증</label>
+                <div class="settings-desc" style="margin:0 0 16px 24px;">
+                  로그인 계정이 이메일 주소가 아닌 아이디 형식인 경우 이메일 인증이 불가합니다. 로그인 계정 형식 변경은 <a style="color:var(--accent);cursor:pointer;" onclick="showToast('가입 및 그룹 설정으로 이동합니다')">가입 및 그룹 설정</a>을 방문하세요.<br><br>
+                  메일 설정에서 올바른 발송 주소와 서비스 업체를 지정하지 않았을 경우 메일이 정상적으로 수신되지 않을 수 있습니다. 메일 설정은 <a style="color:var(--accent);cursor:pointer;" onclick="showToast('메일 발송 설정으로 이동합니다')">메일 발송 설정</a>을 방문하세요.
+                </div>
+
+                <label class="radio-row2" style="margin-bottom:8px;"><input type="radio" name="tfaMethod" onchange="onTfaMethodChange()"> SMS 인증</label>
+                <div class="settings-desc" style="margin:0 0 8px 24px;">
+                  운영진 계정에 연락처가 없을 경우 문자 인증이 불가합니다. SMS 인증은 문자 발송가능 건 수가 있어야 발송 가능합니다.<br>
+                  <a style="color:var(--accent);cursor:pointer;" onclick="showToast('크레딧 충전 화면으로 이동합니다')">크레딧 충전</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-row" style="border-bottom:none;">
+            <div class="settings-label">개인정보 보호 설정</div>
+            <div class="settings-value">
+              <div class="settings-desc" style="margin:0 0 14px;">사용자의 소중한 개인정보를 보호하고 관련 법령을 준수합니다.</div>
+
+              <label class="check-row" style="margin-bottom:6px;"><input type="checkbox" id="autoLogoutToggle" checked onchange="toggleSubSelect('autoLogoutToggle','autoLogoutSub')"> 장시간 미사용 시 자동 로그아웃</label>
+              <div id="autoLogoutSub" style="margin:0 0 16px 24px;">
+                <div class="settings-desc" style="margin:0 0 4px;">미사용 시간</div>
+                <select style="max-width:160px;">
+                  <option>10분</option><option>20분</option><option>30분</option>
+                  <option selected>60분</option><option>90분</option><option>120분</option>
+                </select>
+              </div>
+
+              <label class="check-row" style="margin-bottom:6px;"><input type="checkbox" id="loginBlockToggle" checked onchange="toggleSubSelect('loginBlockToggle','loginBlockSub')"> 로그인 실패 시 접속 차단</label>
+              <div id="loginBlockSub" style="margin:0 0 16px 24px;">
+                <div class="settings-desc" style="margin:0 0 4px;">로그인 실패 허용 횟수</div>
+                <select style="max-width:160px;">
+                  <option>5회</option><option>6회</option><option>7회</option><option>8회</option>
+                  <option>9회</option><option selected>10회</option><option>11회</option>
+                  <option>12회</option><option>13회</option><option>14회</option><option>15회</option>
+                </select>
+              </div>
+
+              <label class="check-row" style="margin-bottom:6px;"><input type="checkbox" id="pwChangeToggle" checked onchange="toggleSubSelect('pwChangeToggle','pwChangeSub')"> 주기적 비밀번호 변경 안내</label>
+              <div id="pwChangeSub" style="margin:0 0 0 24px;">
+                <div class="reg-grid2" style="max-width:420px;">
+                  <div>
+                    <div class="settings-desc" style="margin:0 0 4px;">최종 비밀번호 변경일 기준</div>
+                    <select>
+                      <option>1개월</option><option>2개월</option><option>3개월</option>
+                      <option selected>4개월</option><option>5개월</option><option>6개월</option>
+                    </select>
+                  </div>
+                  <div>
+                    <div class="settings-desc" style="margin:0 0 4px;">다음에 변경하기 클릭일 기준</div>
+                    <select>
+                      <option>1일</option><option>3일</option><option>7일</option><option>14일</option>
+                      <option selected>30일</option><option>60일</option><option>90일</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<!-- ===== 허용 IP 추가 모달 ===== -->
+<div class="modal-overlay" id="ipAddModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>허용 IP 추가</h3>
+      <button class="modal-close" onclick="closeModal('ipAddModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>IP 주소 <span class="req">(필수)</span></label>
+        <input type="text" id="ip_addr" placeholder="예) 123.45.67.89">
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label>메모</label>
+        <input type="text" id="ip_memo" placeholder="예) 본사 사무실">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('ipAddModal')">취소</button>
+      <button class="btn btn-primary" onclick="confirmAddIp()">추가</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">저장되었습니다</span>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+function switchGenTab(el, tab){
+  document.querySelectorAll('.tabs .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('[id^="gtab-"]').forEach(d=>d.style.display='none');
+  document.getElementById('gtab-'+tab).style.display='block';
+}
+
+function setSeg(el, groupId){
+  document.querySelectorAll('#'+groupId+' .seg-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function onBizLocChange(){
+  const overseas = document.getElementById('bizLocCountryWrap');
+  overseas.style.display = document.querySelector('input[name="gen_bizLoc"]:checked').parentElement.textContent.trim() === '해외' ? 'block' : 'none';
+}
+
+/* ================= SNS 연결 ================= */
+const snsIcons = {
+  facebook: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg>',
+  instagram: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
+  blog: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h6M7 12h10M7 16h7"/></svg>',
+  kakao: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.8-.2.7-.8 2.7-.9 3.1 0 0-.1.4.2.5.3.1.6-.1.6-.1 1-.7 3.3-2.2 3.9-2.6.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3Z"/></svg>',
+  youtube: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5.5" width="19" height="13" rx="3"/><path d="M10.5 9.5v5l4.5-2.5-4.5-2.5Z" fill="currentColor" stroke="none"/></svg>',
+  link: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/></svg>',
+};
+
+let snsItems = [
+  { icon:'facebook', url:'https://www.facebook.com/' },
+  { icon:'instagram', url:'https://www.instagram.com/' },
+  { icon:'blog', url:'https://blog.naver.com/' },
+  { icon:'kakao', url:'https://www.kakaocorp.com/page/service/service/KakaoTalk' },
+  { icon:'youtube', url:'https://www.youtube.com/' },
+];
+
+function renderSnsList(){
+  document.getElementById('snsList').innerHTML = snsItems.map((s, i) => `
+    <div class="sns-row" ondragover="snsDragOver(event)" ondrop="snsDrop(event, ${i})">
+      <div class="sns-icon">${snsIcons[s.icon] || snsIcons.link}</div>
+      <input type="text" value="${s.url}" oninput="snsItems[${i}].url=this.value">
+      <button class="sns-action-btn" title="아이콘 변경" onclick="cycleSnsIcon(${i})">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.6 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.6 1Z"/></svg>
+      </button>
+      <button class="sns-action-btn" title="삭제" onclick="removeSnsRow(${i})">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <button class="sns-action-btn" title="드래그해서 순서 변경" style="cursor:grab;" draggable="true"
+        ondragstart="snsDragStart(event, ${i})" ondragend="snsDragEnd(event)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+      </button>
+    </div>
+  `).join('');
+}
+let snsDragIndex = null;
+function snsDragStart(e, i){
+  snsDragIndex = i;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', String(i));
+  const row = e.currentTarget.closest('.sns-row');
+  if(row) row.style.opacity = '.4';
+}
+function snsDragOver(e){
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+}
+function snsDragEnd(e){
+  const row = e.currentTarget.closest('.sns-row');
+  if(row) row.style.opacity = '1';
+  snsDragIndex = null;
+}
+function snsDrop(e, i){
+  e.preventDefault();
+  if(snsDragIndex === null || snsDragIndex === i) return;
+  const moved = snsItems.splice(snsDragIndex, 1)[0];
+  snsItems.splice(i, 0, moved);
+  snsDragIndex = null;
+  renderSnsList();
+  showToast('순서가 변경되었습니다');
+}
+const snsIconOrder = ['facebook','instagram','blog','kakao','youtube','link'];
+function cycleSnsIcon(i){
+  const cur = snsIconOrder.indexOf(snsItems[i].icon);
+  snsItems[i].icon = snsIconOrder[(cur+1) % snsIconOrder.length];
+  renderSnsList();
+}
+function removeSnsRow(i){
+  snsItems.splice(i,1);
+  renderSnsList();
+}
+renderSnsList();
+
+/* ================= 무통장 입금 계좌 ================= */
+let bankItems = [
+  { bank:'국민은행', account:'123-45-6789-012', holder:'(주)플라워' },
+];
+function renderBankList(){
+  document.getElementById('bankList').innerHTML = bankItems.map((b, i) => `
+    <div class="sns-row" style="gap:10px;">
+      <input type="text" placeholder="은행명" value="${b.bank}" style="flex:1;" oninput="bankItems[${i}].bank=this.value">
+      <input type="text" placeholder="계좌번호" value="${b.account}" style="flex:1.4;" oninput="bankItems[${i}].account=this.value">
+      <input type="text" placeholder="예금주" value="${b.holder}" style="flex:1;" oninput="bankItems[${i}].holder=this.value">
+      <button class="sns-action-btn" title="삭제" onclick="removeBankRow(${i})">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  `).join('');
+}
+function addBankRow(){
+  if(bankItems.length >= 5){ showToast('최대 5개까지 등록 가능합니다'); return; }
+  bankItems.push({ bank:'', account:'', holder:'' });
+  renderBankList();
+}
+function removeBankRow(i){
+  bankItems.splice(i,1);
+  renderBankList();
+}
+renderBankList();
+
+/* ================= 운영진 보안설정 ================= */
+function onIpAllowChange(){
+  document.getElementById('ipAllowBody').style.display = document.getElementById('ipAllowToggle').checked ? 'block' : 'none';
+}
+function onTfaChange(){
+  document.getElementById('tfaBody').style.opacity = document.getElementById('tfaToggle').checked ? '1' : '.4';
+  document.getElementById('tfaBody').style.pointerEvents = document.getElementById('tfaToggle').checked ? 'auto' : 'none';
+}
+function onTfaMethodChange(){}
+function toggleSubSelect(toggleId, subId){
+  const on = document.getElementById(toggleId).checked;
+  document.getElementById(subId).style.opacity = on ? '1' : '.4';
+  document.getElementById(subId).style.pointerEvents = on ? 'auto' : 'none';
+}
+
+let ipList = [];
+function renderIpList(){
+  document.getElementById('ipListEmpty').style.display = ipList.length ? 'none' : 'block';
+  document.getElementById('ipListTableWrap').style.display = ipList.length ? 'table' : 'none';
+  document.getElementById('ipListTbody').innerHTML = ipList.map((ip,i) => `
+    <tr>
+      <td style="width:40px;"><input type="checkbox" class="ip-chk" value="${i}"></td>
+      <td>${ip.addr} ${ip.memo ? '<span style="color:var(--text-faint);font-size:12px;">· '+ip.memo+'</span>' : ''}</td>
+    </tr>
+  `).join('');
+}
+function toggleAllIp(cb){
+  document.querySelectorAll('.ip-chk').forEach(c => c.checked = cb.checked);
+}
+function openIpAddModal(){
+  document.getElementById('ip_addr').value = '';
+  document.getElementById('ip_memo').value = '';
+  document.getElementById('ipAddModal').classList.add('open');
+}
+function confirmAddIp(){
+  const addr = document.getElementById('ip_addr').value.trim();
+  if(!addr){ showToast('IP 주소를 입력해주세요'); return; }
+  const memo = document.getElementById('ip_memo').value.trim();
+  ipList.push({ addr, memo });
+  closeModal('ipAddModal');
+  renderIpList();
+  showToast('IP가 추가되었습니다');
+}
+function deleteSelectedIps(){
+  const idxs = [...document.querySelectorAll('.ip-chk:checked')].map(c => Number(c.value));
+  if(!idxs.length){ showToast('선택된 IP가 없어요'); return; }
+  ipList = ipList.filter((_,i) => !idxs.includes(i));
+  renderIpList();
+  showToast('선택한 IP를 삭제했습니다');
+}
+renderIpList();
+</script>
+</body>
+</html>

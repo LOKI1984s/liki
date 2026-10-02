@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>주문관리 · 관리자</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===== Global Header ===== -->
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='대시보드.html'">
+      <div class="mark">S</div>
+      <div class="name">ADMIN관리자</div>
+    </div>
+
+    <div class="gh-quick">
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'inquiry')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="gh-notif-label">문의</span>
+          <span class="badge-dot">3</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-inquiry">
+          <div class="gh-notif-panel-head">신규 문의 <b>3건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">배송이 너무 늦어요</div><div class="sub">김민준 · 5분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">사이즈 교환 문의</div><div class="sub">이서연 · 22분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">결제가 안돼요</div><div class="sub">박도윤 · 1시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('문의 전체보기로 이동합니다')">문의 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'order')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="gh-notif-label">주문</span>
+          <span class="badge-dot">12</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-order">
+          <div class="gh-notif-panel-head">신규 주문 <b>12건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-042 · 88,000원</div><div class="sub">최지우 · 3분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-041 · 132,000원</div><div class="sub">정하은 · 18분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-040 · 45,000원</div><div class="sub">윤시우 · 40분 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('주문 전체보기로 이동합니다')">주문 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'delivery')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17h4V5H2v12h3"/><path d="M14 9h4l3 3v5h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="gh-notif-label">배송</span>
+          <span class="badge-dot">5</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-delivery">
+          <div class="gh-notif-panel-head">배송 대기 <b>5건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-118 발송 대기</div><div class="sub">김민준 · 2시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-117 발송 대기</div><div class="sub">이서연 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-116 지연 접수</div><div class="sub">박도윤 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('배송 현황으로 이동합니다')">배송 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'comment')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+          <span class="gh-notif-label">댓글</span>
+          <span class="badge-dot">2</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-comment">
+          <div class="gh-notif-panel-head">새 댓글 <b>2건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"배송 진짜 빠르네요!"</div><div class="sub">최지우 · 30분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"재입고 언제 되나요?"</div><div class="sub">정하은 · 2시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('댓글 전체보기로 이동합니다')">댓글 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'newmember')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+          <span class="gh-notif-label">신규회원</span>
+          <span class="badge-dot">4</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-newmember">
+          <div class="gh-notif-panel-head">신규 가입 <b>4명</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">정하은</div><div class="sub">카카오 가입 · 40분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">박도윤</div><div class="sub">자체 가입 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">윤시우</div><div class="sub">네이버 가입 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('회원목록으로 이동합니다')">신규회원 전체보기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">김도현 관리자님</div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>192.168.0.1 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="showToast('로그아웃 되었습니다')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll">
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">사이트관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="01_카테고리.html"><span class="dot"></span>카테고리</a>
+          <a class="nav-item" href="02_메뉴설정.html"><span class="dot"></span>메뉴설정</a>
+          <a class="nav-item" href="03_공지사항.html"><span class="dot"></span>공지사항</a>
+          <a class="nav-item" href="04_팝업배너.html"><span class="dot"></span>팝업·배너</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="ng-text">회원관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="05_회원목록.html"><span class="dot"></span>회원목록</a>
+          <a class="nav-item" href="06_회원등급.html"><span class="dot"></span>회원등급</a>
+          <a class="nav-item" href="07_회원설정.html"><span class="dot"></span>회원설정</a>
+          <a class="nav-item" href="08_추천인설정.html"><span class="dot"></span>추천인설정</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="ng-text">주문관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="09_입금관리.html"><span class="dot"></span>입금관리</a>
+          <a class="nav-item" href="10_상품관리.html"><span class="dot"></span>상품관리</a>
+          <a class="nav-item active" href="11_주문관리.html"><span class="dot"></span>주문관리</a>
+          <a class="nav-item" href="12_배송관리.html"><span class="dot"></span>배송관리</a>
+          <a class="nav-item" href="13_정기구독.html"><span class="dot"></span>정기구독</a>
+          <a class="nav-item" href="14_문의.html"><span class="dot"></span>문의</a>
+          <a class="nav-item" href="15_구매평.html"><span class="dot"></span>구매평</a>
+          <a class="nav-item" href="16_재입고알림.html"><span class="dot"></span>재입고알림</a>
+          <a class="nav-item" href="17_세금계산서.html"><span class="dot"></span>세금계산서</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 12l9 9 11-11-2-8-8-2Z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">프로모션</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="18_쿠폰.html"><span class="dot"></span>쿠폰</a>
+          <a class="nav-item" href="19_적립금.html"><span class="dot"></span>적립금</a>
+          <a class="nav-item" href="20_이벤트.html"><span class="dot"></span>이벤트</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14v3M12 10v7M17 6v11"/></svg>
+          <span class="ng-text">통계</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="21_개요.html"><span class="dot"></span>개요</a>
+          <a class="nav-item" href="22_매출.html"><span class="dot"></span>매출</a>
+          <a class="nav-item" href="23_기간별분석.html"><span class="dot"></span>기간별분석</a>
+          <a class="nav-item" href="24_유입통계.html"><span class="dot"></span>유입통계</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ng-text">메세지</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="25_문자발송.html"><span class="dot"></span>문자발송</a>
+          <a class="nav-item" href="26_자동메일.html"><span class="dot"></span>자동메일</a>
+          <a class="nav-item" href="27_환경설정.html"><span class="dot"></span>환경설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.2 4.2l2.8 2.8m10 10 2.8 2.8M1 12h4m14 0h4M4.2 19.8l2.8-2.8m10-10 2.8-2.8"/></svg>
+          <span class="ng-text">시스템</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="28_일반설정.html"><span class="dot"></span>일반설정</a>
+          <a class="nav-item" href="29_약관개인정보.html"><span class="dot"></span>약관·개인정보</a>
+          <a class="nav-item" href="30_도메인관리.html"><span class="dot"></span>도메인관리</a>
+          <a class="nav-item" href="31_전자결제.html"><span class="dot"></span>전자결제</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5z"/></svg>
+          <span class="ng-text">권한관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="32_관리자계정.html"><span class="dot"></span>관리자계정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+          <span class="ng-text">파트너</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="33_리셀러목록.html"><span class="dot"></span>리셀러목록</a>
+          <a class="nav-item" href="34_리셀러설정.html"><span class="dot"></span>리셀러설정</a>
+          <a class="nav-item" href="35_리셀러트리.html"><span class="dot"></span>리셀러트리</a>
+          <a class="nav-item" href="36_리셀러정산.html"><span class="dot"></span>리셀러정산</a>
+          <a class="nav-item" href="37_리셀러도메인.html"><span class="dot"></span>리셀러도메인</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== Main ===== -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">주문</div>
+        <div class="breadcrumb">쇼핑 &nbsp;/&nbsp; 주문관리</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn" onclick="showToast('엑셀 파일 생성을 요청했습니다')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-4-4m4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+          액셀 다운로드
+        </button>
+        <button class="btn" onclick="openInvoiceModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9m0 0 4 4m-4-4-4 4"/><path d="M4 4h16"/></svg>
+          송장 일괄 등록
+        </button>
+        <div class="dropdown dropdown-caret-btn">
+          <button class="btn btn-primary" onclick="toggleCreateMenu(event)">
+            주문 생성
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="split-menu" id="createMenu">
+            <button onclick="location.href='주문생성.html'">새 주문 생성</button>
+            <button onclick="closeAllMenus(); openAdminOrderModal()">생성 내역 보기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="card">
+        <div class="tabs">
+          <div class="tab active" data-status="all" onclick="filterByStatus(this,'all')">전체 <span class="count" id="cnt-all">0</span></div>
+          <div class="tab" data-status="paywait" onclick="filterByStatus(this,'paywait')">결제대기 <span class="count" id="cnt-paywait">0</span></div>
+          <div class="tab" data-status="preparing" onclick="filterByStatus(this,'preparing')">상품준비중 <span class="count" id="cnt-preparing">0</span></div>
+          <div class="tab" data-status="shipwait" onclick="filterByStatus(this,'shipwait')">배송대기 <span class="count" id="cnt-shipwait">0</span></div>
+          <div class="tab" data-status="shipping" onclick="filterByStatus(this,'shipping')">배송중 <span class="count" id="cnt-shipping">0</span></div>
+          <div class="tab" data-status="shipdone" onclick="filterByStatus(this,'shipdone')">배송완료 <span class="count" id="cnt-shipdone">0</span></div>
+          <div class="tab" data-status="cancelreq" onclick="filterByStatus(this,'cancelreq')">취소접수 <span class="count" id="cnt-cancelreq">0</span></div>
+          <div class="tab" data-status="returnreq" onclick="filterByStatus(this,'returnreq')">반품접수 <span class="count" id="cnt-returnreq">0</span></div>
+        </div>
+
+        <div class="toolbar">
+          <div style="font-size:14px;font-weight:800;" id="listHeadTitle">전체 <span style="color:var(--text-faint);font-weight:700;" id="listHeadCount">0</span></div>
+          <div class="search-box" style="flex:1;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="searchInput" type="text" placeholder="이름, 아이디, 연락처, 주문번호, 송장번호" oninput="applySearch()">
+          </div>
+          <button class="icon-sq-btn" onclick="showToast('상세 필터를 엽니다')" title="필터">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+          </button>
+          <button class="icon-sq-btn" onclick="showToast('표시할 항목을 설정합니다')" title="표시 항목 설정">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 0 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 0 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1Z"/></svg>
+          </button>
+        </div>
+
+        <div class="bulkbar-coupon" id="orderBulkBar">
+          <span class="sel-count" id="orderSelCount">0건 선택됨</span>
+          <div class="dropdown" style="position:relative;">
+            <button class="btn" style="padding:7px 12px;font-size:12.5px;" onclick="toggleRowMenu(event,'orderStatus')">상태 변경 ▾</button>
+            <div class="dropdown-menu" id="menu-orderStatus">
+              <button onclick="closeAllMenus(); bulkChangeOrderStatus('preparing')">상품준비중</button>
+              <button onclick="closeAllMenus(); bulkChangeOrderStatus('shipwait')">배송대기</button>
+              <button onclick="closeAllMenus(); bulkChangeOrderStatus('shipping')">배송중</button>
+              <button onclick="closeAllMenus(); bulkChangeOrderStatus('shipdone')">배송완료</button>
+            </div>
+          </div>
+          <button class="btn" style="padding:7px 12px;font-size:12.5px;" onclick="openInvoiceModal()">송장 등록</button>
+          <button class="btn btn-danger-outline" style="padding:7px 12px;font-size:12.5px;" onclick="bulkCancelOrders()">주문 취소</button>
+        </div>
+
+        <div style="overflow-x:auto;">
+        <table style="table-layout:fixed;">
+          <colgroup>
+            <col style="width:36px;">
+            <col style="width:150px;">
+            <col style="width:110px;">
+            <col style="width:150px;">
+            <col style="width:22%;">
+            <col style="width:60px;">
+            <col style="width:110px;">
+            <col style="width:130px;">
+            <col style="width:40px;">
+          </colgroup>
+          <thead>
+            <tr>
+              <th><input type="checkbox" class="chk" id="selectAll" onclick="toggleAll(this)"></th>
+              <th>주문번호</th>
+              <th>주문일시</th>
+              <th>구매자</th>
+              <th>상품</th>
+              <th>수량</th>
+              <th>결제금액</th>
+              <th>주문 상태</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="orderTbody"></tbody>
+        </table>
+        </div>
+
+        <div class="empty-state" id="emptyState" style="display:none;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="opacity:.35;margin-bottom:10px;"><path d="M9 12h6M9 16h4M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/></svg>
+          <div>주문이 없어요</div>
+        </div>
+
+        <div class="prod-pagination">
+          <div class="info">전체 <b id="totalCount">0</b>건 중 1–<span id="shownCount">0</span> 표시</div>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<!-- ===== 송장 일괄 등록 모달 ===== -->
+<div class="modal-overlay" id="invoiceModal">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <h3>송장 일괄 등록</h3>
+      <button class="modal-close" onclick="closeModal('invoiceModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="step-title"><span class="step-num">1</span> 엑셀 양식 다운로드</div>
+      <div class="step-desc">엑셀 양식을 다운로드하고, 파일 내에 적힌 가이드에 맞춰 송장 정보를 작성해 주세요.</div>
+      <div style="display:flex;gap:8px;margin-bottom:22px;">
+        <button class="btn" onclick="showToast('기본 양식을 다운로드합니다')">기본 양식 ⬇</button>
+        <button class="btn" disabled>목록에서 선택한 <span id="invoiceSelCount">0</span>건의 주문 ⬇</button>
+      </div>
+
+      <div class="step-title"><span class="step-num">2</span> 엑셀 파일 업로드</div>
+      <div class="step-desc">가이드에 맞춰 작성한 엑셀 파일을 업로드해 주세요.</div>
+      <div class="dropzone" onclick="showToast('파일 선택 창을 엽니다')">
+        <div class="dz-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+        파일을 선택하거나 끌어다 놓기
+        <div class="dz-sub">최대 5MB의 XLSX, CSV 파일</div>
+      </div>
+
+      <div class="field" style="margin-top:20px;">
+        <label>엑셀 파일 등록 내역</label>
+        <div class="file-history-box">등록한 내역 없음</div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('invoiceModal')">취소</button>
+      <button class="btn btn-primary" disabled>등록</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 관리자 생성 주문 모달 ===== -->
+<div class="modal-overlay" id="adminOrderModal">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <div>
+        <h3 style="margin-bottom:4px;">관리자 생성 주문</h3>
+        <div style="font-size:12px;color:var(--text-faint);font-weight:500;">생성된 주문은 결제가 완료돼야 주문 페이지에 노출돼요.</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('adminOrderModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="search-box" style="margin-bottom:14px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" placeholder="주문번호, 구매자명">
+      </div>
+      <div style="display:grid;grid-template-columns:1.4fr 1fr 0.6fr 1fr;gap:10px;padding:0 4px 8px;font-size:11.5px;font-weight:700;color:var(--text-faint);border-bottom:1px solid var(--border);">
+        <div>주문번호 · 생성일</div><div>구매자</div><div>품목</div><div style="text-align:right;">미결 금액</div>
+      </div>
+      <div id="adminOrderList"></div>
+    </div>
+    <div class="modal-foot" style="justify-content:flex-end;">
+      <button class="btn" onclick="closeModal('adminOrderModal')">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 주문 상세 모달 ===== -->
+<div class="modal-overlay" id="orderDetailModal">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <div>
+        <h3 id="od_title" style="margin-bottom:4px;">주문 상세</h3>
+        <div style="font-size:12px;color:var(--text-faint);font-weight:500;" id="od_date">-</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('orderDetailModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+        <span class="order-status-pill" id="od_statusPill">-</span>
+      </div>
+
+      <div class="reg-grid2">
+        <div class="field">
+          <label>구매자</label>
+          <div class="field-view"><div class="val" id="od_buyer">-</div></div>
+        </div>
+        <div class="field">
+          <label>연락처</label>
+          <div class="field-view"><div class="val" id="od_phone">-</div></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>배송지</label>
+        <div class="field-view"><div class="val" id="od_address">서울특별시 강남구 테헤란로 123, 4층 (역삼동)</div></div>
+      </div>
+
+      <div class="field">
+        <label>주문 상품</label>
+        <table style="table-layout:fixed;border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+          <colgroup><col style="width:50%;"><col style="width:20%;"><col style="width:30%;"></colgroup>
+          <thead><tr><th style="font-size:12px;">상품명</th><th style="font-size:12px;">수량</th><th style="font-size:12px;">금액</th></tr></thead>
+          <tbody id="od_productRows"></tbody>
+        </table>
+      </div>
+
+      <div class="reg-grid2">
+        <div class="field" style="margin-bottom:0;">
+          <label>결제수단</label>
+          <div class="field-view"><div class="val">계좌이체</div></div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label>결제금액</label>
+          <div class="field-view"><div class="val" id="od_amount" style="font-weight:800;">-</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('orderDetailModal')">닫기</button>
+      <button class="btn btn-primary" onclick="closeModal('orderDetailModal'); openSingleInvoice(odCurrentId)">송장 등록</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 주문 취소 확인 모달 ===== -->
+<div class="modal-overlay" id="orderCancelModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>주문 취소</h3>
+      <button class="modal-close" onclick="closeModal('orderCancelModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="warn-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        <div>취소 접수 처리 후 환불 절차가 진행됩니다.
+          <div class="name-list" id="oc_targetName">주문번호</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('orderCancelModal')">닫기</button>
+      <button class="btn" style="background:var(--danger);border-color:var(--danger);color:#fff;" onclick="confirmCancelOrder()">취소 접수</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">저장되었습니다</span>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+/* ================= 헤더 알림 패널 ================= */
+function toggleCreateMenu(e){
+  e.stopPropagation();
+  const menu = document.getElementById('createMenu');
+  const wasOpen = menu.classList.contains('open');
+  closeAllMenus();
+  if(!wasOpen) menu.classList.add('open');
+}
+
+/* ================= 주문 데이터 ================= */
+const statusLabel = {
+  paywait:'결제대기', preparing:'상품준비중', shipwait:'배송대기', shipping:'배송중',
+  shipdone:'배송완료', cancelreq:'취소접수', returnreq:'반품접수'
+};
+const statusClass = {
+  paywait:'os-paywait', preparing:'os-preparing', shipwait:'os-shipwait', shipping:'os-shipping',
+  shipdone:'os-shipdone', cancelreq:'os-cancelreq', returnreq:'os-returnreq'
+};
+const orders = [
+  {id:'202607161430296', date:'2026-07-16 05:13', buyer:'홍길동', phone:'010-2323-4425', product:'감귤', qty:1, amount:11900, status:'paywait'},
+  {id:'202607160559206', date:'2026-07-16 05:02', buyer:'관리자', phone:'010-0000-0000', product:'감귤', qty:1, amount:11900, status:'paywait'},
+  {id:'202607150221105', date:'2026-07-15 14:20', buyer:'김민준', phone:'010-2222-3333', product:'바나나 외 1건', qty:2, amount:20800, status:'preparing'},
+  {id:'202607141122304', date:'2026-07-14 11:05', buyer:'이서연', phone:'010-4444-5555', product:'딸기', qty:3, amount:29700, status:'shipwait'},
+  {id:'202607131022201', date:'2026-07-13 22:40', buyer:'박도윤', phone:'010-6666-7777', product:'토마토', qty:1, amount:9900, status:'shipping'},
+  {id:'202607121022108', date:'2026-07-12 09:12', buyer:'최지우', phone:'010-8888-9999', product:'사과', qty:2, amount:23800, status:'shipdone'},
+  {id:'202607110933110', date:'2026-07-11 08:00', buyer:'정하은', phone:'010-1111-2222', product:'체리', qty:1, amount:11900, status:'cancelreq'},
+];
+
+let selected = new Set();
+let curStatus = 'all';
+
+function filterByStatus(el, status){
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  curStatus = status;
+  renderTable();
+}
+function applySearch(){ renderTable(); }
+
+function renderTable(){
+  const tbody = document.getElementById('orderTbody');
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+
+  const filtered = orders.filter(o => {
+    if(curStatus !== 'all' && o.status !== curStatus) return false;
+    if(q && !o.buyer.toLowerCase().includes(q) && !o.id.includes(q) && !o.phone.includes(q)) return false;
+    return true;
+  });
+
+  document.getElementById('emptyState').style.display = filtered.length ? 'none' : 'block';
+  document.getElementById('totalCount').textContent = filtered.length;
+  document.getElementById('shownCount').textContent = filtered.length;
+  document.getElementById('listHeadCount').textContent = filtered.length;
+  document.getElementById('listHeadTitle').firstChild.textContent = (curStatus==='all' ? '전체 ' : statusLabel[curStatus] + ' ');
+
+  Object.keys(statusLabel).forEach(k => {
+    document.getElementById('cnt-'+k).textContent = orders.filter(o=>o.status===k).length;
+  });
+  document.getElementById('cnt-all').textContent = orders.length;
+
+  tbody.innerHTML = filtered.map(o => `
+    <tr class="${selected.has(o.id)?'selected':''}">
+      <td><input type="checkbox" class="chk" ${selected.has(o.id)?'checked':''} onclick="toggleOne('${o.id}')"></td>
+      <td class="text-sub" style="font-weight:700;color:var(--text);">${o.id}</td>
+      <td class="text-sub">${o.date}</td>
+      <td>
+        <div class="buyer-cell">
+          <div class="name">${o.buyer}</div>
+          <div class="phone">${o.phone}</div>
+        </div>
+      </td>
+      <td class="text-sub" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${o.product}</td>
+      <td class="text-sub">${o.qty}</td>
+      <td class="text-sub">${o.amount.toLocaleString()}원</td>
+      <td><span class="order-status-pill ${statusClass[o.status]}">${statusLabel[o.status]}</span></td>
+      <td>
+        <div class="dropdown">
+          <button class="row-menu-btn" onclick="toggleRowMenu(event,'${o.id}')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/></svg>
+          </button>
+          <div class="dropdown-menu" id="menu-${o.id}">
+            <button onclick="closeAllMenus(); openOrderDetail('${o.id}')">상세보기</button>
+            <button onclick="closeAllMenus(); openSingleInvoice('${o.id}')">송장 등록</button>
+            <div class="sep"></div>
+            <button class="danger" onclick="closeAllMenus(); openCancelOrderModal('${o.id}')">주문 취소</button>
+          </div>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function toggleOne(id){
+  if(selected.has(id)) selected.delete(id); else selected.add(id);
+  document.getElementById('invoiceSelCount').textContent = selected.size;
+  syncOrderBulkBar();
+  renderTable();
+}
+function toggleAll(cb){
+  if(cb.checked){ orders.forEach(o=>selected.add(o.id)); } else { selected.clear(); }
+  document.getElementById('invoiceSelCount').textContent = selected.size;
+  syncOrderBulkBar();
+  renderTable();
+}
+function syncOrderBulkBar(){
+  document.getElementById('orderBulkBar').classList.toggle('show', selected.size>0);
+  document.getElementById('orderSelCount').textContent = selected.size + '건 선택됨';
+}
+function bulkChangeOrderStatus(status){
+  if(!selected.size){ showToast('선택된 주문이 없어요'); return; }
+  orders.forEach(o=>{ if(selected.has(o.id)) o.status = status; });
+  renderTable();
+  showToast(selected.size+'건 주문 상태를 \''+statusLabel[status]+'\'(으)로 변경했습니다');
+}
+function bulkCancelOrders(){
+  if(!selected.size){ showToast('선택된 주문이 없어요'); return; }
+  if(!confirm(selected.size+'건 주문을 취소 접수할까요?')) return;
+  orders.forEach(o=>{ if(selected.has(o.id)) o.status = 'cancelreq'; });
+  selected.clear();
+  syncOrderBulkBar();
+  renderTable();
+  showToast('선택한 주문을 취소 접수했습니다');
+}
+
+/* ================= 주문 상세 ================= */
+let odCurrentId = null;
+function openOrderDetail(id){
+  const o = orders.find(x=>x.id===id);
+  if(!o) return;
+  odCurrentId = id;
+  document.getElementById('od_title').textContent = '주문 '+o.id;
+  document.getElementById('od_date').textContent = o.date + ' 주문';
+  document.getElementById('od_statusPill').textContent = statusLabel[o.status];
+  document.getElementById('od_statusPill').className = 'order-status-pill ' + statusClass[o.status];
+  document.getElementById('od_buyer').textContent = o.buyer;
+  document.getElementById('od_phone').textContent = o.phone;
+  document.getElementById('od_amount').textContent = o.amount.toLocaleString()+'원';
+  document.getElementById('od_productRows').innerHTML = `
+    <tr><td>${o.product}</td><td>${o.qty}</td><td>${o.amount.toLocaleString()}원</td></tr>
+  `;
+  document.getElementById('orderDetailModal').classList.add('open');
+}
+
+/* ================= 송장 단건 등록 ================= */
+function openSingleInvoice(id){
+  selected = new Set([id]);
+  document.getElementById('invoiceSelCount').textContent = selected.size;
+  document.getElementById('invoiceModal').classList.add('open');
+}
+
+/* ================= 주문 취소 ================= */
+let ocTargetId = null;
+function openCancelOrderModal(id){
+  const o = orders.find(x=>x.id===id);
+  if(!o) return;
+  ocTargetId = id;
+  document.getElementById('oc_targetName').textContent = o.id + ' · ' + o.buyer;
+  document.getElementById('orderCancelModal').classList.add('open');
+}
+function confirmCancelOrder(){
+  const o = orders.find(x=>x.id===ocTargetId);
+  if(o) o.status = 'cancelreq';
+  closeModal('orderCancelModal');
+  renderTable();
+  showToast('취소 접수되었습니다');
+}
+/* ================= 송장 일괄 등록 모달 ================= */
+function openInvoiceModal(){
+  document.getElementById('invoiceSelCount').textContent = selected.size;
+  document.getElementById('invoiceModal').classList.add('open');
+}
+
+/* ================= 관리자 생성 주문 모달 ================= */
+function openAdminOrderModal(){
+  const pendingOrders = orders.filter(o => o.status === 'paywait');
+  const list = document.getElementById('adminOrderList');
+  list.innerHTML = pendingOrders.map(o => `
+    <div class="admin-order-row">
+      <div>
+        <div class="oid">${o.id}</div>
+        <div class="odate">${o.date.replace('2026-07-','7월 ').replace('-','일 오전 ')}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="avatar-sm">${o.buyer.charAt(0)}</div>
+        ${o.buyer}
+      </div>
+      <div>${o.qty}</div>
+      <div style="text-align:right;font-weight:700;">${o.amount.toLocaleString()}원</div>
+    </div>
+  `).join('') || '<div style="padding:24px;text-align:center;color:var(--text-faint);font-size:13px;">결제 대기 중인 관리자 생성 주문이 없습니다.</div>';
+  document.getElementById('adminOrderModal').classList.add('open');
+}
+
+/* ================= 모달 공통 ================= */
+/* ================= 토스트 ================= */
+renderTable();
+</script>
+</body>
+</html>

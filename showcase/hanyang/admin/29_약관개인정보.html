@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>약관개인정보 · 관리자</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='대시보드.html'">
+      <div class="mark">S</div>
+      <div class="name">ADMIN관리자</div>
+    </div>
+
+    <div class="gh-quick">
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'inquiry')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="gh-notif-label">문의</span>
+          <span class="badge-dot">3</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-inquiry">
+          <div class="gh-notif-panel-head">신규 문의 <b>3건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">배송이 너무 늦어요</div><div class="sub">김민준 · 5분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">사이즈 교환 문의</div><div class="sub">이서연 · 22분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">결제가 안돼요</div><div class="sub">박도윤 · 1시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('문의 전체보기로 이동합니다')">문의 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'order')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="gh-notif-label">주문</span>
+          <span class="badge-dot">12</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-order">
+          <div class="gh-notif-panel-head">신규 주문 <b>12건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-042 · 88,000원</div><div class="sub">최지우 · 3분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-041 · 132,000원</div><div class="sub">정하은 · 18분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-040 · 45,000원</div><div class="sub">윤시우 · 40분 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('주문 전체보기로 이동합니다')">주문 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'delivery')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17h4V5H2v12h3"/><path d="M14 9h4l3 3v5h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="gh-notif-label">배송</span>
+          <span class="badge-dot">5</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-delivery">
+          <div class="gh-notif-panel-head">배송 대기 <b>5건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-118 발송 대기</div><div class="sub">김민준 · 2시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-117 발송 대기</div><div class="sub">이서연 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-116 지연 접수</div><div class="sub">박도윤 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('배송 현황으로 이동합니다')">배송 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'comment')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+          <span class="gh-notif-label">댓글</span>
+          <span class="badge-dot">2</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-comment">
+          <div class="gh-notif-panel-head">새 댓글 <b>2건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"배송 진짜 빠르네요!"</div><div class="sub">최지우 · 30분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"재입고 언제 되나요?"</div><div class="sub">정하은 · 2시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('댓글 전체보기로 이동합니다')">댓글 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'newmember')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+          <span class="gh-notif-label">신규회원</span>
+          <span class="badge-dot">4</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-newmember">
+          <div class="gh-notif-panel-head">신규 가입 <b>4명</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">정하은</div><div class="sub">카카오 가입 · 40분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">박도윤</div><div class="sub">자체 가입 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">윤시우</div><div class="sub">네이버 가입 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('회원목록으로 이동합니다')">신규회원 전체보기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">김도현 관리자님</div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>192.168.0.1 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="showToast('로그아웃 되었습니다')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll">
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">사이트관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="01_카테고리.html"><span class="dot"></span>카테고리</a>
+          <a class="nav-item" href="02_메뉴설정.html"><span class="dot"></span>메뉴설정</a>
+          <a class="nav-item" href="03_공지사항.html"><span class="dot"></span>공지사항</a>
+          <a class="nav-item" href="04_팝업배너.html"><span class="dot"></span>팝업·배너</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="ng-text">회원관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="05_회원목록.html"><span class="dot"></span>회원목록</a>
+          <a class="nav-item" href="06_회원등급.html"><span class="dot"></span>회원등급</a>
+          <a class="nav-item" href="07_회원설정.html"><span class="dot"></span>회원설정</a>
+          <a class="nav-item" href="08_추천인설정.html"><span class="dot"></span>추천인설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="ng-text">주문관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="09_입금관리.html"><span class="dot"></span>입금관리</a>
+          <a class="nav-item" href="10_상품관리.html"><span class="dot"></span>상품관리</a>
+          <a class="nav-item" href="11_주문관리.html"><span class="dot"></span>주문관리</a>
+          <a class="nav-item" href="12_배송관리.html"><span class="dot"></span>배송관리</a>
+          <a class="nav-item" href="13_정기구독.html"><span class="dot"></span>정기구독</a>
+          <a class="nav-item" href="14_문의.html"><span class="dot"></span>문의</a>
+          <a class="nav-item" href="15_구매평.html"><span class="dot"></span>구매평</a>
+          <a class="nav-item" href="16_재입고알림.html"><span class="dot"></span>재입고알림</a>
+          <a class="nav-item" href="17_세금계산서.html"><span class="dot"></span>세금계산서</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 12l9 9 11-11-2-8-8-2Z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">프로모션</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="18_쿠폰.html"><span class="dot"></span>쿠폰</a>
+          <a class="nav-item" href="19_적립금.html"><span class="dot"></span>적립금</a>
+          <a class="nav-item" href="20_이벤트.html"><span class="dot"></span>이벤트</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14v3M12 10v7M17 6v11"/></svg>
+          <span class="ng-text">통계</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="21_개요.html"><span class="dot"></span>개요</a>
+          <a class="nav-item" href="22_매출.html"><span class="dot"></span>매출</a>
+          <a class="nav-item" href="23_기간별분석.html"><span class="dot"></span>기간별분석</a>
+          <a class="nav-item" href="24_유입통계.html"><span class="dot"></span>유입통계</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ng-text">메세지</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="25_문자발송.html"><span class="dot"></span>문자발송</a>
+          <a class="nav-item" href="26_자동메일.html"><span class="dot"></span>자동메일</a>
+          <a class="nav-item" href="27_환경설정.html"><span class="dot"></span>환경설정</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.2 4.2l2.8 2.8m10 10 2.8 2.8M1 12h4m14 0h4M4.2 19.8l2.8-2.8m10-10 2.8-2.8"/></svg>
+          <span class="ng-text">시스템</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="28_일반설정.html"><span class="dot"></span>일반설정</a>
+          <a class="nav-item active" href="29_약관개인정보.html"><span class="dot"></span>약관·개인정보</a>
+          <a class="nav-item" href="30_도메인관리.html"><span class="dot"></span>도메인관리</a>
+          <a class="nav-item" href="31_전자결제.html"><span class="dot"></span>전자결제</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5z"/></svg>
+          <span class="ng-text">권한관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="32_관리자계정.html"><span class="dot"></span>관리자계정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+          <span class="ng-text">파트너</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="33_리셀러목록.html"><span class="dot"></span>리셀러목록</a>
+          <a class="nav-item" href="34_리셀러설정.html"><span class="dot"></span>리셀러설정</a>
+          <a class="nav-item" href="35_리셀러트리.html"><span class="dot"></span>리셀러트리</a>
+          <a class="nav-item" href="36_리셀러정산.html"><span class="dot"></span>리셀러정산</a>
+          <a class="nav-item" href="37_리셀러도메인.html"><span class="dot"></span>리셀러도메인</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">약관·개인정보</div>
+        <div class="breadcrumb">시스템 &nbsp;/&nbsp; 약관·개인정보</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn" onclick="showToast('약관 페이지를 새 창에서 엽니다')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-1px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+          약관 바로가기
+        </button>
+        <button class="btn btn-primary" onclick="showToast('저장되었습니다')">저장</button>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="card" style="padding:24px;">
+        <div class="tabs" style="margin-bottom:20px;flex-wrap:wrap;">
+          <div class="tab active" data-ltab="terms" onclick="switchLegalTab(this,'terms')">이용약관</div>
+          <div class="tab" data-ltab="privacy" onclick="switchLegalTab(this,'privacy')">개인정보처리방침</div>
+          <div class="tab" data-ltab="travelDomestic" onclick="switchLegalTab(this,'travelDomestic')">국내여행약관</div>
+          <div class="tab" data-ltab="travelOverseas" onclick="switchLegalTab(this,'travelOverseas')">국외여행약관</div>
+          <div class="tab" data-ltab="marketing" onclick="switchLegalTab(this,'marketing')">마케팅활용동의 및 광고수신동의</div>
+          <div class="tab" data-ltab="thirdparty" onclick="switchLegalTab(this,'thirdparty')">개인정보제3자제공동의</div>
+          <div class="tab" data-ltab="age14" onclick="switchLegalTab(this,'age14')">만 14세 이상 동의</div>
+          <div class="tab" data-ltab="coupon" onclick="switchLegalTab(this,'coupon')">쿠폰 정기 혜택 서비스</div>
+        </div>
+
+        <!-- ===== 이용약관 ===== -->
+        <div id="ltab-terms">
+          <div class="legal-notice">
+            · 법률 자문이나 법적 검토가 이루어지지 않았다면, 공정거래위원회의 표준약관을 수정없이 사용해야 합니다.<br>
+            · 아래 양식은 샘플로 제공되는 서식으로 운영형태에 따른 수정이 필요합니다.<br>
+            · HTML태그 사용이 가능하지만 줄바꿈(BR태그)은 자동으로 처리되어 입력하실 필요가 없습니다.
+          </div>
+          <div style="text-align:right;margin-bottom:14px;">
+            <button class="btn" onclick="showToast('공정위 표준약관을 적용합니다')">표준약관 적용</button>
+            <button class="btn" onclick="showToast('쇼핑몰 표준약관을 적용합니다')">쇼핑몰 표준약관 적용</button>
+          </div>
+          <textarea class="legal-box-edit" spellcheck="false">제1조 목적
+본 이용약관은 "사이트명"(이하 "사이트")의 서비스의 이용조건과 운영에 관한 제반 사항 규정을 목적으로 합니다.
+
+제2조 용어의 정의
+본 약관에서 사용되는 주요한 용어의 정의는 다음과 같습니다.
+
+① 회원 : 사이트의 약관에 동의하고 개인정보를 제공하여 회원등록을 한 자로서, 사이트와의 이용계약을 체결하고 사이트를 이용하는 이용자를 말합니다.
+② 이용계약 : 사이트 이용과 관련하여 사이트와 회원간에 체결하는 계약을 말합니다.
+③ 회원 아이디(이하 "ID") : 회원의 식별과 회원의 서비스 이용을 위하여 회원별로 부여하는 고유한 문자와 숫자의 조합을 말합니다.
+④ 비밀번호 : 회원이 부여받은 ID와 일치된 회원임을 확인하고 회원의 권익 보호를 위하여 회원이 선정한 문자와 숫자의 조합을 말합니다.
+⑤ 운영자 : 서비스에 홈페이지를 개설하여 운영하는 운영자를 말합니다.
+⑥ 해지 : 회원이 이용계약을 해약하는 것을 말합니다.
+
+제3조 약관 외 준칙
+운영자는 필요한 경우 별도로 운영정책을 공지 안내할 수 있으며, 본 약관과 운영정책이 중첩될 경우 운영정책이 우선 적용됩니다.
+
+제4조 이용계약 체결
+① 이용계약은 회원으로 등록하여 사이트를 이용하려는 자의 본 약관 내용에 대한 동의와 가입신청에 대하여 운영자의 이용승낙으로 성립합니다.
+② 회원으로 등록하여 서비스를 이용하려는 자는 사이트 가입신청 시 본 약관을 읽고 아래에 있는 "동의합니다"를 선택하는 것으로 본 약관에 대한 동의 의사 표시를 합니다.
+
+제5조 서비스 이용 신청
+① 회원으로 등록하여 사이트를 이용하려는 이용자는 사이트에서 요청하는 제반정보(이용자ID, 비밀번호, 닉네임 등)를 제공해야 합니다.
+② 타인의 정보를 도용하거나 허위의 정보를 등록하는 등 본인의 진정한 정보를 등록하지 않은 회원은 사이트 이용과 관련하여 아무런 권리를 주장할 수 없으며, 관계 법령에 따라 처벌받을 수 있습니다.
+
+제6조 회원 탈퇴 및 자격 상실
+① 회원은 운영자에 대해 언제든지 탈퇴를 요청할 수 있으며, 운영자는 즉시 회원탈퇴를 처리합니다.
+② 회원이 다음 각 호의 사유에 해당하는 경우, 운영자는 회원자격을 제한 및 정지시킬 수 있습니다.
+1. 가입 신청 시 허위 내용을 등록한 경우
+2. 다른 사람의 사이트 이용을 방해하거나 정보를 도용하는 등 전자상거래 질서를 위협하는 경우
+3. 사이트를 이용하여 법령 또는 본 약관이 금지하거나 공서양속에 반하는 행위를 하는 경우
+
+제7조 개인정보보호
+운영자는 관계 법령이 정하는 바에 따라 회원의 개인정보를 보호하기 위해 노력하며, 개인정보의 보호 및 사용에 대해서는 관련 법령 및 운영자의 개인정보처리방침이 적용됩니다.
+
+제8조 운영자의 의무
+① 운영자는 법령과 본 약관이 금지하거나 공서양속에 반하는 행위를 하지 않으며, 계속적, 안정적으로 재화·용역을 제공하기 위하여 최선을 다하여 노력합니다.
+② 운영자는 회원이 안전하게 인터넷 서비스를 이용할 수 있도록 회원의 개인정보(신용정보 포함)보호를 위한 보안 시스템을 갖추어야 합니다.
+
+제9조 회원의 의무
+회원은 다음 행위를 하여서는 안됩니다.
+1. 신청 또는 변경시 허위내용의 등록
+2. 타인의 정보 도용
+3. 운영자가 게시한 정보의 변경
+4. 운영자가 정한 정보 이외의 정보(컴퓨터 프로그램 등) 등의 송신 또는 게시
+5. 운영자 기타 제3자의 저작권 등 지적재산권에 대한 침해
+6. 운영자 기타 제3자의 명예를 손상시키거나 업무를 방해하는 행위
+
+제10조 준거법 및 재판관할
+본 약관과 관련하여 분쟁이 발생한 경우 대한민국 법을 준거법으로 하며, 민사소송법상의 관할법원에 제소합니다.
+
+부칙
+이 약관은 2026년 1월 1일부터 적용됩니다.
+          </textarea>
+        </div>
+
+        <!-- ===== 개인정보처리방침 ===== -->
+        <div id="ltab-privacy" style="display:none;">
+          <div class="legal-notice">
+            · 법률 자문이나 법적 검토가 이루어지지 않았다면, 공정거래위원회의 표준약관을 수정없이 사용해야 합니다.<br>
+            · 아래 양식은 샘플로 제공되는 서식으로 운영형태에 따른 수정이 필요합니다.<br>
+            · HTML태그 사용이 가능하지만 줄바꿈(BR태그)은 자동으로 처리되어 입력하실 필요가 없습니다.
+          </div>
+          <div style="text-align:right;margin-bottom:14px;">
+            <button class="btn" onclick="showToast('기본값으로 되돌렸습니다')">기본값으로 되돌리기</button>
+          </div>
+          <div class="legal-subtabs" id="privacySubtabs">
+            <div class="legal-subtab active" onclick="switchPrivacySub(this,'full')">개인정보 처리방침 전체내용</div>
+            <div class="legal-subtab" onclick="switchPrivacySub(this,'member')">개인정보 수집 및 이용 동의(회원가입시)</div>
+            <div class="legal-subtab" onclick="switchPrivacySub(this,'guest')">개인정보 수집 및 이용 동의(비회원 구매시)</div>
+          </div>
+          <textarea class="legal-box-edit" id="privacyBox-full" spellcheck="false">회사명(이하 '회사'라 한다)는 개인정보 보호법 제30조에 따라 정보 주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리지침을 수립, 공개합니다.
+
+제1조 (개인정보의 처리목적)
+회사는 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이 변경되는 경우에는 개인정보보호법 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.
+
+1. 홈페이지 회원 가입 및 관리
+회원 가입의사 확인, 회원제 서비스 제공에 따른 본인 식별·인증, 회원자격 유지·관리, 제한적 본인확인제 시행에 따른 본인확인, 서비스 부정 이용 방지, 만 14세 미만 아동의 개인정보처리 시 법정대리인의 동의여부 확인, 각종 고지·통지, 고충 처리 등을 목적으로 개인정보를 처리합니다.
+
+2. 재화 또는 서비스 제공
+물품 배송, 서비스 제공, 계약서 및 청구서 발송, 콘텐츠 제공, 맞춤서비스 제공, 본인인증, 연령인증, 요금 결제 및 정산, 채권추심 등을 목적으로 개인정보를 처리합니다.
+
+3. 고충 처리
+민원인의 신원 확인, 민원사항 확인, 사실조사를 위한 연락·통지, 처리 결과 통보 등의 목적으로 개인정보를 처리합니다.
+
+제2조 (개인정보의 처리 및 보유기간)
+① 회사는 법령에 따른 개인정보 보유·이용 기간 또는 정보주체로부터 개인정보를 수집 시에 동의받은 개인정보 보유·이용 기간 내에서 개인정보를 처리·보유합니다.
+② 각각의 개인정보 처리 및 보유 기간은 다음과 같습니다.
+1. 홈페이지 회원 가입 및 관리 : 사업자/단체 홈페이지 탈퇴 시까지. 다만, 관계 법령 위반에 따른 수사·조사 등이 진행 중인 경우에는 해당 수사·조사 종료 시까지
+2. 재화 또는 서비스 제공 : 재화·서비스 공급완료 및 요금결제·정산 완료 시까지
+
+제3조 (개인정보의 제3자 제공)
+회사는 정보주체의 개인정보를 제1조(개인정보의 처리목적)에서 명시한 범위 내에서만 처리하며, 정보주체의 동의, 법률의 특별한 규정 등 개인정보보호법 제17조 및 제18조에 해당하는 경우에만 개인정보를 제3자에게 제공합니다.
+
+제4조 (정보주체의 권리·의무 및 행사방법)
+정보주체는 회사에 대해 언제든지 개인정보 열람·정정·삭제·처리정지 요구 등의 권리를 행사할 수 있습니다.
+
+제5조 (개인정보의 안전성 확보조치)
+회사는 개인정보의 안전성 확보를 위해 관리적, 기술적, 물리적 조치를 취하고 있습니다.
+
+제6조 (개인정보 보호책임자)
+회사는 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 정보주체의 불만처리 및 피해구제 등을 위하여 개인정보 보호책임자를 지정하고 있습니다.
+          </textarea>
+          <textarea class="legal-box-edit" id="privacyBox-member" style="display:none;" spellcheck="false">[개인정보 수집 및 이용 동의 (회원가입 시)]
+
+1. 수집하는 개인정보 항목
+- 필수항목: 이름, 아이디, 비밀번호, 이메일, 휴대폰번호
+- 선택항목: 생년월일, 성별, 주소
+
+2. 개인정보의 수집 및 이용목적
+- 회원 식별 및 가입의사 확인, 부정이용 방지, 고지사항 전달
+
+3. 개인정보의 보유 및 이용기간
+- 회원 탈퇴 시까지 (단, 관계 법령에 따라 보존이 필요한 경우 해당 기간까지)
+
+* 위 개인정보 수집·이용에 대한 동의를 거부할 권리가 있으며, 동의 거부 시 회원가입이 제한됩니다.
+          </textarea>
+          <textarea class="legal-box-edit" id="privacyBox-guest" style="display:none;" spellcheck="false">[개인정보 수집 및 이용 동의 (비회원 구매 시)]
+
+1. 수집하는 개인정보 항목
+- 주문자명, 연락처, 배송지 주소, 결제정보
+
+2. 개인정보의 수집 및 이용목적
+- 비회원 주문 처리, 배송, 결제 확인, 고객 문의 응대
+
+3. 개인정보의 보유 및 이용기간
+- 주문 처리 완료 후 관계 법령에 따른 보존기간까지 (전자상거래법 등)
+
+* 위 개인정보 수집·이용에 대한 동의를 거부할 권리가 있으며, 동의 거부 시 비회원 주문이 제한됩니다.
+          </textarea>
+        </div>
+
+        <!-- ===== 국내여행약관 ===== -->
+        <div id="ltab-travelDomestic" style="display:none;">
+          <div class="legal-notice">
+            · 여행상품을 판매하지 않는 경우 이 탭은 사용하지 않으셔도 됩니다.<br>
+            · 아래 양식은 공정거래위원회 국내여행 표준약관 샘플이며, 운영형태에 따른 수정이 필요합니다.
+          </div>
+          <div style="text-align:right;margin-bottom:14px;">
+            <button class="btn" onclick="showToast('기본값으로 되돌렸습니다')">기본값으로 되돌리기</button>
+          </div>
+          <textarea class="legal-box-edit" spellcheck="false">제1조 (목적)
+이 약관은 회사와 여행자가 체결한 국내여행계약의 세부 이행 및 여행자와 회사간의 권리·의무 및 책임사항을 규정함을 목적으로 합니다.
+
+제2조 (여행계약의 구성)
+여행계약은 여행계약서(붙임 여행일정표 포함)와 여행약관·여행목적지(국가)에 관한 안전정보를 계약내용으로 합니다.
+
+제3조 (특약)
+회사와 여행자는 관계법령에 위반되지 않는 범위 내에서 서면(전자문서 포함)으로 특약을 맺을 수 있습니다.
+
+제4조 (계약체결의 거절)
+회사는 여행자에게 여행에 필요한 사항을 계약서에 명시하거나 설명하여야 하며, 다른 여행자에게 폐를 끼치거나 여행의 원활한 실시에 지장이 있다고 인정될 때에는 계약체결을 거절할 수 있습니다.
+
+제5조 (여행 취소 및 위약금)
+여행자는 여행 개시 전 언제든지 계약을 해제할 수 있으며, 이 경우 여행자는 회사가 정한 여행취소료를 회사에게 지급해야 합니다.
+          </textarea>
+        </div>
+
+        <!-- ===== 국외여행약관 ===== -->
+        <div id="ltab-travelOverseas" style="display:none;">
+          <div class="legal-notice">
+            · 해외여행상품을 판매하지 않는 경우 이 탭은 사용하지 않으셔도 됩니다.<br>
+            · 아래 양식은 공정거래위원회 국외여행 표준약관 샘플이며, 운영형태에 따른 수정이 필요합니다.
+          </div>
+          <div style="text-align:right;margin-bottom:14px;">
+            <button class="btn" onclick="showToast('기본값으로 되돌렸습니다')">기본값으로 되돌리기</button>
+          </div>
+          <textarea class="legal-box-edit" spellcheck="false">제1조 (목적)
+이 약관은 회사와 여행자가 체결한 국외여행계약의 세부 이행 및 여행자와 회사간의 권리·의무 및 책임사항을 규정함을 목적으로 합니다.
+
+제2조 (여행경비의 포함사항)
+여행경비에는 항공기, 선박, 철도 등 이용운송기관의 운임(보통운임기준), 공항, 역, 부두와 호텔사이의 송영버스요금, 숙박요금 및 식사요금 등이 포함됩니다.
+
+제3조 (여권 및 사증)
+여행자는 여권의 효력, 사증, 예방접종 등 여행에 필요한 사항을 확인할 책임이 있으며, 이를 게을리하여 여행에 지장이 초래된 경우 그로 인한 손해는 여행자가 부담합니다.
+
+제4조 (여행조건의 변경요건 및 요금 조정)
+① 회사가 여행자와 계약을 체결할 당시 계약서, 여행일정표에 명시한 여행조건은 다음 각 호의 1의 경우에 한하여 변경될 수 있습니다.
+1. 여행자의 안전과 보호를 위하여 여행자의 요청 또는 현지 사정에 의하여 부득이하다고 쌍방이 합의한 경우
+2. 천재지변, 전란, 정부의 명령, 운송·숙박기관 등의 파업·휴업 등으로 여행의 목적을 달성할 수 없는 경우
+          </textarea>
+        </div>
+
+        <!-- ===== 마케팅활용동의 및 광고수신동의 ===== -->
+        <div id="ltab-marketing" style="display:none;">
+          <div style="display:flex;gap:24px;margin-bottom:18px;">
+            <label class="check-row"><input type="checkbox" checked> 메시지(SMS, 카카오톡 등) 수신 동의</label>
+            <label class="check-row"><input type="checkbox" checked> E-Mail 수신 동의</label>
+          </div>
+          <div class="legal-notice">
+            · 마케팅 활용 동의 사용시 회원가입시 이벤트/혜택 소식 수신 여부 항목(E-mail, 메시지)이 생성되며, 가입 후 정보수정을 통해 변경할 수 있습니다.<br>
+            · 아래 양식은 샘플로 제공되는 서식으로 운영형태에 따른 수정이 필요합니다.<br>
+            · HTML태그 사용이 가능하지만 줄바꿈(BR태그)은 자동으로 처리되어 입력하실 필요가 없습니다.
+          </div>
+          <div style="text-align:right;margin-bottom:14px;">
+            <button class="btn" onclick="showToast('기본값으로 되돌렸습니다')">기본값으로 되돌리기</button>
+          </div>
+          <textarea class="legal-box-edit" spellcheck="false">서비스와 관련된 신상품 소식, 이벤트 안내, 고객 혜택 등 다양한 정보를 제공합니다.
+
+1. 수집 이용 목적: 신상품 및 이벤트 정보 안내, 맞춤형 혜택 및 광고성 정보 제공
+2. 수집 항목: 이메일 주소, 휴대폰번호
+3. 보유 및 이용기간: 수신동의 철회 시 또는 회원 탈퇴 시까지
+
+* 마케팅 정보 수신에 동의하지 않으셔도 서비스 이용에 제한이 없습니다.
+* 수신 동의는 마이페이지에서 언제든지 변경하실 수 있습니다.
+          </textarea>
+        </div>
+
+        <!-- ===== 개인정보제3자제공동의 ===== -->
+        <div id="ltab-thirdparty" style="display:none;">
+          <div style="display:flex;gap:24px;margin-bottom:18px;">
+            <label class="radio-row2"><input type="radio" name="ltab_thirdparty"> 사용(필수)</label>
+            <label class="radio-row2"><input type="radio" name="ltab_thirdparty"> 사용(선택)</label>
+            <label class="radio-row2"><input type="radio" name="ltab_thirdparty" checked> 사용안함</label>
+          </div>
+          <div class="legal-notice warn">
+            · 사이트 운영 도중 이 설정을 사용하게 될 경우 사전에 메일, 사이트에 게시 등으로 적용 예고를 안내해야 법적 분쟁을 피할 수 있습니다.<br>
+            · 아래 양식은 샘플로 제공되는 서식으로 운영형태에 따른 수정이 필요합니다.<br>
+            · HTML태그 사용이 가능하지만 줄바꿈(BR태그)은 자동으로 처리되어 입력하실 필요가 없습니다.
+          </div>
+          <div style="text-align:right;margin-bottom:14px;">
+            <button class="btn" onclick="showToast('기본값으로 되돌렸습니다')">기본값으로 되돌리기</button>
+          </div>
+          <textarea class="legal-box-edit" spellcheck="false">다음과 같이 개인정보를 제3자에게 제공하고 있습니다.
+
+1. 개인정보를 제공받는 자예) ○○○카드
+2. 제공받는 자의 개인정보 이용목적예) 이벤트 공동개최 등 업무제휴 및 제휴카드 발급
+3. 제공하는 개인정보 항목예) 성명, 주소, 휴대폰번호, 이메일
+4. 제공받는 자의 보유 및 이용기간예) 회원탈퇴 시 또는 개인정보 제3자 제공 철회 시까지
+          </textarea>
+        </div>
+
+        <!-- ===== 만 14세 이상 동의 ===== -->
+        <div id="ltab-age14" style="display:none;">
+          <div style="margin-bottom:18px;">
+            <label class="radio-row2"><input type="radio" name="ltab_age14" checked> 만 14세 이상 동의
+              <span style="width:15px;height:15px;border-radius:50%;background:var(--bg);color:var(--text-faint);font-size:10px;display:inline-flex;align-items:center;justify-content:center;margin-left:2px;">?</span>
+            </label>
+          </div>
+          <div class="legal-notice">
+            · 관계 법령에 따라 만 14세 미만 고객의 회원가입을 허용할 경우, 법정대리인의 동의가 필요합니다.<br>
+            · 가입을 허용하는 경우 이용약관 또는 개인정보 처리방침 내용 수정이 필요하며, 법률 자문이나 법적 검토를 진행해 주시길 바랍니다.
+          </div>
+          <div style="text-align:right;margin-bottom:14px;">
+            <button class="btn" onclick="showToast('기본값으로 되돌렸습니다')">기본값으로 되돌리기</button>
+          </div>
+          <textarea class="legal-box-edit" spellcheck="false">만 14세 이상입니다.
+          </textarea>
+        </div>
+
+        <!-- ===== 쿠폰 정기 혜택 서비스 ===== -->
+        <div id="ltab-coupon" style="display:none;">
+          <div style="display:flex;gap:24px;margin-bottom:18px;">
+            <label class="radio-row2"><input type="radio" name="ltab_coupon" checked> 사용 안함</label>
+            <label class="radio-row2"><input type="radio" name="ltab_coupon"> 사용(선택)</label>
+          </div>
+          <div class="legal-notice">
+            · 쿠폰 정기 혜택 서비스는 본사이트 마케팅 제품을 통해 신청받을 수 있으며, 마이페이지 정보수정을 통해 해지할 수 있습니다.<br>
+            · 아래 양식은 샘플로 제공되는 서식으로 운영형태에 따른 수정이 필요합니다.<br>
+            · HTML태그 사용이 가능하지만 줄바꿈(BR태그)은 자동으로 처리되어 입력하실 필요가 없습니다.
+          </div>
+          <div style="text-align:right;margin-bottom:14px;">
+            <button class="btn" onclick="showToast('변수를 설정합니다')">변수 설정하기</button>
+            <button class="btn" onclick="showToast('기본값으로 되돌렸습니다')">기본값으로 되돌리기</button>
+          </div>
+          <textarea class="legal-box-edit" spellcheck="false">제1조 [목적]
+본 약관은 {{사이트명}}(이하 "회사"라고 합니다)이 운영하는 웹사이트, 모바일 웹 및 앱 등에서 제공하는 '쿠폰 정기 혜택 서비스'(이하 "본 서비스")를 이용하는 회원과 회사 간의 권리·의무 관계, 관련 절차 및 기타 제반 사항을 규정함으로써 이용자의 혜택 수혜 편의를 증진하는 것을 목적으로 합니다.
+
+제2조 [용어의 정의]
+(1) 본 약관에서 사용하는 용어의 정의는 다음과 같습니다.
+1. "본 서비스"란 회원이 개별적으로 쿠폰을 발급받아야 하는 번거로움을 해소하기 위해, 회원의 명시적 요청에 따라 회사가 정한 주기 또는 특정 조건에 맞춰 쿠폰을 자동으로 생성 및 지급하는 '혜택 수령 대행 서비스' 일체를 의미합니다.
+2. "신청 회원"이란 본 약관에 동의하고 회사가 제시한 신청 절차(버튼 클릭, 팝업 동의 등)를 거쳐 본 서비스를 활성화한 회원을 의미합니다.
+3. "자동 발행"이란 신청 회원의 명시적 서비스 이용 계약에 근거하여, 회사가 시스템을 통해 쿠폰을 생성하여 해당 회원의 계정에 귀속시키는 행정적/기술적 조치를 의미합니다.
+4. "이행 고지"란 본 서비스의 정상적인 수행을 위해 쿠폰 발행 완료, 혜택 내용, 사용 기한 등을 신청 회원에게 전달하는 필수 정보성 안내를 의미합니다.
+
+제3조 [약관의 게시와 개정]
+(1) 회사는 신청 회원이 본 약관의 내용을 상시 확인할 수 있도록 서비스 내 신청 페이지 또는 마이페이지 정보 수정 화면에 게시합니다.
+(2) 회사는 관련 법령을 위배하지 않는 범위 내에서 본 약관을 개정할 수 있습니다. 단, 신청 회원에게 불리한 개정의 경우 적용일자 30일 전부터 공지하며 전자우편, 알림톡 등의 수단으로 명확히 통지합니다.
+
+제4조 [이용계약의 성립]
+(1) 본 서비스의 이용계약은 회원이 본 약관에 동의한 후 [정기 혜택 신청] 또는 [서비스 활성화] 등 명시적인 의사표시를 완료하고, 회사가 이를 승낙함으로써 성립합니다.
+(2) 회사는 신청 회원이 본 서비스의 성격(쿠폰 자동 발행 및 그에 따른 정보성 안내)을 명확히 인지할 수 있도록 신청 시점에 주요 내용을 고지합니다.
+(3) 본 서비스는 회원 본인의 의사에 반하여 강제로 가입되지 않으며, 언제든지 자유로운 해지가 보장됩니다.
+(4) 신청 회원은 본 서비스의 특성상 쿠폰 발행 결과 및 혜택 안내가 전자적 방법(문자, 알림톡, 앱푸시 등)을 통해 제공될 수 있음을 인지하고 이에 동의합니다.
+
+제5조 [해지]
+신청 회원은 마이페이지 정보수정 화면에서 언제든지 본 서비스를 해지할 수 있으며, 해지 즉시 자동 쿠폰 발행이 중단됩니다.
+          </textarea>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">저장되었습니다</span>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+function switchLegalTab(el, tab){
+  document.querySelectorAll('.content > .card > .tabs .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('[id^="ltab-"]').forEach(d=>d.style.display='none');
+  document.getElementById('ltab-'+tab).style.display='block';
+}
+function switchPrivacySub(el, sub){
+  document.querySelectorAll('#privacySubtabs .legal-subtab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  ['full','member','guest'].forEach(s => {
+    document.getElementById('privacyBox-'+s).style.display = (s===sub) ? 'block' : 'none';
+  });
+}
+</script>
+</body>
+</html>

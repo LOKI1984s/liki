@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>도메인 · 파트너센터</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===== Global Header ===== -->
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='dashboard.html'">
+      <div class="mark">P</div>
+      <div class="name">파트너센터</div>
+    </div>
+
+    <div class="gh-quick"></div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">강남플라워스튜디오님 <span class="p-tier-badge">총판</span></div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>정상 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="location.href='login.html'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll" style="padding-top:14px;">
+      <div class="p-nav-section">파트너센터</div>
+      <a class="p-nav-item" href="dashboard.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>대시보드</span></a>
+      <a class="p-nav-item" href="members.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>회원목록</span></a>
+      <a class="p-nav-item" href="settlement.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span>정산관리</span></a>
+      <a class="p-nav-item" href="agencies.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3.5"/><path d="M2.5 21v-1.5A4.5 4.5 0 0 1 7 15h4a4.5 4.5 0 0 1 4.5 4.5V21"/><circle cx="18" cy="8" r="2.5"/><path d="M15.5 15.2A4 4 0 0 1 21.5 19v2"/></svg><span>하위 대리점</span></a>
+      <a class="p-nav-item active" href="domain.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span>도메인</span></a>
+      <a class="p-nav-item" href="account.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg><span>내 정보</span></a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">도메인</div>
+        <div class="breadcrumb">내 브랜드 도메인 신청 및 상태를 확인하세요</div>
+      </div>
+      <button class="btn btn-primary" onclick="openRegModal()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        도메인 신청
+      </button>
+    </div>
+
+    <div class="content">
+      <div class="info-note" style="margin-bottom:16px;">
+        실제 DNS 연결은 본사 개발팀이 처리해요. 신청 후 상태가 "정상"으로 바뀔 때까지 시간이 걸릴 수 있어요.
+      </div>
+
+      <div class="card">
+        <div class="toolbar" style="padding:16px;">
+          <div style="font-size:13px;color:var(--text-sub);">내 도메인 <b style="color:var(--text);">1</b>개</div>
+        </div>
+        <div style="overflow-x:auto;">
+        <table style="table-layout:fixed;">
+          <colgroup><col style="width:34%;"><col style="width:18%;"><col style="width:24%;"><col style="width:24%;"></colgroup>
+          <thead><tr><th>도메인</th><th>유형</th><th>연결 상태</th><th>등록일</th></tr></thead>
+          <tbody id="myDomainTbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<!-- ===== 도메인 신청 모달 ===== -->
+<div class="modal-overlay" id="regModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>도메인 신청</h3>
+      <button class="modal-close" onclick="closeModal('regModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>도메인 유형</label>
+        <div class="seg-group" id="seg_type" style="width:100%;">
+          <button type="button" class="seg-btn active" style="flex:1;" onclick="setType(this,'subdomain')">서브도메인</button>
+          <button type="button" class="seg-btn" style="flex:1;" onclick="setType(this,'custom')">자체도메인</button>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0;" id="subField">
+        <label>서브도메인</label>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <input type="text" id="slug" placeholder="mystorename" style="max-width:200px;">
+          <span style="color:var(--text-sub);font-size:13px;">.flowershop.com</span>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0;display:none;" id="customField">
+        <label>자체 도메인 주소</label>
+        <input type="text" id="customDomain" placeholder="예) myflowershop.com">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('regModal')">취소</button>
+      <button class="btn btn-primary" onclick="confirmReg()">신청</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">저장되었습니다</span>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+let myDomains = [
+  { domain:'gangnam.flowershop.com', type:'subdomain', status:'normal', date:'2026-05-10' },
+];
+const statusLabel = { normal:'정상', degraded:'연결불량', unreachable:'접속불가' };
+const typeLabel = { subdomain:'서브도메인', custom:'자체도메인' };
+
+function render(){
+  document.getElementById('myDomainTbody').innerHTML = myDomains.map(d => `
+    <tr>
+      <td style="color:var(--text-sub);">${d.domain}</td>
+      <td><span class="badge ${d.type==='custom'?'badge-grade-general':'badge-group-none'}">${typeLabel[d.type]}</span></td>
+      <td><div class="dom-status"><span class="dom-dot dom-${d.status}"></span>${statusLabel[d.status]}</div></td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${d.date}</td>
+    </tr>
+  `).join('');
+}
+function setType(el, type){
+  document.querySelectorAll('#seg_type .seg-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('subField').style.display = type==='subdomain' ? 'block' : 'none';
+  document.getElementById('customField').style.display = type==='custom' ? 'block' : 'none';
+  document.getElementById('regModal').dataset.type = type;
+}
+function openRegModal(){
+  document.getElementById('slug').value = '';
+  document.getElementById('customDomain').value = '';
+  document.getElementById('regModal').dataset.type = 'subdomain';
+  document.getElementById('regModal').classList.add('open');
+}
+function confirmReg(){
+  const type = document.getElementById('regModal').dataset.type;
+  let domain;
+  if(type==='subdomain'){
+    const slug = document.getElementById('slug').value.trim();
+    if(!slug){ showToast('서브도메인을 입력해주세요'); return; }
+    domain = slug + '.flowershop.com';
+  } else {
+    domain = document.getElementById('customDomain').value.trim();
+    if(!domain){ showToast('도메인 주소를 입력해주세요'); return; }
+  }
+  myDomains.push({ domain, type, status:'unreachable', date: new Date().toISOString().slice(0,10) });
+  closeModal('regModal');
+  render();
+  showToast('신청되었습니다. 본사 검토 후 연결됩니다');
+}
+render();
+</script>
+</body>
+</html>

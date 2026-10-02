@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>매출 · 관리자</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ===== Global Header ===== -->
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='대시보드.html'">
+      <div class="mark">S</div>
+      <div class="name">ADMIN관리자</div>
+    </div>
+
+    <div class="gh-quick">
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'inquiry')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="gh-notif-label">문의</span>
+          <span class="badge-dot">3</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-inquiry">
+          <div class="gh-notif-panel-head">신규 문의 <b>3건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">배송이 너무 늦어요</div><div class="sub">김민준 · 5분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">사이즈 교환 문의</div><div class="sub">이서연 · 22분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">결제가 안돼요</div><div class="sub">박도윤 · 1시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('문의 전체보기로 이동합니다')">문의 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'order')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="gh-notif-label">주문</span>
+          <span class="badge-dot">12</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-order">
+          <div class="gh-notif-panel-head">신규 주문 <b>12건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-042 · 88,000원</div><div class="sub">최지우 · 3분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-041 · 132,000원</div><div class="sub">정하은 · 18분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-040 · 45,000원</div><div class="sub">윤시우 · 40분 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('주문 전체보기로 이동합니다')">주문 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'delivery')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17h4V5H2v12h3"/><path d="M14 9h4l3 3v5h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="gh-notif-label">배송</span>
+          <span class="badge-dot">5</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-delivery">
+          <div class="gh-notif-panel-head">배송 대기 <b>5건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-118 발송 대기</div><div class="sub">김민준 · 2시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-117 발송 대기</div><div class="sub">이서연 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-116 지연 접수</div><div class="sub">박도윤 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('배송 현황으로 이동합니다')">배송 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'comment')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+          <span class="gh-notif-label">댓글</span>
+          <span class="badge-dot">2</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-comment">
+          <div class="gh-notif-panel-head">새 댓글 <b>2건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"배송 진짜 빠르네요!"</div><div class="sub">최지우 · 30분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"재입고 언제 되나요?"</div><div class="sub">정하은 · 2시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('댓글 전체보기로 이동합니다')">댓글 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'newmember')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+          <span class="gh-notif-label">신규회원</span>
+          <span class="badge-dot">4</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-newmember">
+          <div class="gh-notif-panel-head">신규 가입 <b>4명</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">정하은</div><div class="sub">카카오 가입 · 40분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">박도윤</div><div class="sub">자체 가입 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">윤시우</div><div class="sub">네이버 가입 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('회원목록으로 이동합니다')">신규회원 전체보기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">김도현 관리자님</div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>192.168.0.1 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="showToast('로그아웃 되었습니다')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll">
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">사이트관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="01_카테고리.html"><span class="dot"></span>카테고리</a>
+          <a class="nav-item" href="02_메뉴설정.html"><span class="dot"></span>메뉴설정</a>
+          <a class="nav-item" href="03_공지사항.html"><span class="dot"></span>공지사항</a>
+          <a class="nav-item" href="04_팝업배너.html"><span class="dot"></span>팝업·배너</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="ng-text">회원관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="05_회원목록.html"><span class="dot"></span>회원목록</a>
+          <a class="nav-item" href="06_회원등급.html"><span class="dot"></span>회원등급</a>
+          <a class="nav-item" href="07_회원설정.html"><span class="dot"></span>회원설정</a>
+          <a class="nav-item" href="08_추천인설정.html"><span class="dot"></span>추천인설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="ng-text">주문관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="09_입금관리.html"><span class="dot"></span>입금관리</a>
+          <a class="nav-item" href="10_상품관리.html"><span class="dot"></span>상품관리</a>
+          <a class="nav-item" href="11_주문관리.html"><span class="dot"></span>주문관리</a>
+          <a class="nav-item" href="12_배송관리.html"><span class="dot"></span>배송관리</a>
+          <a class="nav-item" href="13_정기구독.html"><span class="dot"></span>정기구독</a>
+          <a class="nav-item" href="14_문의.html"><span class="dot"></span>문의</a>
+          <a class="nav-item" href="15_구매평.html"><span class="dot"></span>구매평</a>
+          <a class="nav-item" href="16_재입고알림.html"><span class="dot"></span>재입고알림</a>
+          <a class="nav-item" href="17_세금계산서.html"><span class="dot"></span>세금계산서</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 12l9 9 11-11-2-8-8-2Z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">프로모션</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="18_쿠폰.html"><span class="dot"></span>쿠폰</a>
+          <a class="nav-item" href="19_적립금.html"><span class="dot"></span>적립금</a>
+          <a class="nav-item" href="20_이벤트.html"><span class="dot"></span>이벤트</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14v3M12 10v7M17 6v11"/></svg>
+          <span class="ng-text">통계</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="21_개요.html"><span class="dot"></span>개요</a>
+          <a class="nav-item active" href="22_매출.html"><span class="dot"></span>매출</a>
+          <a class="nav-item" href="23_기간별분석.html"><span class="dot"></span>기간별분석</a>
+          <a class="nav-item" href="24_유입통계.html"><span class="dot"></span>유입통계</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ng-text">메세지</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="25_문자발송.html"><span class="dot"></span>문자발송</a>
+          <a class="nav-item" href="26_자동메일.html"><span class="dot"></span>자동메일</a>
+          <a class="nav-item" href="27_환경설정.html"><span class="dot"></span>환경설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.2 4.2l2.8 2.8m10 10 2.8 2.8M1 12h4m14 0h4M4.2 19.8l2.8-2.8m10-10 2.8-2.8"/></svg>
+          <span class="ng-text">시스템</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="28_일반설정.html"><span class="dot"></span>일반설정</a>
+          <a class="nav-item" href="29_약관개인정보.html"><span class="dot"></span>약관·개인정보</a>
+          <a class="nav-item" href="30_도메인관리.html"><span class="dot"></span>도메인관리</a>
+          <a class="nav-item" href="31_전자결제.html"><span class="dot"></span>전자결제</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5z"/></svg>
+          <span class="ng-text">권한관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="32_관리자계정.html"><span class="dot"></span>관리자계정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+          <span class="ng-text">파트너</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="33_리셀러목록.html"><span class="dot"></span>리셀러목록</a>
+          <a class="nav-item" href="34_리셀러설정.html"><span class="dot"></span>리셀러설정</a>
+          <a class="nav-item" href="35_리셀러트리.html"><span class="dot"></span>리셀러트리</a>
+          <a class="nav-item" href="36_리셀러정산.html"><span class="dot"></span>리셀러정산</a>
+          <a class="nav-item" href="37_리셀러도메인.html"><span class="dot"></span>리셀러도메인</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ===== Main ===== -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">매출</div>
+        <div class="breadcrumb">통계 &nbsp;/&nbsp; 매출</div>
+      </div>
+      <button class="btn" onclick="showToast('CSV 파일을 내보냅니다')">CSV 내보내기</button>
+    </div>
+
+    <div class="content" style="display:flex;flex-direction:column;gap:16px;">
+
+      <div class="card" style="padding:16px;">
+        <div class="tabs" style="border-bottom:none;padding:0;gap:6px;">
+          <div class="tab active" style="border-radius:9px;background:var(--text);color:#fff;padding:9px 16px;border-bottom:none;" data-rtab="period" onclick="switchRevTab(this,'period')">기간별</div>
+          <div class="tab" style="border-radius:9px;padding:9px 16px;border-bottom:none;" data-rtab="product" onclick="switchRevTab(this,'product')">상품별</div>
+          <div class="tab" style="border-radius:9px;padding:9px 16px;border-bottom:none;" data-rtab="env" onclick="switchRevTab(this,'env')">환경별</div>
+        </div>
+      </div>
+
+      <!-- ===== TAB: 기간별 ===== -->
+      <div id="rtab-period">
+        <div class="card" style="padding:16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div class="rev-quick-tabs">
+            <div class="rev-quick-tab" onclick="selectRange(this)">최근 7일</div>
+            <div class="rev-quick-tab active" onclick="selectRange(this)">최근 30일</div>
+            <div class="rev-quick-tab" onclick="selectRange(this)">최근 90일</div>
+            <div class="rev-quick-tab" onclick="selectRange(this)">최근 1년</div>
+            <div class="rev-quick-tab" onclick="selectRange(this)">전체</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <input type="date" class="rev-date-input" value="2026-06-17">
+            <span style="color:var(--text-faint);">~</span>
+            <input type="date" class="rev-date-input" value="2026-07-16">
+            <button class="btn btn-primary" style="padding:9px 16px;" onclick="showToast('조회했습니다')">조회</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid" style="margin-bottom:16px;">
+          <div class="kpi-card"><div class="kpi-label">기간 매출</div><div class="kpi-value">794,800원</div><div class="kpi-sub up">▲ 12.4% vs 이전 30일</div></div>
+          <div class="kpi-card"><div class="kpi-label">기간 결제건수</div><div class="kpi-value">72건</div><div class="kpi-sub up">▲ 8.1% 전체 주문 76건 중</div></div>
+          <div class="kpi-card"><div class="kpi-label">평균 주문 단가 (AOV)</div><div class="kpi-value">11,039원</div><div class="kpi-sub">결제완료 72건 기준</div></div>
+          <div class="kpi-card"><div class="kpi-label">오늘 매출</div><div class="kpi-value">23,800원</div><div class="kpi-sub down">▼ 14.2% vs 어제</div></div>
+        </div>
+        <div class="kpi-grid" style="margin-bottom:16px;">
+          <div class="kpi-card"><div class="kpi-label">입금 대기</div><div class="kpi-value">2건</div><div class="kpi-sub">입금 확인 필요</div></div>
+          <div class="kpi-card"><div class="kpi-label">취소율</div><div class="kpi-value">2.8%</div><div class="kpi-sub">취소 2건</div></div>
+          <div class="kpi-card"><div class="kpi-label">환불 건수</div><div class="kpi-value">1건</div><div class="kpi-sub">기간 내 1건</div></div>
+          <div class="kpi-card"><div class="kpi-label">배송 완료율</div><div class="kpi-value">86.1%</div><div class="kpi-sub">62 / 72건</div></div>
+        </div>
+
+        <div class="card stat-card" style="margin-bottom:16px;">
+          <div class="stat-card-head">
+            <div class="stat-card-title">일별 매출 추이</div>
+            <span style="font-size:11.5px;color:var(--text-faint);">2026-06-17 ~ 2026-07-16</span>
+          </div>
+          <svg viewBox="0 0 1200 260" style="width:100%;height:260px;" preserveAspectRatio="none">
+            <line x1="60" y1="30" x2="1190" y2="30" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
+            <line x1="60" y1="90" x2="1190" y2="90" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
+            <line x1="60" y1="150" x2="1190" y2="150" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
+            <line x1="60" y1="210" x2="1190" y2="210" stroke="var(--border)" stroke-width="1"/>
+            <text x="10" y="34" font-size="11" fill="var(--text-faint)">28만</text>
+            <text x="10" y="94" font-size="11" fill="var(--text-faint)">14만</text>
+            <text x="10" y="154" font-size="11" fill="var(--text-faint)">7만</text>
+            <text x="18" y="214" font-size="11" fill="var(--text-faint)">0만</text>
+            <path d="M60,210 L1000,210 L1080,32 L1160,208 L1190,210 L1190,210 L60,210 Z" fill="var(--accent-dim)" opacity="0.6"/>
+            <polyline points="60,210 1000,210 1080,32 1160,208 1190,210" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+            <circle cx="1080" cy="32" r="4" fill="var(--accent)"/>
+            <text x="55" y="236" font-size="12" fill="var(--text-faint)">6/17</text>
+            <text x="330" y="236" font-size="12" fill="var(--text-faint)">6/27</text>
+            <text x="610" y="236" font-size="12" fill="var(--text-faint)">7/7</text>
+            <text x="900" y="236" font-size="12" fill="var(--text-faint)">7/12</text>
+            <text x="1160" y="236" font-size="12" fill="var(--text-faint)">7/16</text>
+          </svg>
+        </div>
+
+        <div class="stat-grid2" style="margin-bottom:16px;">
+          <div class="card stat-card">
+            <div class="stat-card-head"><div class="stat-card-title">최근 12개월 매출</div><span style="font-size:11.5px;color:var(--text-faint);">월별 합계</span></div>
+            <svg viewBox="0 0 600 200" style="width:100%;height:200px;">
+              <line x1="40" y1="20" x2="580" y2="20" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
+              <line x1="40" y1="100" x2="580" y2="100" stroke="var(--border)" stroke-width="1" stroke-dasharray="4 4"/>
+              <line x1="40" y1="180" x2="580" y2="180" stroke="var(--border)" stroke-width="1"/>
+              <text x="4" y="24" font-size="10" fill="var(--text-faint)">28만</text>
+              <text x="4" y="104" font-size="10" fill="var(--text-faint)">14만</text>
+              <text x="8" y="184" font-size="10" fill="var(--text-faint)">0만</text>
+              <rect x="522" y="24" width="30" height="156" rx="3" fill="var(--accent)"/>
+              <text x="60" y="195" font-size="9" fill="var(--text-faint)">25/08</text>
+              <text x="150" y="195" font-size="9" fill="var(--text-faint)">25/11</text>
+              <text x="260" y="195" font-size="9" fill="var(--text-faint)">26/02</text>
+              <text x="370" y="195" font-size="9" fill="var(--text-faint)">26/05</text>
+              <text x="510" y="195" font-size="9" fill="var(--text-faint)">26/07</text>
+            </svg>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card-head"><div class="stat-card-title">주문 전환 퍼널</div><span style="font-size:11.5px;color:var(--text-faint);">기간 내 76건</span></div>
+            <div class="funnel-row"><div class="funnel-label-row"><span>주문 접수</span><span class="val">76건 (100.0%)</span></div><div class="funnel-track"><div class="funnel-fill" style="width:100%;"></div></div></div>
+            <div class="funnel-row"><div class="funnel-label-row"><span>결제 완료</span><span class="val">72건 (94.7%)</span></div><div class="funnel-track"><div class="funnel-fill" style="width:94.7%;"></div></div></div>
+            <div class="funnel-row"><div class="funnel-label-row"><span>배송 준비</span><span class="val">65건 (85.5%)</span></div><div class="funnel-track"><div class="funnel-fill" style="width:85.5%;"></div></div></div>
+            <div class="funnel-row"><div class="funnel-label-row"><span>배송 완료</span><span class="val">62건 (81.6%)</span></div><div class="funnel-track"><div class="funnel-fill" style="width:81.6%;"></div></div></div>
+          </div>
+        </div>
+
+        <div class="stat-grid2" style="margin-bottom:16px;">
+          <div class="card stat-card">
+            <div class="stat-card-head"><div class="stat-card-title">카테고리별 매출 비중</div></div>
+            <div style="display:flex;align-items:center;gap:26px;">
+              <svg viewBox="0 0 200 200" width="150" height="150" style="flex-shrink:0;">
+                <circle cx="100" cy="100" r="70" fill="none" stroke="var(--bg)" stroke-width="28"/>
+                <circle cx="100" cy="100" r="70" fill="none" stroke="var(--accent)" stroke-width="28" stroke-dasharray="342.9 439.6" stroke-dashoffset="0" transform="rotate(-90 100 100)"/>
+                <circle cx="100" cy="100" r="70" fill="none" stroke="#C9C4FF" stroke-width="28" stroke-dasharray="96.7 439.6" stroke-dashoffset="-342.9" transform="rotate(-90 100 100)"/>
+                <text x="100" y="96" text-anchor="middle" font-size="12" fill="var(--text-faint)">합계</text>
+                <text x="100" y="116" text-anchor="middle" font-size="17" font-weight="800" fill="var(--text)">79만</text>
+              </svg>
+              <div style="flex:1;">
+                <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;"><span style="display:flex;align-items:center;gap:8px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;"></span>Fruit</span><b>78.0%</b></div>
+                <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;"><span style="display:flex;align-items:center;gap:8px;"><span style="width:10px;height:10px;border-radius:50%;background:#C9C4FF;display:inline-block;"></span>Vegetable</span><b>22.0%</b></div>
+              </div>
+            </div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card-head"><div class="stat-card-title">요일별 주문 분포</div></div>
+            <div class="weekday-bars">
+              <div class="weekday-bar-col"><div class="weekday-bar" style="height:38px;"></div><div class="weekday-bar-label">일</div></div>
+              <div class="weekday-bar-col"><div class="weekday-bar" style="height:60px;"></div><div class="weekday-bar-label">월</div></div>
+              <div class="weekday-bar-col"><div class="weekday-bar" style="height:74px;"></div><div class="weekday-bar-label">화</div></div>
+              <div class="weekday-bar-col"><div class="weekday-bar" style="height:95px;"></div><div class="weekday-bar-label">수</div></div>
+              <div class="weekday-bar-col"><div class="weekday-bar" style="height:66px;"></div><div class="weekday-bar-label">목</div></div>
+              <div class="weekday-bar-col"><div class="weekday-bar" style="height:112px;"></div><div class="weekday-bar-label">금</div></div>
+              <div class="weekday-bar-col"><div class="weekday-bar" style="height:120px;"></div><div class="weekday-bar-label">토</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card stat-card">
+          <div class="stat-card-head"><div class="stat-card-title">상품별 매출 TOP 5</div></div>
+          <div class="top-prod-row"><span class="rank">1</span><span class="name">감귤</span><div class="track"><div class="fill" style="width:100%;"></div></div><span class="amt">285,600원</span></div>
+          <div class="top-prod-row"><span class="rank">2</span><span class="name">딸기</span><div class="track"><div class="fill" style="width:62%;"></div></div><span class="amt">178,200원</span></div>
+          <div class="top-prod-row"><span class="rank">3</span><span class="name">사과</span><div class="track"><div class="fill" style="width:50%;"></div></div><span class="amt">142,800원</span></div>
+          <div class="top-prod-row"><span class="rank">4</span><span class="name">바나나</span><div class="track"><div class="fill" style="width:38%;"></div></div><span class="amt">109,000원</span></div>
+          <div class="top-prod-row"><span class="rank">5</span><span class="name">토마토</span><div class="track"><div class="fill" style="width:28%;"></div></div><span class="amt">79,200원</span></div>
+        </div>
+      </div>
+
+      <!-- ===== TAB: 상품별 ===== -->
+      <div id="rtab-product" style="display:none;">
+        <div class="card stat-card">
+          <table class="stat-table">
+            <thead><tr><th>#</th><th>상품</th><th class="r">판매량</th><th class="r">매출</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>감귤</td><td class="r">24</td><td class="r" style="font-weight:800;">285,600원</td></tr>
+              <tr><td>2</td><td>딸기</td><td class="r">18</td><td class="r" style="font-weight:800;">178,200원</td></tr>
+              <tr><td>3</td><td>사과</td><td class="r">12</td><td class="r" style="font-weight:800;">142,800원</td></tr>
+              <tr><td>4</td><td>바나나</td><td class="r">10</td><td class="r" style="font-weight:800;">109,000원</td></tr>
+              <tr><td>5</td><td>토마토</td><td class="r">8</td><td class="r" style="font-weight:800;">79,200원</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===== TAB: 환경별 ===== -->
+      <div id="rtab-env" style="display:none;">
+        <div class="stat-grid2">
+          <div class="card stat-card">
+            <div class="stat-card-head"><div class="stat-card-title">기기별 매출</div></div>
+            <div class="stat-bar-row"><span>모바일</span><span class="val">556,360원 (70%)</span></div>
+            <div class="stat-bar-track"><div class="stat-bar-fill" style="width:70%;"></div></div>
+            <div class="stat-bar-row" style="margin-top:12px;"><span>PC</span><span class="val">238,440원 (30%)</span></div>
+            <div class="stat-bar-track"><div class="stat-bar-fill" style="width:30%;"></div></div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-card-head"><div class="stat-card-title">유입 경로별 매출</div></div>
+            <div class="stat-bar-row"><span>자체 가입</span><span class="val">397,400원</span></div>
+            <div class="stat-bar-row"><span>네이버</span><span class="val">238,440원</span></div>
+            <div class="stat-bar-row"><span>카카오</span><span class="val">158,960원</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">저장되었습니다</span>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+/* ================= 헤더 알림 패널 ================= */
+/* ================= 탭 전환 ================= */
+function switchRevTab(el, tab){
+  document.querySelectorAll('[data-rtab]').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  ['period','product','env'].forEach(t => {
+    document.getElementById('rtab-'+t).style.display = (t===tab) ? 'block' : 'none';
+  });
+}
+function selectRange(el){
+  document.querySelectorAll('.rev-quick-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  showToast(el.textContent + ' 매출을 조회합니다');
+}
+
+/* ================= 토스트 ================= */
+</script>
+</body>
+</html>

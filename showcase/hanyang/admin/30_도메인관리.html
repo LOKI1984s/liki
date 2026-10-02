@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>도메인관리 · 관리자</title>
+<link rel="stylesheet" href="assets/css/common.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <header class="global-header">
+    <div class="gh-brand" style="cursor:pointer;" onclick="location.href='대시보드.html'">
+      <div class="mark">S</div>
+      <div class="name">ADMIN관리자</div>
+    </div>
+
+    <div class="gh-quick">
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'inquiry')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="gh-notif-label">문의</span>
+          <span class="badge-dot">3</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-inquiry">
+          <div class="gh-notif-panel-head">신규 문의 <b>3건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">배송이 너무 늦어요</div><div class="sub">김민준 · 5분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">사이즈 교환 문의</div><div class="sub">이서연 · 22분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">결제가 안돼요</div><div class="sub">박도윤 · 1시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('문의 전체보기로 이동합니다')">문의 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'order')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="gh-notif-label">주문</span>
+          <span class="badge-dot">12</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-order">
+          <div class="gh-notif-panel-head">신규 주문 <b>12건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-042 · 88,000원</div><div class="sub">최지우 · 3분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-041 · 132,000원</div><div class="sub">정하은 · 18분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260716-040 · 45,000원</div><div class="sub">윤시우 · 40분 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('주문 전체보기로 이동합니다')">주문 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'delivery')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17h4V5H2v12h3"/><path d="M14 9h4l3 3v5h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+          <span class="gh-notif-label">배송</span>
+          <span class="badge-dot">5</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-delivery">
+          <div class="gh-notif-panel-head">배송 대기 <b>5건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-118 발송 대기</div><div class="sub">김민준 · 2시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-117 발송 대기</div><div class="sub">이서연 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">#20260715-116 지연 접수</div><div class="sub">박도윤 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('배송 현황으로 이동합니다')">배송 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'comment')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+          <span class="gh-notif-label">댓글</span>
+          <span class="badge-dot">2</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-comment">
+          <div class="gh-notif-panel-head">새 댓글 <b>2건</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"배송 진짜 빠르네요!"</div><div class="sub">최지우 · 30분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">"재입고 언제 되나요?"</div><div class="sub">정하은 · 2시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('댓글 전체보기로 이동합니다')">댓글 전체보기</button>
+        </div>
+      </div>
+
+      <div class="gh-notif">
+        <button class="gh-notif-btn" onclick="toggleNotifPanel(event,'newmember')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+          <span class="gh-notif-label">신규회원</span>
+          <span class="badge-dot">4</span>
+        </button>
+        <div class="gh-notif-panel" onclick="event.stopPropagation()" id="panel-newmember">
+          <div class="gh-notif-panel-head">신규 가입 <b>4명</b></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">정하은</div><div class="sub">카카오 가입 · 40분 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">박도윤</div><div class="sub">자체 가입 · 3시간 전</div></div></div>
+          <div class="gh-notif-item"><span class="dot-mark"></span><div><div class="ttl">윤시우</div><div class="sub">네이버 가입 · 5시간 전</div></div></div>
+          <button class="gh-notif-more" onclick="showToast('회원목록으로 이동합니다')">신규회원 전체보기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gh-right">
+      <div class="gh-admin">
+        <div class="gh-admin-info">
+          <div class="gh-name">김도현 관리자님</div>
+          <div class="gh-meta"><span class="gh-live-dot"></span>192.168.0.1 접속중</div>
+        </div>
+      </div>
+      <div class="gh-divider"></div>
+      <button class="gh-logout" onclick="showToast('로그아웃 되었습니다')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        로그아웃
+      </button>
+    </div>
+  </header>
+
+  <div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar">
+    <nav class="sidebar-scroll">
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">사이트관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="01_카테고리.html"><span class="dot"></span>카테고리</a>
+          <a class="nav-item" href="02_메뉴설정.html"><span class="dot"></span>메뉴설정</a>
+          <a class="nav-item" href="03_공지사항.html"><span class="dot"></span>공지사항</a>
+          <a class="nav-item" href="04_팝업배너.html"><span class="dot"></span>팝업·배너</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="ng-text">회원관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="05_회원목록.html"><span class="dot"></span>회원목록</a>
+          <a class="nav-item" href="06_회원등급.html"><span class="dot"></span>회원등급</a>
+          <a class="nav-item" href="07_회원설정.html"><span class="dot"></span>회원설정</a>
+          <a class="nav-item" href="08_추천인설정.html"><span class="dot"></span>추천인설정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="ng-text">주문관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="09_입금관리.html"><span class="dot"></span>입금관리</a>
+          <a class="nav-item" href="10_상품관리.html"><span class="dot"></span>상품관리</a>
+          <a class="nav-item" href="11_주문관리.html"><span class="dot"></span>주문관리</a>
+          <a class="nav-item" href="12_배송관리.html"><span class="dot"></span>배송관리</a>
+          <a class="nav-item" href="13_정기구독.html"><span class="dot"></span>정기구독</a>
+          <a class="nav-item" href="14_문의.html"><span class="dot"></span>문의</a>
+          <a class="nav-item" href="15_구매평.html"><span class="dot"></span>구매평</a>
+          <a class="nav-item" href="16_재입고알림.html"><span class="dot"></span>재입고알림</a>
+          <a class="nav-item" href="17_세금계산서.html"><span class="dot"></span>세금계산서</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 12l9 9 11-11-2-8-8-2Z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+          <span class="ng-text">프로모션</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="18_쿠폰.html"><span class="dot"></span>쿠폰</a>
+          <a class="nav-item" href="19_적립금.html"><span class="dot"></span>적립금</a>
+          <a class="nav-item" href="20_이벤트.html"><span class="dot"></span>이벤트</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14v3M12 10v7M17 6v11"/></svg>
+          <span class="ng-text">통계</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="21_개요.html"><span class="dot"></span>개요</a>
+          <a class="nav-item" href="22_매출.html"><span class="dot"></span>매출</a>
+          <a class="nav-item" href="23_기간별분석.html"><span class="dot"></span>기간별분석</a>
+          <a class="nav-item" href="24_유입통계.html"><span class="dot"></span>유입통계</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ng-text">메세지</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="25_문자발송.html"><span class="dot"></span>문자발송</a>
+          <a class="nav-item" href="26_자동메일.html"><span class="dot"></span>자동메일</a>
+          <a class="nav-item" href="27_환경설정.html"><span class="dot"></span>환경설정</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.2 4.2l2.8 2.8m10 10 2.8 2.8M1 12h4m14 0h4M4.2 19.8l2.8-2.8m10-10 2.8-2.8"/></svg>
+          <span class="ng-text">시스템</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="28_일반설정.html"><span class="dot"></span>일반설정</a>
+          <a class="nav-item" href="29_약관개인정보.html"><span class="dot"></span>약관·개인정보</a>
+          <a class="nav-item active" href="30_도메인관리.html"><span class="dot"></span>도메인관리</a>
+          <a class="nav-item" href="31_전자결제.html"><span class="dot"></span>전자결제</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5z"/></svg>
+          <span class="ng-text">권한관리</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="32_관리자계정.html"><span class="dot"></span>관리자계정</a>
+        </div>
+      </div>
+      <div class="nav-group collapsed">
+        <div class="nav-group-label" onclick="toggleNavGroup(this)">
+          <svg class="ng-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg>
+          <span class="ng-text">파트너</span>
+          <svg class="ng-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="nav-group-items">
+          <a class="nav-item" href="33_리셀러목록.html"><span class="dot"></span>리셀러목록</a>
+          <a class="nav-item" href="34_리셀러설정.html"><span class="dot"></span>리셀러설정</a>
+          <a class="nav-item" href="35_리셀러트리.html"><span class="dot"></span>리셀러트리</a>
+          <a class="nav-item" href="36_리셀러정산.html"><span class="dot"></span>리셀러정산</a>
+          <a class="nav-item" href="37_리셀러도메인.html"><span class="dot"></span>리셀러도메인</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">도메인관리</div>
+        <div class="breadcrumb">시스템 &nbsp;/&nbsp; 도메인관리</div>
+      </div>
+      <button class="btn btn-primary" onclick="openDomainRegisterModal()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        도메인 등록
+      </button>
+    </div>
+
+    <div class="content">
+      <div class="info-note" style="margin-bottom:16px;">
+        이 화면은 도메인 <b>연결 자체를 처리하지 않습니다.</b> 실제 DNS 연결·해제는 개발자가 수동으로 반영하며, 관리자에서는 등록한 도메인의 <b>상태를 모니터링</b>하고 이력을 기록하는 용도로 사용합니다.
+      </div>
+
+      <div class="kpi-grid" style="margin-bottom:16px;">
+        <div class="kpi-card"><div class="kpi-label"><span class="dom-dot dom-normal" style="display:inline-block;margin-right:6px;"></span>정상</div><div class="kpi-value" id="kpi-normal">0</div></div>
+        <div class="kpi-card"><div class="kpi-label"><span class="dom-dot dom-degraded" style="display:inline-block;margin-right:6px;"></span>연결불량</div><div class="kpi-value" id="kpi-degraded">0</div></div>
+        <div class="kpi-card"><div class="kpi-label"><span class="dom-dot dom-unreachable" style="display:inline-block;margin-right:6px;"></span>접속불가</div><div class="kpi-value" id="kpi-unreachable">0</div></div>
+        <div class="kpi-card"><div class="kpi-label"><span class="dom-dot dom-spam" style="display:inline-block;margin-right:6px;"></span>스팸 차단</div><div class="kpi-value" id="kpi-spam">0</div></div>
+      </div>
+
+      <div class="card" style="padding:20px 24px;margin-bottom:16px;">
+        <div class="toggle-row" style="padding:0;">
+          <div>
+            <span class="lbl" style="font-weight:700;">상태 이상 감지 시 관리자에게 알림</span>
+            <div class="settings-desc" style="margin-top:4px;">정상 외 상태(연결불량·접속불가·스팸)로 바뀌면 아래 등록된 연락처로 알림을 보냅니다. (문자는 크레딧 차감)</div>
+          </div>
+          <label class="switch"><input type="checkbox" checked><span class="track"></span></label>
+        </div>
+
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+          <div style="font-size:12.5px;font-weight:700;margin-bottom:10px;">알림 받을 연락처</div>
+          <div id="alertRecipientList" style="max-width:640px;margin-bottom:10px;"></div>
+          <button class="btn" onclick="addAlertRecipient()">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" style="margin-right:4px;vertical-align:-1px;"><path d="M12 5v14M5 12h14"/></svg>
+            연락처 추가
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="toolbar" style="padding:16px;">
+          <div style="font-size:13px;color:var(--text-sub);">등록된 도메인 <b id="domainCount" style="color:var(--text);">0</b>개</div>
+          <div style="flex:1;"></div>
+          <button class="btn" onclick="exportDomainsExcel()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:-1px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+            엑셀다운로드
+          </button>
+          <div class="search-box" style="width:260px;flex:none;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="domainSearchInput" type="text" placeholder="도메인 검색" oninput="renderDomainTable()">
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+        <table style="table-layout:fixed;">
+          <colgroup>
+            <col style="width:22%;"><col style="width:14%;"><col style="width:20%;">
+            <col style="width:16%;"><col style="width:13%;"><col style="width:180px;">
+          </colgroup>
+          <thead>
+            <tr><th>도메인</th><th>상태</th><th>메모</th><th>마지막 점검</th><th>등록일</th><th></th></tr>
+          </thead>
+          <tbody id="domainTbody"></tbody>
+        </table>
+        </div>
+        <div class="empty-state" id="domainEmpty" style="display:none;">등록된 도메인이 없습니다</div>
+      </div>
+    </div>
+  </main>
+  </div>
+</div>
+
+<!-- ===== 도메인 등록 모달 ===== -->
+<div class="modal-overlay" id="domainRegisterModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>도메인 등록</h3>
+      <button class="modal-close" onclick="closeModal('domainRegisterModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>도메인 주소 <span class="req">(필수)</span></label>
+        <input type="text" id="rg_domain" placeholder="예) www.flowershop.com">
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label>메모 (용도, 담당자 전달사항 등)</label>
+        <textarea class="ta" id="rg_note" style="min-height:90px;" placeholder="예) 네이버 검색광고용 랜딩 도메인, 개발자 김OO에게 DNS 연결 요청함"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('domainRegisterModal')">취소</button>
+      <button class="btn btn-primary" onclick="confirmDomainRegister()">등록</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 도메인 상세 모달 ===== -->
+<div class="modal-overlay" id="domainDetailModal">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <h3 id="dd_title">도메인 상세</h3>
+      <button class="modal-close" onclick="closeModal('domainDetailModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <div class="dom-status"><span class="dom-dot" id="dd_dot"></span><span id="dd_statusLabel">-</span></div>
+        <div class="dropdown" style="position:relative;">
+          <button class="btn" style="padding:7px 12px;font-size:12.5px;" onclick="toggleRowMenu(event,'ddStatus')">상태 수동 변경 ▾</button>
+          <div class="dropdown-menu" id="menu-ddStatus">
+            <button onclick="closeAllMenus(); setDomainStatus('normal')">정상</button>
+            <button onclick="closeAllMenus(); setDomainStatus('degraded')">연결불량</button>
+            <button onclick="closeAllMenus(); setDomainStatus('unreachable')">접속불가</button>
+            <button onclick="closeAllMenus(); setDomainStatus('spam')">스팸 차단</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>메모</label>
+        <textarea class="ta" id="dd_note" style="min-height:80px;"></textarea>
+      </div>
+
+      <div class="field" style="margin-bottom:0;">
+        <label>상태 점검 이력</label>
+        <div id="dd_logList" style="border:1px solid var(--border);border-radius:9px;padding:4px 14px;max-height:200px;overflow-y:auto;"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-danger-outline" onclick="deleteDomainConfirm()">도메인 삭제</button>
+      <button class="btn btn-primary" onclick="closeModal('domainDetailModal')">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 삭제 확인 모달 ===== -->
+<div class="modal-overlay" id="domainDeleteModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>도메인 삭제</h3>
+      <button class="modal-close" onclick="closeModal('domainDeleteModal')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="warn-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        <div>관리자에서 기록만 삭제됩니다. 실제 도메인 연결 해제는 개발자에게 별도로 요청해야 해요.
+          <div class="name-list" id="delDomainName">도메인명</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" onclick="closeModal('domainDeleteModal')">취소</button>
+      <button class="btn" style="background:var(--danger);border-color:var(--danger);color:#fff;" onclick="confirmDeleteDomain()">삭제</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  <span id="toastMsg">저장되었습니다</span>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+const domStatusLabel = { normal:'정상', degraded:'연결불량', unreachable:'접속불가', spam:'스팸 차단' };
+
+function nowStamp(){
+  const n = new Date();
+  const p = v => String(v).padStart(2,'0');
+  return `${n.getFullYear()}-${p(n.getMonth()+1)}-${p(n.getDate())} ${p(n.getHours())}:${p(n.getMinutes())}`;
+}
+
+let domains = [
+  { id:1, name:'www.flowershop.com', note:'대표 도메인 (네이버 검색광고 연결)', status:'normal',
+    date:'2026-05-02', lastCheck:'2026-07-18 09:00',
+    logs:[{time:'2026-07-18 09:00', status:'normal'}, {time:'2026-07-11 09:00', status:'normal'}] },
+  { id:2, name:'flower-event.co.kr', note:'여름 이벤트 랜딩용 서브도메인', status:'degraded',
+    date:'2026-07-10', lastCheck:'2026-07-18 09:00',
+    logs:[{time:'2026-07-18 09:00', status:'degraded'}, {time:'2026-07-17 09:00', status:'normal'}] },
+  { id:3, name:'old-flowershop.kr', note:'예전 도메인, 이전 완료 후 정리 예정', status:'unreachable',
+    date:'2026-03-14', lastCheck:'2026-07-18 09:00',
+    logs:[{time:'2026-07-18 09:00', status:'unreachable'}, {time:'2026-07-03 09:00', status:'unreachable'}] },
+];
+let nextDomainId = 4;
+
+function renderKpis(){
+  const counts = { normal:0, degraded:0, unreachable:0, spam:0 };
+  domains.forEach(d => counts[d.status]++);
+  document.getElementById('kpi-normal').textContent = counts.normal;
+  document.getElementById('kpi-degraded').textContent = counts.degraded;
+  document.getElementById('kpi-unreachable').textContent = counts.unreachable;
+  document.getElementById('kpi-spam').textContent = counts.spam;
+}
+
+function renderDomainTable(){
+  const kw = document.getElementById('domainSearchInput').value.trim().toLowerCase();
+  const filtered = domains.filter(d => !kw || d.name.toLowerCase().includes(kw));
+  document.getElementById('domainCount').textContent = domains.length;
+  document.getElementById('domainEmpty').style.display = filtered.length ? 'none' : 'block';
+  renderKpis();
+
+  document.getElementById('domainTbody').innerHTML = filtered.map(d => `
+    <tr>
+      <td style="font-weight:600;">${d.name}</td>
+      <td><div class="dom-status"><span class="dom-dot dom-${d.status}"></span>${domStatusLabel[d.status]}</div></td>
+      <td style="color:var(--text-sub);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${d.note || '-'}</td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${d.lastCheck}</td>
+      <td style="color:var(--text-sub);font-size:12.5px;">${d.date}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn" style="padding:6px 12px;font-size:12px;" onclick="openDomainDetail(${d.id})">상세</button>
+          <button class="btn" style="padding:6px 12px;font-size:12px;" onclick="recheckDomain(${d.id})">지금 점검</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openDomainRegisterModal(){
+  document.getElementById('rg_domain').value = '';
+  document.getElementById('rg_note').value = '';
+  document.getElementById('domainRegisterModal').classList.add('open');
+}
+function confirmDomainRegister(){
+  const name = document.getElementById('rg_domain').value.trim();
+  if(!name){ showToast('도메인 주소를 입력해주세요'); return; }
+  const note = document.getElementById('rg_note').value.trim();
+  domains.unshift({
+    id: nextDomainId++, name, note, status:'unreachable',
+    date: nowStamp().slice(0,10), lastCheck: nowStamp(),
+    logs:[{time:nowStamp(), status:'unreachable'}]
+  });
+  closeModal('domainRegisterModal');
+  renderDomainTable();
+  showToast('도메인이 등록되었습니다. 개발자에게 DNS 연결을 요청해주세요');
+}
+
+function recheckDomain(id){
+  const d = domains.find(x=>x.id===id);
+  if(!d) return;
+  d.lastCheck = nowStamp();
+  d.logs.unshift({time:d.lastCheck, status:d.status});
+  renderDomainTable();
+  showToast(d.name + ' 상태를 다시 점검했습니다 (현재: ' + domStatusLabel[d.status] + ')');
+}
+
+let ddCurrentId = null;
+function openDomainDetail(id){
+  const d = domains.find(x=>x.id===id);
+  if(!d) return;
+  ddCurrentId = id;
+  document.getElementById('dd_title').textContent = d.name;
+  document.getElementById('dd_dot').className = 'dom-dot dom-' + d.status;
+  document.getElementById('dd_statusLabel').textContent = domStatusLabel[d.status];
+  document.getElementById('dd_note').value = d.note || '';
+  renderDomainLogs(d);
+  document.getElementById('domainDetailModal').classList.add('open');
+}
+function renderDomainLogs(d){
+  document.getElementById('dd_logList').innerHTML = d.logs.map(l => `
+    <div class="dom-log-row">
+      <span class="dom-log-time">${l.time}</span>
+      <span class="dom-status"><span class="dom-dot dom-${l.status}"></span>${domStatusLabel[l.status]}</span>
+    </div>
+  `).join('') || '<div style="padding:12px 0;color:var(--text-faint);font-size:12.5px;">점검 이력이 없습니다</div>';
+}
+function setDomainStatus(status){
+  const d = domains.find(x=>x.id===ddCurrentId);
+  if(!d) return;
+  d.status = status;
+  d.lastCheck = nowStamp();
+  d.logs.unshift({time:d.lastCheck, status});
+  document.getElementById('dd_dot').className = 'dom-dot dom-' + status;
+  document.getElementById('dd_statusLabel').textContent = domStatusLabel[status];
+  renderDomainLogs(d);
+  renderDomainTable();
+  showToast('상태가 \''+domStatusLabel[status]+'\'(으)로 변경되었습니다');
+}
+function exportDomainsExcel(){
+  const rows = [['도메인','상태','메모','마지막 점검','등록일']];
+  domains.forEach(d => rows.push([d.name, domStatusLabel[d.status], d.note||'', d.lastCheck, d.date]));
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '도메인목록_' + nowStamp().slice(0,10) + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('엑셀 파일을 다운로드했습니다');
+}
+
+function deleteDomainConfirm(){
+  const d = domains.find(x=>x.id===ddCurrentId);
+  if(!d) return;
+  document.getElementById('delDomainName').textContent = d.name;
+  closeModal('domainDetailModal');
+  document.getElementById('domainDeleteModal').classList.add('open');
+}
+function confirmDeleteDomain(){
+  domains = domains.filter(d => d.id !== ddCurrentId);
+  closeModal('domainDeleteModal');
+  renderDomainTable();
+  showToast('도메인 기록이 삭제되었습니다');
+}
+
+renderDomainTable();
+
+/* ================= 알림 받을 연락처 ================= */
+let alertRecipients = [
+  { type:'phone', value:'010-1234-5678' },
+  { type:'email', value:'admin@flowershop.com' },
+];
+function renderAlertRecipients(){
+  document.getElementById('alertRecipientList').innerHTML = alertRecipients.map((r, i) => `
+    <div class="sns-row" style="gap:10px;">
+      <select style="max-width:110px;flex:none;" onchange="alertRecipients[${i}].type=this.value">
+        <option value="phone" ${r.type==='phone'?'selected':''}>전화번호</option>
+        <option value="email" ${r.type==='email'?'selected':''}>이메일</option>
+      </select>
+      <input type="text" placeholder="${r.type==='phone'?'010-0000-0000':'email@example.com'}" value="${r.value}" style="flex:1;" oninput="alertRecipients[${i}].value=this.value">
+      <button class="sns-action-btn" title="삭제" onclick="removeAlertRecipient(${i})">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+  `).join('');
+}
+function addAlertRecipient(){
+  alertRecipients.push({ type:'phone', value:'' });
+  renderAlertRecipients();
+}
+function removeAlertRecipient(i){
+  alertRecipients.splice(i,1);
+  renderAlertRecipients();
+}
+renderAlertRecipients();
+</script>
+</body>
+</html>
